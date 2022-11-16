@@ -10,15 +10,21 @@ SessionData = Inferno::Repositories::SessionData::Model
 Request = Inferno::Repositories::Requests::Model
 Result = Inferno::Repositories::Results::Model
 
-# DRY_RUN = ENV['DRY_RUN'].casecmp? 'true'
-DRY_RUN = true
+DRY_RUN = ENV['DRY_RUN'].casecmp? 'true'
 
 SESSION_BATCH_SIZE = 5
+
+def old_session_count
+  TestSession
+    .where{created_at <= 2.months.ago}
+    .count
+end
 
 def find_old_session_ids(offset)
   session_query =
     TestSession
-      .where{created_at <= 1.month.ago}
+      .where{created_at <= 2.months.ago}
+      .order(:created_at)
       .limit(SESSION_BATCH_SIZE)
       .offset(offset)
 
@@ -40,22 +46,22 @@ def destroy_request_bodies_and_headers(session_ids)
   end
 end
 
-def destroy_messages_results_and_requests_results(session_ids)
-  result_ids = Result.where(test_session_id: session_ids).map(:id)
+def destroy_non_warning_messages(session_ids)
+  ids = Result.where(test_session_id: session_ids).map(:id)
 
-  result_ids.each_slice(10) do |ids|
-    messages_query = Inferno::Repositories::Messages.db.where(result_id: ids)
-    results_query = Inferno::Repositories::Results.db.where(id: ids)
-    requests_results_query = Inferno::Application['db.connection'][:requests_results].where(results_id: ids)
+  # result_ids.each_slice(10) do |ids|
+    messages_query = Inferno::Repositories::Messages.db.where(result_id: ids).exclude(type: 'warning')
+    # results_query = Inferno::Repositories::Results.db.where(id: ids)
+    # requests_results_query = Inferno::Application['db.connection'][:requests_results].where(results_id: ids)
 
     puts "Deleting #{messages_query.count} messages"
     messages_query.delete unless DRY_RUN
-    puts "Deleting #{results_query.count} results"
-    results_query.delete unless DRY_RUN
-    puts "Deleting #{requests_results_query.count} requests_results"
-    requests_results_query.delete unless DRY_RUN
+    # puts "Deleting #{results_query.count} results"
+    # results_query.delete unless DRY_RUN
+    # puts "Deleting #{requests_results_query.count} requests_results"
+    # requests_results_query.delete unless DRY_RUN
     sleep 0.3 if DRY_RUN
-  end
+  # end
 end
 
 # def destroy_test_runs(session_ids)
@@ -83,19 +89,23 @@ end
 #   sleep 1 if DRY_RUN
 # end
 
+remaining_sessions = old_session_count
 offset = 0
+
 loop do
+  puts "#{remaining_sessions} left to process."
   session_ids = find_old_session_ids(offset)
 
   break if session_ids.blank?
 
   puts "Starting to delete #{session_ids.length} sessions"
   destroy_request_bodies_and_headers(session_ids)
-  destroy_messages_results_and_requests_results(session_ids)
+  destroy_non_warning_messages(session_ids)
   # destroy_test_runs(session_ids)
   # destroy_session_data(session_ids)
   # destroy_sessions(session_ids)
   puts "Finished deleting #{session_ids.length} sessions\n\n"
   offset += SESSION_BATCH_SIZE
+  remaining_sessions -= SESSION_BATCH_SIZE
   sleep 5 if DRY_RUN
 end
