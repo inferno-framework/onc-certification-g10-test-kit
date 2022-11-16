@@ -98,7 +98,7 @@ loop do
 
   break if session_ids.blank?
 
-  puts "Starting to delete #{session_ids.length} sessions"
+  puts "Starting to delete sessions #{session_ids.join(', ')}"
   destroy_request_bodies_and_headers(session_ids)
   destroy_non_warning_messages(session_ids)
   # destroy_test_runs(session_ids)
