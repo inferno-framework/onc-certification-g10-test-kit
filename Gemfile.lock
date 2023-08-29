@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    onc_certification_g10_test_kit (3.8.0)
+    onc_certification_g10_test_kit (3.8.0.pre.dev)
       bloomer (~> 1.0.0)
       colorize (~> 0.8.1)
       inferno_core (>= 0.4.18)
@@ -11,7 +11,7 @@ PATH
       rubyzip (~> 2.3.2)
       smart_app_launch_test_kit (= 0.3.0)
       tls_test_kit (= 0.2.0)
-      us_core_test_kit (= 0.5.0)
+      us_core_test_kit (= 0.6.0)
 
 GEM
   remote: https://rubygems.org/
@@ -243,7 +243,7 @@ GEM
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
     public_suffix (5.0.3)
-    puma (5.6.6)
+    puma (5.6.7)
       nio4r (~> 2.0)
     racc (1.7.1)
     rack (2.2.8)
@@ -302,11 +302,11 @@ GEM
       inferno_core (>= 0.4.2)
       jwt (~> 2.2)
       tls_test_kit (~> 0.2.0)
-    sqlite3 (1.6.3)
+    sqlite3 (1.6.4)
       mini_portile2 (~> 2.8.0)
-    sqlite3 (1.6.3-arm64-darwin)
-    sqlite3 (1.6.3-x86_64-darwin)
-    sqlite3 (1.6.3-x86_64-linux)
+    sqlite3 (1.6.4-arm64-darwin)
+    sqlite3 (1.6.4-x86_64-darwin)
+    sqlite3 (1.6.4-x86_64-linux)
     strings (0.2.1)
       strings-ansi (~> 0.2)
       unicode-display_width (>= 1.5, < 3.0)
@@ -332,7 +332,7 @@ GEM
     unf_ext (0.0.8.2)
     unicode-display_width (2.4.2)
     unicode_utils (1.4.0)
-    us_core_test_kit (0.5.0)
+    us_core_test_kit (0.6.0)
       inferno_core (>= 0.4.2)
       tls_test_kit (~> 0.2.0)
     webmock (3.18.1)
