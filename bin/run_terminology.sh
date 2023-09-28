@@ -11,12 +11,12 @@ if [ -f /.dockerenv ]; then
   fi
 fi
 
-./bin/prepare_terminology.sh 2022
+./bin/prepare_terminology.sh 2023
 bundle exec rake terminology:create_vs_validators["preferred"]
 echo "$?"
 
 if [ -n "$CLEANUP" ]
 then
-  echo 'Deleting 2022 build files'
-  bundle exec rake terminology:cleanup_precursors["2022"]
+  echo 'Deleting 2023 build files'
+  bundle exec rake terminology:cleanup_precursors["2023"]
 fi

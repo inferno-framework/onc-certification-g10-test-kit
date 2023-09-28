@@ -29,7 +29,7 @@ Inferno.logger.formatter = proc do |_severity, _datetime, _progname, message|
   "#{message}\n"
 end
 
-default_version = '2022'
+default_version = '2023'
 
 namespace :terminology do |_argv|
   desc 'download and execute UMLS terminology data'

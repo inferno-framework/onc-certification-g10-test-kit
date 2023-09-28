@@ -5,7 +5,7 @@ if [ -n "$1" ]
 then
   version="$1"
 else
-  version="2022"
+  version="2023"
 fi
 
 temp_folder="tmp/terminology/${version}"

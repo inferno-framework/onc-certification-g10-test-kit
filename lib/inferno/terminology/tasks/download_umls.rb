@@ -12,7 +12,8 @@ module Inferno
           '2019' => 'https://download.nlm.nih.gov/umls/kss/2019AB/umls-2019AB-full.zip',
           '2020' => 'https://download.nlm.nih.gov/umls/kss/2020AB/umls-2020AB-full.zip',
           '2021' => 'https://download.nlm.nih.gov/umls/kss/2021AA/umls-2021AA-full.zip',
-          '2022' => 'https://download.nlm.nih.gov/umls/kss/2022AA/umls-2022AA-full.zip'
+          '2022' => 'https://download.nlm.nih.gov/umls/kss/2022AA/umls-2022AA-full.zip',
+          '2023' => 'https://download.nlm.nih.gov/umls/kss/2023AA/umls-2023AA-full.zip'
         }.freeze
         TICKET_GRANTING_TICKET_URL = 'https://utslogin.nlm.nih.gov/cas/v1/api-key'.freeze
 
