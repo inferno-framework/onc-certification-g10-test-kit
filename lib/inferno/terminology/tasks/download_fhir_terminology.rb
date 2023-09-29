@@ -18,8 +18,9 @@ module Inferno
           FHIRPackageManager.get_package('hl7.fhir.us.core#3.1.1', PACKAGE_DIR, ['ValueSet', 'CodeSystem'])
           FHIRPackageManager.get_package('hl7.fhir.us.core#4.0.0', PACKAGE_DIR, ['ValueSet', 'CodeSystem'])
           FHIRPackageManager.get_package('hl7.fhir.us.core#5.0.1', PACKAGE_DIR, ['ValueSet', 'CodeSystem'])
+          FHIRPackageManager.get_package('hl7.fhir.us.core#6.1.0', PACKAGE_DIR, ['ValueSet', 'CodeSystem'])
           FHIRPackageManager.get_package(
-            'us.nlm.vsac#0.7.0', File.join(PACKAGE_DIR, 'vsac'), ['ValueSet', 'CodeSystem']
+            'us.nlm.vsac#0.11.0', File.join(PACKAGE_DIR, 'vsac'), ['ValueSet', 'CodeSystem']
           )
         end
 

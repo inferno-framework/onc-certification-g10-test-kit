@@ -34,6 +34,13 @@ module Inferno
           mismatched_value_sets.each do |value_set|
             Inferno.logger.info mismatched_value_set_message(value_set)
           end
+
+          if new_value_sets.present?
+            Inferno.logger.info("\nThe following unexpected value set validators were created:")
+            new_value_sets.each do |value_set|
+              Inferno.logger.info("#{value_set[:url]}: #{value_set[:count]} codes")
+            end
+          end
         end
 
         def expected_manifest
@@ -48,7 +55,7 @@ module Inferno
         def new_manifest
           return [] unless File.exist? new_manifest_path
 
-          YAML.load_file(new_manifest_path)
+          @new_manifest ||= YAML.load_file(new_manifest_path)
         end
 
         def mismatched_value_sets
@@ -59,8 +66,17 @@ module Inferno
             end
         end
 
+        def new_value_sets
+          @new_value_sets ||=
+            new_manifest.reject { |value_set| old_value_set?(value_set[:url]) }
+        end
+
         def new_value_set(url)
           new_manifest.find { |value_set| value_set[:url] == url }
+        end
+
+        def old_value_set?(url)
+          expected_manifest.any? { |value_set| value_set[:url] == url }
         end
 
         def only_non_umls_mismatch?

@@ -642,22 +642,8 @@
   :strength: required
   :system: http://hl7.org/fhir/us/core/ValueSet/us-core-problem-or-health-concern
   :path: category
+  :required_binding_slice: true
   :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-condition-problems-health-concerns
-- :type: CodeableConcept
-  :strength: required
-  :system: http://hl7.org/fhir/us/core/ValueSet/us-core-diagnosticreport-category
-  :path: category
-  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-diagnosticreport-note
-- :type: CodeableConcept
-  :strength: required
-  :system: http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-category
-  :path: category
-  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-documentreference
-- :type: CodeableConcept
-  :strength: required
-  :system: http://hl7.org/fhir/ValueSet/medicationrequest-category
-  :path: category
-  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-medicationrequest
 - :type: code
   :strength: required
   :system: http://hl7.org/fhir/ValueSet/observation-status
@@ -703,11 +689,6 @@
   :system: http://hl7.org/fhir/ValueSet/address-type
   :path: address.type
   :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner
-- :type: Coding
-  :strength: required
-  :system: http://hl7.org/fhir/us/core/ValueSet/us-core-tags
-  :path: meta.tag
-  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-questionnaireresponse
 - :type: code
   :strength: required
   :system: http://hl7.org/fhir/ValueSet/questionnaire-answers-status
@@ -728,13 +709,71 @@
   :system: http://hl7.org/fhir/ValueSet/request-intent
   :path: intent
   :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-servicerequest
-- :type: CodeableConcept
-  :strength: required
-  :system: http://hl7.org/fhir/us/core/ValueSet/us-core-servicerequest-category
-  :path: category
-  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-servicerequest
 - :type: code
   :strength: required
   :system: http://hl7.org/fhir/ValueSet/request-priority
   :path: priority
   :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-servicerequest
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/identifier-use
+  :path: identifier.use
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-coverage
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/fm-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-coverage
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/medicationdispense-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-medicationdispense
+- :type: CodeableConcept
+  :strength: required
+  :system: http://hl7.org/fhir/us/core/ValueSet/us-core-clinical-result-observation-category
+  :path: category
+  :required_binding_slice: true
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-lab
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/observation-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-pregnancystatus
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/observation-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-pregnancyintent
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/observation-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-occupation
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/observation-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-simple-observation
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/observation-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-screening-assessment
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/observation-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-clinical-result
+- :type: code
+  :strength: required
+  :system: http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.3
+  :path: value
+  :extensions:
+  - http://hl7.org/fhir/us/core/StructureDefinition/us-core-sex
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
+- :type: code
+  :strength: required
+  :system: http://hl7.org/fhir/ValueSet/specimen-status
+  :path: status
+  :profile_url: http://hl7.org/fhir/us/core/StructureDefinition/us-core-specimen
