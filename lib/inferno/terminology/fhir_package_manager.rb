@@ -18,7 +18,8 @@ module Inferno
           'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1',
           'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.102',
           'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1021.103',
-          'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.2074.1.1.3'
+          'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113883.3.2074.1.1.3',
+          'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.3'
           # The ValueSets below are needed when building all of the terminology
           # rather than only the terminology for required bindings.
           # 'http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1186.8',
