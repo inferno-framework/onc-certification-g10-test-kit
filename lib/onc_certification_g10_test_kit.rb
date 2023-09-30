@@ -10,6 +10,7 @@ require_relative 'onc_certification_g10_test_kit/g10_options'
 require_relative 'onc_certification_g10_test_kit/single_patient_api_group'
 require_relative 'onc_certification_g10_test_kit/single_patient_us_core_4_api_group'
 require_relative 'onc_certification_g10_test_kit/single_patient_us_core_5_api_group'
+require_relative 'onc_certification_g10_test_kit/single_patient_us_core_6_api_group'
 require_relative 'onc_certification_g10_test_kit/smart_app_launch_invalid_aud_group'
 require_relative 'onc_certification_g10_test_kit/smart_invalid_token_group'
 require_relative 'onc_certification_g10_test_kit/smart_invalid_token_group_stu2'
@@ -64,7 +65,9 @@ module ONCCertificationG10TestKit
     [
       G10Options::US_CORE_3_REQUIREMENT,
       G10Options::US_CORE_4_REQUIREMENT,
-      G10Options::US_CORE_5_REQUIREMENT
+      G10Options::US_CORE_5_REQUIREMENT,
+      G10Options::US_CORE_6_REQUIREMENT
+
     ].each do |us_core_version_requirement|
       validator :default, required_suite_options: us_core_version_requirement do
         url ENV.fetch('G10_VALIDATOR_URL', 'http://validator_service:4567')
@@ -77,6 +80,8 @@ module ONCCertificationG10TestKit
             USCoreTestKit::USCoreV400::USCoreTestSuite::VALIDATION_MESSAGE_FILTERS
           when G10Options::US_CORE_5
             USCoreTestKit::USCoreV501::USCoreTestSuite::VALIDATION_MESSAGE_FILTERS
+          when G10Options::US_CORE_6
+            USCoreTestKit::USCoreV610::USCoreTestSuite::VALIDATION_MESSAGE_FILTERS
           end
 
         exclude_message do |message|
@@ -102,6 +107,8 @@ module ONCCertificationG10TestKit
         perform_additional_validation do |resource, profile_url|
           versionless_profile_url, profile_version = profile_url.split('|')
           profile_version = case profile_version
+                            when '6.1.0'
+                              '610'
                             when '4.0.0'
                               '400'
                             when '5.0.1'
@@ -174,6 +181,10 @@ module ONCCertificationG10TestKit
                    {
                      label: 'US Core 5.0.1 / USCDI v2',
                      value: G10Options::US_CORE_5
+                   },
+                   {
+                     label: 'US Core 6.1.0 / USCDI v3',
+                     value: G10Options::US_CORE_6
                    }
                  ]
 
@@ -274,6 +285,8 @@ module ONCCertificationG10TestKit
           required_suite_options: G10Options::US_CORE_4_REQUIREMENT
     group from: 'g10_single_patient_us_core_5_api',
           required_suite_options: G10Options::US_CORE_5_REQUIREMENT
+    group from: 'g10_single_patient_us_core_6_api',
+          required_suite_options: G10Options::US_CORE_6_REQUIREMENT
 
     group from: 'multi_patient_api',
           required_suite_options: G10Options::BULK_DATA_1_REQUIREMENT
