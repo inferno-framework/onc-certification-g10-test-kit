@@ -134,7 +134,7 @@
   - http://hl7.org/fhir/document-relationship-type
 - :url: http://hl7.org/fhir/ValueSet/mimetypes
   :file: hl7_org_fhir_ValueSet_mimetypes.msgpack
-  :count: 2382
+  :count: 2503
   :type: bloom
   :code_systems:
   - urn:ietf:bcp:13
@@ -354,30 +354,6 @@
   :code_systems:
   - http://terminology.hl7.org/CodeSystem/condition-category
   - http://hl7.org/fhir/us/core/CodeSystem/condition-category
-- :url: http://hl7.org/fhir/us/core/ValueSet/us-core-diagnosticreport-category
-  :file: hl7_org_fhir_us_core_ValueSet_us-core-diagnosticreport-category.msgpack
-  :count: 3
-  :type: bloom
-  :code_systems:
-  - http://loinc.org
-- :url: http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-category
-  :file: hl7_org_fhir_us_core_ValueSet_us-core-documentreference-category.msgpack
-  :count: 1
-  :type: bloom
-  :code_systems:
-  - http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category
-- :url: http://hl7.org/fhir/ValueSet/medicationrequest-category
-  :file: hl7_org_fhir_ValueSet_medicationrequest-category.msgpack
-  :count: 4
-  :type: bloom
-  :code_systems:
-  - http://terminology.hl7.org/CodeSystem/medicationrequest-category
-- :url: http://hl7.org/fhir/us/core/ValueSet/us-core-tags
-  :file: hl7_org_fhir_us_core_ValueSet_us-core-tags.msgpack
-  :count: 1
-  :type: bloom
-  :code_systems:
-  - http://hl7.org/fhir/us/core/CodeSystem/us-core-tags
 - :url: http://hl7.org/fhir/ValueSet/questionnaire-answers-status
   :file: hl7_org_fhir_ValueSet_questionnaire-answers-status.msgpack
   :count: 5
@@ -390,13 +366,37 @@
   :type: bloom
   :code_systems:
   - http://hl7.org/fhir/request-intent
-- :url: http://hl7.org/fhir/us/core/ValueSet/us-core-servicerequest-category
-  :file: hl7_org_fhir_us_core_ValueSet_us-core-servicerequest-category.msgpack
-  :count: 8
+- :url: http://hl7.org/fhir/ValueSet/fm-status
+  :file: hl7_org_fhir_ValueSet_fm-status.msgpack
+  :count: 4
   :type: bloom
   :code_systems:
-  - http://hl7.org/fhir/us/core/CodeSystem/us-core-tags
+  - http://hl7.org/fhir/fm-status
+- :url: http://hl7.org/fhir/ValueSet/medicationdispense-status
+  :file: hl7_org_fhir_ValueSet_medicationdispense-status.msgpack
+  :count: 9
+  :type: bloom
+  :code_systems:
+  - http://terminology.hl7.org/CodeSystem/medicationdispense-status
+- :url: http://hl7.org/fhir/us/core/ValueSet/us-core-clinical-result-observation-category
+  :file: hl7_org_fhir_us_core_ValueSet_us-core-clinical-result-observation-category.msgpack
+  :count: 7
+  :type: bloom
+  :code_systems:
+  - http://terminology.hl7.org/CodeSystem/observation-category
+- :url: http://cts.nlm.nih.gov/fhir/ValueSet/2.16.840.1.113762.1.4.1240.3
+  :file: cts_nlm_nih_gov_fhir_ValueSet_2_16_840_1_113762_1_4_1240_3.msgpack
+  :count: 4
+  :type: bloom
+  :code_systems:
   - http://snomed.info/sct
+  - http://terminology.hl7.org/CodeSystem/data-absent-reason
+- :url: http://hl7.org/fhir/ValueSet/specimen-status
+  :file: hl7_org_fhir_ValueSet_specimen-status.msgpack
+  :count: 4
+  :type: bloom
+  :code_systems:
+  - http://hl7.org/fhir/specimen-status
 - :url: http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical
   :file: terminology_hl7_org_CodeSystem_allergyintolerance-clinical.msgpack
   :count: 3
@@ -514,7 +514,7 @@
   :code_systems: http://hl7.org/fhir/document-relationship-type
 - :url: urn:ietf:bcp:13
   :file: urn_ietf_bcp_13.msgpack
-  :count: 2382
+  :count: 2503
   :type: bloom
   :code_systems: urn:ietf:bcp:13
 - :url: http://hl7.org/fhir/identifier-use
@@ -652,28 +652,38 @@
   :count: 2
   :type: bloom
   :code_systems: http://hl7.org/fhir/us/core/CodeSystem/condition-category
-- :url: http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category
-  :file: hl7_org_fhir_us_core_CodeSystem_us-core-documentreference-category.msgpack
-  :count: 1
-  :type: bloom
-  :code_systems: http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category
-- :url: http://terminology.hl7.org/CodeSystem/medicationrequest-category
-  :file: terminology_hl7_org_CodeSystem_medicationrequest-category.msgpack
-  :count: 4
-  :type: bloom
-  :code_systems: http://terminology.hl7.org/CodeSystem/medicationrequest-category
-- :url: http://hl7.org/fhir/us/core/CodeSystem/us-core-tags
-  :file: hl7_org_fhir_us_core_CodeSystem_us-core-tags.msgpack
-  :count: 1
-  :type: bloom
-  :code_systems: http://hl7.org/fhir/us/core/CodeSystem/us-core-tags
 - :url: http://hl7.org/fhir/questionnaire-answers-status
   :file: hl7_org_fhir_questionnaire-answers-status.msgpack
   :count: 5
   :type: bloom
   :code_systems: http://hl7.org/fhir/questionnaire-answers-status
+- :url: http://hl7.org/fhir/fm-status
+  :file: hl7_org_fhir_fm-status.msgpack
+  :count: 4
+  :type: bloom
+  :code_systems: http://hl7.org/fhir/fm-status
+- :url: http://terminology.hl7.org/CodeSystem/medicationdispense-status
+  :file: terminology_hl7_org_CodeSystem_medicationdispense-status.msgpack
+  :count: 9
+  :type: bloom
+  :code_systems: http://terminology.hl7.org/CodeSystem/medicationdispense-status
+- :url: http://terminology.hl7.org/CodeSystem/observation-category
+  :file: terminology_hl7_org_CodeSystem_observation-category.msgpack
+  :count: 9
+  :type: bloom
+  :code_systems: http://terminology.hl7.org/CodeSystem/observation-category
 - :url: http://snomed.info/sct
   :file: snomed_info_sct.msgpack
   :count: 498684
   :type: bloom
   :code_systems: http://snomed.info/sct
+- :url: http://terminology.hl7.org/CodeSystem/data-absent-reason
+  :file: terminology_hl7_org_CodeSystem_data-absent-reason.msgpack
+  :count: 15
+  :type: bloom
+  :code_systems: http://terminology.hl7.org/CodeSystem/data-absent-reason
+- :url: http://hl7.org/fhir/specimen-status
+  :file: hl7_org_fhir_specimen-status.msgpack
+  :count: 4
+  :type: bloom
+  :code_systems: http://hl7.org/fhir/specimen-status
