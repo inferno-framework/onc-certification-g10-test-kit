@@ -43,6 +43,9 @@ module ONCCertificationG10TestKit
     V5_VALID_RESOURCE_TYPES =
       (VALID_RESOURCE_TYPES + ['ServiceRequest', 'QuestionnaireResponse', 'Media']).freeze
 
+    V6_VALID_RESOURCE_TYPES =
+      (V5_VALID_RESOURCE_TYPES + ['Coverage', 'MedicationDispense', 'RelatedPerson', 'Specimen']).freeze
+
     PATIENT_COMPARTMENT_RESOURCE_TYPES = [
       '*',
       'Patient',
@@ -63,16 +66,23 @@ module ONCCertificationG10TestKit
     V5_PATIENT_COMPARTMENT_RESOURCE_TYPES =
       (PATIENT_COMPARTMENT_RESOURCE_TYPES + ['ServiceRequest']).freeze
 
-    def patient_compartment_resource_types
-      return PATIENT_COMPARTMENT_RESOURCE_TYPES unless using_us_core_5?
+    V6_PATIENT_COMPARTMENT_RESOURCE_TYPES =
+      (V5_PATIENT_COMPARTMENT_RESOURCE_TYPES + ['Coverage', 'MedicationDispense', 'Specimen']).freeze
 
-      V5_PATIENT_COMPARTMENT_RESOURCE_TYPES
+    def patient_compartment_resource_types
+      return V5_PATIENT_COMPARTMENT_RESOURCE_TYPES if using_us_core_5?
+
+      return V6_PATIENT_COMPARTMENT_RESOURCE_TYPES if using_us_core_6?
+
+      PATIENT_COMPARTMENT_RESOURCE_TYPES
     end
 
     def valid_resource_types
-      return VALID_RESOURCE_TYPES unless using_us_core_5?
+      return V5_VALID_RESOURCE_TYPES if using_us_core_5?
 
-      V5_VALID_RESOURCE_TYPES
+      return V6_VALID_RESOURCE_TYPES if using_us_core_6?
+
+      VALID_RESOURCE_TYPES
     end
 
     def required_scope_type
