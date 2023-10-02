@@ -66,6 +66,19 @@
           "options": [
             {
               "name": "us_core_version",
+              "value": "us_core_6"
+            },
+            {
+              "name": "smart_app_launch_version",
+              "value": "smart_app_launch_1"
+            }
+          ],
+          "value": "launch/patient openid fhirUser offline_access patient/Medication.read patient/AllergyIntolerance.read patient/CarePlan.read patient/CareTeam.read patient/Condition.read patient/Device.read patient/DiagnosticReport.read patient/DocumentReference.read patient/Encounter.read patient/Goal.read patient/Immunization.read patient/Location.read patient/MedicationRequest.read patient/Observation.read patient/Organization.read patient/Patient.read patient/Practitioner.read patient/Procedure.read patient/Provenance.read patient/PractitionerRole.read patient/ServiceRequest.read patient/RelatedPerson.read patient/QuestionnaireResponse.read patient/Media.read patient/Coverage.read patient/MedicationDispense.read patient/Specimen.read"
+        },
+        {
+          "options": [
+            {
+              "name": "us_core_version",
               "value": "us_core_3"
             },
             {
@@ -100,6 +113,19 @@
             }
           ],
           "value": "launch/patient openid fhirUser offline_access patient/Medication.rs patient/AllergyIntolerance.rs patient/CarePlan.rs patient/CareTeam.rs patient/Condition.rs patient/Device.rs patient/DiagnosticReport.rs patient/DocumentReference.rs patient/Encounter.rs patient/Goal.rs patient/Immunization.rs patient/Location.rs patient/MedicationRequest.rs patient/Observation.rs patient/Organization.rs patient/Patient.rs patient/Practitioner.rs patient/Procedure.rs patient/Provenance.rs patient/PractitionerRole.rs patient/ServiceRequest.rs patient/RelatedPerson.rs patient/QuestionnaireResponse.rs patient/Media.rs"
+        },
+        {
+          "options": [
+            {
+              "name": "us_core_version",
+              "value": "us_core_6"
+            },
+            {
+              "name": "smart_app_launch_version",
+              "value": "smart_app_launch_2"
+            }
+          ],
+          "value": "launch/patient openid fhirUser offline_access patient/Medication.rs patient/AllergyIntolerance.rs patient/CarePlan.rs patient/CareTeam.rs patient/Condition.rs patient/Device.rs patient/DiagnosticReport.rs patient/DocumentReference.rs patient/Encounter.rs patient/Goal.rs patient/Immunization.rs patient/Location.rs patient/MedicationRequest.rs patient/Observation.rs patient/Organization.rs patient/Patient.rs patient/Practitioner.rs patient/Procedure.rs patient/Provenance.rs patient/PractitionerRole.rs patient/ServiceRequest.rs patient/RelatedPerson.rs patient/QuestionnaireResponse.rs patient/Media.rs patient/Coverage.rs patient/MedicationDispense.rs patient/Specimen.rs"
         }
       ]
     },
@@ -167,6 +193,19 @@
           "options": [
             {
               "name": "us_core_version",
+              "value": "us_core_6"
+            },
+            {
+              "name": "smart_app_launch_version",
+              "value": "smart_app_launch_1"
+            }
+          ],
+          "value": "launch openid fhirUser offline_access user/Medication.read user/AllergyIntolerance.read user/CarePlan.read user/CareTeam.read user/Condition.read user/Device.read user/DiagnosticReport.read user/DocumentReference.read user/Encounter.read user/Goal.read user/Immunization.read user/Location.read user/MedicationRequest.read user/Observation.read user/Organization.read user/Patient.read user/Practitioner.read user/Procedure.read user/Provenance.read user/PractitionerRole.read user/ServiceRequest.read user/RelatedPerson.read user/QuestionnaireResponse.read user/Media.read user/Coverage.read user/MedicationDispense.read user/ServiceRequest.read user/RelatedPerson.read user/Specimen.read"
+        },
+        {
+          "options": [
+            {
+              "name": "us_core_version",
               "value": "us_core_3"
             },
             {
@@ -201,6 +240,19 @@
             }
           ],
           "value": "launch openid fhirUser offline_access user/Medication.rs user/AllergyIntolerance.rs user/CarePlan.rs user/CareTeam.rs user/Condition.rs user/Device.rs user/DiagnosticReport.rs user/DocumentReference.rs user/Encounter.rs user/Goal.rs user/Immunization.rs user/Location.rs user/MedicationRequest.rs user/Observation.rs user/Organization.rs user/Patient.rs user/Practitioner.rs user/Procedure.rs user/Provenance.rs user/PractitionerRole.rs user/ServiceRequest.rs user/RelatedPerson.rs user/QuestionnaireResponse.rs user/Media.rs"
+        },
+        {
+          "options": [
+            {
+              "name": "us_core_version",
+              "value": "us_core_6"
+            },
+            {
+              "name": "smart_app_launch_version",
+              "value": "smart_app_launch_2"
+            }
+          ],
+          "value": "launch openid fhirUser offline_access user/Medication.rs user/AllergyIntolerance.rs user/CarePlan.rs user/CareTeam.rs user/Condition.rs user/Device.rs user/DiagnosticReport.rs user/DocumentReference.rs user/Encounter.rs user/Goal.rs user/Immunization.rs user/Location.rs user/MedicationRequest.rs user/Observation.rs user/Organization.rs user/Patient.rs user/Practitioner.rs user/Procedure.rs user/Provenance.rs user/PractitionerRole.rs user/ServiceRequest.rs user/RelatedPerson.rs user/QuestionnaireResponse.rs user/Media.rs user/Coverage.rs user/MedicationDispense.rs user/ServiceRequest.rs user/RelatedPerson.rs user/Specimen.rs"
         }
       ]
     },
@@ -385,6 +437,19 @@
           "options": [
             {
               "name": "us_core_version",
+              "value": "us_core_6"
+            },
+            {
+              "name": "smart_app_launch_version",
+              "value": "smart_app_launch_1"
+            }
+          ],
+          "value": "launch/patient openid fhirUser offline_access patient/Medication.read patient/AllergyIntolerance.read patient/CarePlan.read patient/CareTeam.read patient/Condition.read patient/Device.read patient/DiagnosticReport.read patient/DocumentReference.read patient/Encounter.read patient/Goal.read patient/Immunization.read patient/Location.read patient/MedicationRequest.read patient/Observation.read patient/Organization.read patient/Patient.read patient/Practitioner.read patient/Procedure.read patient/Provenance.read patient/PractitionerRole.read patient/ServiceRequest.read patient/RelatedPerson.read patient/QuestionnaireResponse.read patient/Media.read patient/Coverage.read patient/MedicationDispense.read patient/Specimen.read"
+        },
+        {
+          "options": [
+            {
+              "name": "us_core_version",
               "value": "us_core_3"
             },
             {
@@ -412,6 +477,19 @@
             {
               "name": "us_core_version",
               "value": "us_core_5"
+            },
+            {
+              "name": "smart_app_launch_version",
+              "value": "smart_app_launch_2"
+            }
+          ],
+          "value": "launch/patient openid fhirUser offline_access patient/Medication.rs patient/AllergyIntolerance.rs patient/CarePlan.rs patient/CareTeam.rs patient/Condition.rs patient/Device.rs patient/DiagnosticReport.rs patient/DocumentReference.rs patient/Encounter.rs patient/Goal.rs patient/Immunization.rs patient/Location.rs patient/MedicationRequest.rs patient/Observation.rs patient/Organization.rs patient/Patient.rs patient/Practitioner.rs patient/Procedure.rs patient/Provenance.rs patient/PractitionerRole.rs patient/ServiceRequest.rs patient/RelatedPerson.rs patient/QuestionnaireResponse.rs patient/Media.rs"
+        },
+        {
+          "options": [
+            {
+              "name": "us_core_version",
+              "value": "us_core_6"
             },
             {
               "name": "smart_app_launch_version",
