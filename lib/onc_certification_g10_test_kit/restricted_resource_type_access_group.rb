@@ -14,20 +14,25 @@ module ONCCertificationG10TestKit
 
       Resources that can be mapped to USCDI are checked in this test, including:
 
-        * AllergyIntolerance
-        * CarePlan
-        * CareTeam
-        * Condition
-        * Device
-        * DiagnosticReport
-        * DocumentReference
-        * Goal
-        * Immunization
-        * MedicationRequest
-        * Observation
-        * Procedure
+      * AllergyIntolerance
+      * CarePlan
+      * CareTeam
+      * Condition
+      * Device
+      * DiagnosticReport
+      * DocumentReference
+      * Goal
+      * Immunization
+      * MedicationRequest
+      * Observation
+      * Patient
+      * Procedure
 
-      If testing against USCDI v2, ServiceRequest is also checked.
+      If testing against USCDI v2, Encounter and ServiceRequest are also
+      checked.
+
+      If testing against USCDI v3, Encounter, ServiceRequest, Coverage,
+      MedicationDispense, RelatedPerson, and Specimen are also checked.
 
       For each of the resources that can be mapped to USCDI data class or
       elements, this set of tests performs a minimum number of requests to
@@ -42,16 +47,28 @@ module ONCCertificationG10TestKit
       This set of tests does not attempt to access resources that do not
       directly map to USCDI. For USCDI v1 this includes:
 
-        * Encounter
-        * Location
-        * Organization
-        * Practitioner
+      * Encounter
+      * Location
+      * Organization
+      * Practitioner
 
       For USCDI v2 this includes:
 
-        * Location
-        * Organization
-        * Practitioner
+      * Location
+      * Organization
+      * Practitioner
+
+      For USCDI v3 this includes:
+
+      * Location
+      * Organization
+      * Practitioner
+      * RelatedPerson
+      * Specimen
+
+      It also does not test Provenance, as this resource type is accessed by
+      queries through other resource types. These resources types are accessed
+      in the more comprehensive Single Patient Query tests.
 
       If the tester chooses to not grant access to a resource, the queries
       associated with that resource must result in either a 401 (Unauthorized)
@@ -347,6 +364,86 @@ module ONCCertificationG10TestKit
 
       def resource_group
         USCoreTestKit::USCoreV501::ServiceRequestGroup
+      end
+    end
+
+    test from: :g10_restricted_access_test do
+      title 'Access to Encounter resources are restricted properly based on patient-selected scope'
+      description %(
+        This test ensures that access to the Encounter is granted or
+        denied based on the selection by the tester prior to the execution of
+        the test. If the tester indicated that access will be granted to this
+        resource, this test verifies that a search by patient in this resource
+        does not result in an access denied result. If the tester indicated that
+        access will be denied for this resource, this verifies that search by
+        patient in the resource results in an access denied result.
+      )
+      id :g10_us_core_6_encounter_restricted_access
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      def resource_group
+        USCoreTestKit::USCoreV610::EncounterGroup
+      end
+    end
+
+    test from: :g10_restricted_access_test do
+      title 'Access to ServiceRequest resources are restricted properly based on patient-selected scope'
+      description %(
+        This test ensures that access to the ServiceRequest is granted or
+        denied based on the selection by the tester prior to the execution of
+        the test. If the tester indicated that access will be granted to this
+        resource, this test verifies that a search by patient in this resource
+        does not result in an access denied result. If the tester indicated that
+        access will be denied for this resource, this verifies that search by
+        patient in the resource results in an access denied result.
+      )
+      id :g10_us_core_6_service_request_restricted_access
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      def resource_group
+        USCoreTestKit::USCoreV610::ServiceRequestGroup
+      end
+    end
+
+    test from: :g10_restricted_access_test do
+      title 'Access to Coverage resources are restricted properly based on patient-selected scope'
+      description %(
+        This test ensures that access to the Coverage is granted or
+        denied based on the selection by the tester prior to the execution of
+        the test. If the tester indicated that access will be granted to this
+        resource, this test verifies that a search by patient in this resource
+        does not result in an access denied result. If the tester indicated that
+        access will be denied for this resource, this verifies that search by
+        patient in the resource results in an access denied result.
+      )
+      id :g10_us_core_6_coverage_restricted_access
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      def resource_group
+        USCoreTestKit::USCoreV610::CoverageGroup
+      end
+    end
+
+    test from: :g10_restricted_access_test do
+      title 'Access to MedicationDispense resources are restricted properly based on patient-selected scope'
+      description %(
+        This test ensures that access to the MedicationDispense is granted or
+        denied based on the selection by the tester prior to the execution of
+        the test. If the tester indicated that access will be granted to this
+        resource, this test verifies that a search by patient in this resource
+        does not result in an access denied result. If the tester indicated that
+        access will be denied for this resource, this verifies that search by
+        patient in the resource results in an access denied result.
+      )
+      id :g10_us_core_6_medication_dispense_restricted_access
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      def resource_group
+        USCoreTestKit::USCoreV610::MedicationDispenseGroup
       end
     end
   end
