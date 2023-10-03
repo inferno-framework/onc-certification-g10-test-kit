@@ -84,6 +84,11 @@ module ONCCertificationG10TestKit
       }
     )
 
+    # TODO: figure out how we want to handle this
+    def self.short_id
+      '6.5'
+    end
+
     test do
       id :g10_patient_id_setup
       title 'Manage patient id list'
