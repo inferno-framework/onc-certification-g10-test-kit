@@ -35,15 +35,7 @@ module ONCCertificationG10TestKit
       case resource.resourceType
       when 'Condition'
         case us_core_version
-        when US_CORE_5
-          if resource_contains_category?(resource, 'encounter-diagnosis', 'http://terminology.hl7.org/CodeSystem/condition-category')
-            profiles << extract_profile('ConditionEncounterDiagnosis')
-          elsif resource_contains_category?(resource, 'problem-list-item',
-                                           'http://terminology.hl7.org/CodeSystem/condition-category') ||
-                resource_contains_category?(resource, 'health-concern', 'http://hl7.org/fhir/us/core/CodeSystem/condition-category')
-            profiles << extract_profile('ConditionProblemsHealthConcerns')
-          end
-        when US_CORE_6
+        when US_CORE_5, US_CORE_6
           if resource_contains_category?(resource, 'encounter-diagnosis', 'http://terminology.hl7.org/CodeSystem/condition-category')
             profiles << extract_profile('ConditionEncounterDiagnosis')
           elsif resource_contains_category?(resource, 'problem-list-item',

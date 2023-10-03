@@ -8,7 +8,7 @@ module ONCCertificationG10TestKit
       For each of the relevant USCDI data elements provided in the
       CapabilityStatement, this test executes the [required supported
       searches](http://hl7.org/fhir/us/core/STU6.1/CapabilityStatement-us-core-server.html)
-      as defined by the US Core Implementation Guide v5.0.1.
+      as defined by the US Core Implementation Guide v6.1.0.
 
       The test begins by searching by one or more patients, with the expectation
       that the Bearer token provided to the test grants access to all USCDI
