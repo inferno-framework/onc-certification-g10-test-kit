@@ -414,6 +414,26 @@ module ONCCertificationG10TestKit
         * http://hl7.org/fhir/us/core/StructureDefinition/us-core-heart-rate
         * http://hl7.org/fhir/us/core/StructureDefinition/us-core-respiratory-rate
 
+        For US Core v6.1.0, this test expects evidence of the following US Core profiles
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-lab
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-occupation
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-pregnancyintent
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-pregnancystatus
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-screening-assessment
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-sexual-orientation
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-smokingstatus
+        * http://hl7.org/fhir/us/core/StructureDefinition/head-occipital-frontal-circumference-percentile
+        * http://hl7.org/fhir/us/core/StructureDefinition/pediatric-bmi-for-age
+        * http://hl7.org/fhir/us/core/StructureDefinition/pediatric-weight-for-height
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-blood-pressure
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-bmi
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-body-height
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-body-temperature
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-body-weight
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-head-circumference
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-heart-rate
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-pulse-oximetry
+        * http://hl7.org/fhir/us/core/StructureDefinition/us-core-respiratory-rate
       DESCRIPTION
 
       include BulkExportValidationTester
@@ -652,6 +672,171 @@ module ONCCertificationG10TestKit
 
       def resource_type
         'PractitionerRole'
+      end
+
+      run do
+        perform_bulk_export_validation
+      end
+    end
+
+    test do
+      title 'ServiceRequest resources returned conform to the US Core ServiceRequest Profile'
+      description <<~DESCRIPTION
+        This test verifies that the resources returned from bulk data export
+        conform to the US Core ServiceRequest profile. This includes checking
+        for missing data elements and value set verification.
+      DESCRIPTION
+
+      id :g10_us_core_6_bulk_service_request_validation
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      include BulkExportValidationTester
+
+      def resource_type
+        'ServiceRequest'
+      end
+
+      run do
+        perform_bulk_export_validation
+      end
+    end
+
+    test do
+      title 'RelatedPerson resources returned conform to the US Core RelatedPerson Profile'
+      description <<~DESCRIPTION
+        This test verifies that the resources returned from bulk data export
+        conform to the US Core RelatedPerson profile. This includes checking
+        for missing data elements and value set verification.
+      DESCRIPTION
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      id :g10_us_core_6_bulk_related_person_validation
+
+      include BulkExportValidationTester
+
+      def resource_type
+        'RelatedPerson'
+      end
+
+      run do
+        perform_bulk_export_validation
+      end
+    end
+
+    test do
+      title 'QuestionnaireResponse resources returned conform to the US Core QuestionnaireResponse Profile if ' \
+            'bulk data has QuestionnaireResponse resources'
+      description <<~DESCRIPTION
+        This test verifies that the resources returned from bulk data export
+        conform to the US Core QuestionnaireResponse profile. This includes checking for missing
+        data elements and value set verification. This test is omitted if bulk
+        data export does not return any QuestionnaireResponse resources.
+      DESCRIPTION
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      id :g10_us_core_6_bulk_questionnaire_response_validation
+
+      include BulkExportValidationTester
+
+      def resource_type
+        'QuestionnaireResponse'
+      end
+
+      run do
+        perform_bulk_export_validation
+      end
+    end
+
+    test do
+      title 'PractionerRole resources returned conform to the US Core PractionerRole Profile if bulk data export ' \
+            'has PractionerRole resources'
+      description <<~DESCRIPTION
+        This test verifies that the resources returned from bulk data export
+        conform to the US Core PractitionerRole profile. This includes checking for missing
+        data elements and value set verification. This test is omitted if bulk
+        data export does not return any  resources.
+      DESCRIPTION
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      id :g10_us_core_6_bulk_practitioner_role_validation
+
+      include BulkExportValidationTester
+
+      def resource_type
+        'PractitionerRole'
+      end
+
+      run do
+        perform_bulk_export_validation
+      end
+    end
+
+    test do
+      title 'Coverage resources returned conform to the US Core Coverage Profile'
+      description <<~DESCRIPTION
+        This test verifies that the resources returned from bulk data export
+        conform to the US Core Coverage profile. This includes checking
+        for missing data elements and value set verification.
+      DESCRIPTION
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      id :g10_us_core_6_bulk_coverage_validation
+
+      include BulkExportValidationTester
+
+      def resource_type
+        'Coverage'
+      end
+
+      run do
+        perform_bulk_export_validation
+      end
+    end
+
+    test do
+      title 'MedicationDispense resources returned conform to the US Core MedicationDispense Profile'
+      description <<~DESCRIPTION
+        This test verifies that the resources returned from bulk data export
+        conform to the US Core MedicationDispense profile. This includes checking
+        for missing data elements and value set verification.
+      DESCRIPTION
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      id :g10_us_core_6_bulk_medication_dispense_validation
+
+      include BulkExportValidationTester
+
+      def resource_type
+        'MedicationDispense'
+      end
+
+      run do
+        perform_bulk_export_validation
+      end
+    end
+
+    test do
+      title 'Specimen resources returned conform to the US Core Specimen Profile'
+      description <<~DESCRIPTION
+        This test verifies that the resources returned from bulk data export
+        conform to the US Core Specimen profile. This includes checking
+        for missing data elements and value set verification.
+      DESCRIPTION
+
+      required_suite_options G10Options::US_CORE_6_REQUIREMENT
+
+      id :g10_us_core_6_bulk_specimen_validation
+
+      include BulkExportValidationTester
+
+      def resource_type
+        'Specimen'
       end
 
       run do
