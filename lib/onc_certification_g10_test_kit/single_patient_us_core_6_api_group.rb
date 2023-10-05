@@ -21,10 +21,11 @@ module ONCCertificationG10TestKit
 
       All MUST SUPPORT elements must be seen before the test can pass, as well
       as Data Absent Reason to demonstrate that the server can properly handle
-      missing data. Note that Encounter, Organization and Practitioner resources
-      must be accessible as references in some US Core profiles to satisfy must
-      support requirements, and those references will be validated to their US
-      Core profile. These resources will not be tested for FHIR search support.
+      missing data. Note that Organization, Practitioner, RelatedPerson and
+      Specimen resources must be accessible as references in some US Core
+      profiles to satisfy must support requirements, and those references will
+      be validated to their US Core profile. These resources will not be tested
+      for FHIR search support.
     )
     run_as_group
 
@@ -74,7 +75,6 @@ module ONCCertificationG10TestKit
           'Procedure',
           'ServiceRequest',
           'Specimen',
-          'Location', # TODO: why wasn't this here already?
           'Organization',
           'Practitioner',
           'PractitionerRole',
@@ -123,7 +123,7 @@ module ONCCertificationG10TestKit
       id = test_group.id
 
       group_config = {}
-      if test_group.respond_to?(:metadata) && test_group.metadata.delayed?
+      if test_group.respond_to?(:metadata) && test_group.metadata.resource != 'Specimen' && test_group.metadata.delayed?
         test_group.children.reject! { |child| child.include? USCoreTestKit::SearchTest }
         group_config[:options] = { read_all_resources: true }
       end
