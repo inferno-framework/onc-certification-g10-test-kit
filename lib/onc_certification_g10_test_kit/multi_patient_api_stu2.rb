@@ -20,6 +20,7 @@ module ONCCertificationG10TestKit
       * `#{Inferno::Application[:base_url]}/custom/g10_certification/.well-known/jwks.json`
     )
 
+    # TODO: update this description based on US Core 6 update
     description %(
       Demonstrate the ability to export clinical data for multiple patients in
       a group using [FHIR Bulk Data Access

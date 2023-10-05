@@ -32,7 +32,7 @@ module ONCCertificationG10TestKit
       checked.
 
       If testing against USCDI v3, Encounter, ServiceRequest, Coverage,
-      MedicationDispense, RelatedPerson, and Specimen are also checked.
+      and MedicationDispense are also checked.
 
       For each of the resources that can be mapped to USCDI data class or
       elements, this set of tests performs a minimum number of requests to

@@ -4,6 +4,7 @@ module ONCCertificationG10TestKit
   class SinglePatientUSCore5APIGroup < Inferno::TestGroup
     id :g10_single_patient_us_core_5_api
     title 'Single Patient API (US Core 5.0.1)'
+    # TODO: verify this is correct
     description %(
       For each of the relevant USCDI data elements provided in the
       CapabilityStatement, this test executes the [required supported
@@ -21,10 +22,11 @@ module ONCCertificationG10TestKit
 
       All MUST SUPPORT elements must be seen before the test can pass, as well
       as Data Absent Reason to demonstrate that the server can properly handle
-      missing data. Note that Encounter, Organization and Practitioner resources
-      must be accessible as references in some US Core profiles to satisfy must
-      support requirements, and those references will be validated to their US
-      Core profile. These resources will not be tested for FHIR search support.
+      missing data. Note that Organization, Practitioner, and RelatedPerson
+      resources must be accessible as references in some US Core profiles to
+      satisfy must support requirements, and those references will be validated
+      to their US Core profile. These resources will not be tested for FHIR
+      search support.
     )
     run_as_group
 
@@ -53,6 +55,7 @@ module ONCCertificationG10TestKit
 
     input_order :url, :patient_id, :additional_patient_ids, :implantable_device_codes, :smart_credentials
 
+    # TODO: verify this is correct
     config(
       options: {
         required_resources: [
