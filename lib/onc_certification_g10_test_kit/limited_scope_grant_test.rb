@@ -34,8 +34,13 @@ module ONCCertificationG10TestKit
     V5_POSSIBLE_RESOURCES =
       (POSSIBLE_RESOURCES + ['Encounter', 'ServiceRequest']).freeze
 
+    V6_POSSIBLE_RESOURCES =
+      (V5_POSSIBLE_RESOURCES + ['Specimen', 'Coverage', 'MedicationDispense']).freeze
+
     def possible_resources
       return V5_POSSIBLE_RESOURCES if using_us_core_5?
+
+      return V6_POSSIBLE_RESOURCES if using_us_core_6?
 
       POSSIBLE_RESOURCES
     end

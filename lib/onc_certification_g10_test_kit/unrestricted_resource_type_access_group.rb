@@ -31,7 +31,7 @@ module ONCCertificationG10TestKit
       checked.
 
       If testing against USCDI v3, Encounter, ServiceRequest, Coverage,
-      MedicationDispense, RelatedPerson, and Specimen are also checked.
+      and MedicationDispense are also checked.
 
       For each of the resource types that can be mapped to USCDI data class or
       elements, this set of tests performs a minimum number of requests to
@@ -70,9 +70,9 @@ module ONCCertificationG10TestKit
       in the more comprehensive Single Patient Query tests.
 
       However, the authorization system must indicate that access is granted to
-      the Encounter, Practitioner and Organization resource types by providing
-      them in the returned scopes because they are required to support the read
-      interaction.
+      the Encounter, Practitioner and Organization (and RelatedPerson and
+      Specimen for USCDI v3) resource types by providing them in the returned
+      scopes because they are required to support the read interaction.
     )
     id :g10_unrestricted_resource_type_access
 
@@ -107,6 +107,8 @@ module ONCCertificationG10TestKit
 
     V5_ALL_RESOURCES = (ALL_RESOURCES + ['ServiceRequest']).freeze
 
+    V6_ALL_RESOURCES = (V5_ALL_RESOURCES + ['Coverage', 'MedicationDispense']).freeze
+
     NON_PATIENT_COMPARTMENT_RESOURCES =
       [
         'Encounter',
@@ -122,6 +124,8 @@ module ONCCertificationG10TestKit
     V5_NON_PATIENT_COMPARTMENT_RESOURCES =
       (NON_PATIENT_COMPARTMENT_RESOURCES - ['Encounter'] + ['ServiceRequest']).freeze
 
+    V6_NON_PATIENT_COMPARTMENT_RESOURCES = V5_NON_PATIENT_COMPARTMENT_RESOURCES
+
     test do
       include G10Options
 
@@ -134,11 +138,15 @@ module ONCCertificationG10TestKit
       def all_resources
         return V5_ALL_RESOURCES if using_us_core_5?
 
+        return V6_ALL_RESOURCES if using_us_core_6?
+
         ALL_RESOURCES
       end
 
       def non_patient_compartment_resources
         return V5_NON_PATIENT_COMPARTMENT_RESOURCES if using_us_core_5?
+
+        return V6_NON_PATIENT_COMPARTMENT_RESOURCES if using_us_core_6?
 
         NON_PATIENT_COMPARTMENT_RESOURCES
       end
