@@ -139,7 +139,7 @@ module ONCCertificationG10TestKit
       Statement](https://www.hl7.org/fhir/R4/capabilitystatement.html) resource.
       The capabilities described in the Capability Statement must be consistent with
       the required capabilities of a US Core server.  This test also expects that
-      APIs state support for all resources types applicable to USCDI v2, as is
+      APIs state support for all resources types applicable to USCDI v3, as is
       expected by the ONC (g)(10) Standardized API for Patient and Populations
       Services certification criterion.
 
