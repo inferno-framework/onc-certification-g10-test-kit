@@ -12,10 +12,7 @@ module ONCCertificationG10TestKit
     MIN_RESOURCE_COUNT = 2
     OMIT_KLASS = ['Medication', 'Location', 'QuestionnaireResponse', 'PractitionerRole'].freeze
     PROFILES_TO_SKIP = [
-      'http://hl7.org/fhir/us/core/StructureDefinition/us-core-simple-observation',
-      # TODO: clinical result should be included, but we don't have a way to
-      # identify clinical result resources
-      'http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-clinical-result'
+      'http://hl7.org/fhir/us/core/StructureDefinition/us-core-simple-observation'
     ].freeze
 
     def metadata_list

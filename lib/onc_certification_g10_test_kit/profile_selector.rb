@@ -192,6 +192,18 @@ module ONCCertificationG10TestKit
           profiles << extract_profile('ObservationPregnancystatus')
         end
 
+        clinical_result_categories = [
+          'laboratory', 'exam', 'therpay', 'imaging', 'procedure', 'vital-signs', 'activity'
+        ]
+
+        if using_us_core_6? && clinical_result_categories.any? do |category|
+             resource_contains_category?(
+               resource, category, 'http://terminology.hl7.org/CodeSystem/observation-category'
+             )
+           end
+          profiles << extract_profile('ObservationClinicalResult')
+        end
+
         nil
       else
         profiles << extract_profile(resource.resourceType)
