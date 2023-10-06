@@ -39,7 +39,7 @@ module ONCCertificationG10TestKit
           if resource_contains_category?(resource, 'encounter-diagnosis', 'http://terminology.hl7.org/CodeSystem/condition-category')
             profiles << extract_profile('ConditionEncounterDiagnosis')
           elsif resource_contains_category?(resource, 'problem-list-item',
-                                           'http://terminology.hl7.org/CodeSystem/condition-category') ||
+                                            'http://terminology.hl7.org/CodeSystem/condition-category') ||
                 resource_contains_category?(resource, 'health-concern', 'http://hl7.org/fhir/us/core/CodeSystem/condition-category')
             profiles << extract_profile('ConditionProblemsHealthConcerns')
           end
@@ -150,13 +150,13 @@ module ONCCertificationG10TestKit
 
         if using_us_core_5? &&
            resource_contains_category?(resource, 'social-history',
-                                      'http://terminology.hl7.org/CodeSystem/observation-category')
+                                       'http://terminology.hl7.org/CodeSystem/observation-category')
           profiles << extract_profile('ObservationSocialHistory')
         end
 
         if using_us_core_5? &&
            resource_contains_category?(resource, 'imaging',
-                                      'http://terminology.hl7.org/CodeSystem/observation-category')
+                                       'http://terminology.hl7.org/CodeSystem/observation-category')
           profiles << extract_profile('ObservationImaging')
         end
 

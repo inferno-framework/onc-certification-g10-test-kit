@@ -35,11 +35,11 @@ module Inferno
             Inferno.logger.info mismatched_value_set_message(value_set)
           end
 
-          if new_value_sets.present?
-            Inferno.logger.info("\nThe following unexpected value set validators were created:")
-            new_value_sets.each do |value_set|
-              Inferno.logger.info("#{value_set[:url]}: #{value_set[:count]} codes")
-            end
+          return unless new_value_sets.present?
+
+          Inferno.logger.info("\nThe following unexpected value set validators were created:")
+          new_value_sets.each do |value_set|
+            Inferno.logger.info("#{value_set[:url]}: #{value_set[:count]} codes")
           end
         end
 
