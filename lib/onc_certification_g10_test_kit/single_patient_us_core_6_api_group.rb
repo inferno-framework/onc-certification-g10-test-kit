@@ -77,7 +77,6 @@ module ONCCertificationG10TestKit
           'Specimen',
           'Organization',
           'Practitioner',
-          'PractitionerRole',
           'Provenance',
           'RelatedPerson'
         ]
