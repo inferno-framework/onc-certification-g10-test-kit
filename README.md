@@ -11,7 +11,7 @@ series of HTTP requests that mimic a real world client to ensure that the API
 supports an approved version of each of the required standards:
 
 * Health Level 7 (HL7®) Fast Healthcare Interoperability Resources (FHIR®) (v4.0.1)
-* US Core Implementation Guide (v3.1.1, v4.0.0, or v5.0.1)
+* US Core Implementation Guide (v3.1.1, v4.0.0, v5.0.1, or v6.1.0)
 * SMART Application Launch Framework Implementation Guide Release (v1.0.0, or
   v2.0.0)
 * HL7 FHIR Bulk Data Access (Flat FHIR) (v1.0.1, or v2.0.0)
