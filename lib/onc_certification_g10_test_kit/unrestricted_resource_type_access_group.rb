@@ -63,11 +63,11 @@ module ONCCertificationG10TestKit
       * Organization
       * Practitioner
       * RelatedPerson
-      * Specimen
 
       It also does not test Provenance, as this resource type is accessed by
-      queries through other resource types. These resources types are accessed
-      in the more comprehensive Single Patient Query tests.
+      queries through other resource types, or Specimen in USCDI v3 which only
+      requires support for read and search by id. These resources types are
+      accessed in the more comprehensive Single Patient Query tests.
 
       However, the authorization system must indicate that access is granted to
       the Encounter, Practitioner and Organization (and RelatedPerson and
