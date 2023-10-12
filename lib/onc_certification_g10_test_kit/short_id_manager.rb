@@ -27,7 +27,7 @@ module ONCCertificationG10TestKit
           Inferno::Application['logger'].warn("No short id defined for #{runnable.id}")
         end
       rescue Errno::ENOENT
-        Inferno::Application['logger'].warn("No short id map found")
+        Inferno::Application['logger'].warn('No short id map found')
       end
 
       ### The methods below are only for creating an initial list of short ids
