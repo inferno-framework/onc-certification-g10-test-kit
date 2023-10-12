@@ -4,6 +4,7 @@ module ONCCertificationG10TestKit
   class SinglePatientUSCore4APIGroup < Inferno::TestGroup
     id :g10_single_patient_us_core_4_api
     title 'Single Patient API (US Core 4.0.0)'
+    short_title 'Single Patient API'
     description %(
       For each of the relevant USCDI data elements provided in the
       CapabilityStatement, this test executes the [required supported

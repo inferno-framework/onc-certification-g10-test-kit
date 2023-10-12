@@ -3,7 +3,8 @@ require_relative 'incorrectly_permitted_tls_versions_messages_setup_test'
 module ONCCertificationG10TestKit
   class SinglePatientAPIGroup < Inferno::TestGroup
     id :g10_single_patient_api
-    title 'Single Patient API'
+    title 'Single Patient API (US Core 3.1.1)'
+    short_title 'Single Patient API'
     description %(
       For each of the relevant USCDI data elements provided in the
       CapabilityStatement, this test executes the [required supported
