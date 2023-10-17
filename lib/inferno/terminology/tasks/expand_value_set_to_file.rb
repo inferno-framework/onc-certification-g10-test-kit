@@ -16,7 +16,7 @@ module Inferno
           # Before writing the JSON to a file at the end
           end_vs = nil if type == 'json'
 
-          %w[2022].each do |version|
+          %w[2023].each do |version|
             Loader.register_umls_db File.join(TEMP_DIR, version, 'umls.db')
             Loader.load_value_sets_from_directory(PACKAGE_DIR, true)
             vs = Repositories::ValueSets.new.find(value_set_url)

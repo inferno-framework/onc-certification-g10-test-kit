@@ -121,7 +121,7 @@
   - http://hl7.org/fhir/composition-status
 - :url: http://hl7.org/fhir/us/core/ValueSet/us-core-documentreference-type
   :file: hl7_org_fhir_us_core_ValueSet_us-core-documentreference-type.msgpack
-  :count: 11042
+  :count: 11418
   :type: bloom
   :code_systems:
   - http://terminology.hl7.org/CodeSystem/v3-NullFlavor
@@ -504,7 +504,7 @@
   :code_systems: http://terminology.hl7.org/CodeSystem/v3-NullFlavor
 - :url: http://loinc.org
   :file: loinc_org.msgpack
-  :count: 283408
+  :count: 287148
   :type: bloom
   :code_systems: http://loinc.org
 - :url: http://hl7.org/fhir/document-relationship-type
@@ -597,11 +597,6 @@
   :count: 4
   :type: bloom
   :code_systems: http://hl7.org/fhir/quantity-comparator
-- :url: http://unitsofmeasure.org
-  :file: unitsofmeasure_org.msgpack
-  :count: 1443
-  :type: bloom
-  :code_systems: http://unitsofmeasure.org
 - :url: http://hl7.org/fhir/name-use
   :file: hl7_org_fhir_name-use.msgpack
   :count: 7
@@ -674,7 +669,7 @@
   :code_systems: http://terminology.hl7.org/CodeSystem/observation-category
 - :url: http://snomed.info/sct
   :file: snomed_info_sct.msgpack
-  :count: 498684
+  :count: 508538
   :type: bloom
   :code_systems: http://snomed.info/sct
 - :url: http://terminology.hl7.org/CodeSystem/data-absent-reason

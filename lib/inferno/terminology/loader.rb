@@ -28,7 +28,10 @@ module Inferno
         'http://hl7.org/fhir/ValueSet/example-intensional', # Unhandled filter parent =
         'http://hl7.org/fhir/ValueSet/use-context', # ValueSet contains an unknown ValueSet
         'http://hl7.org/fhir/ValueSet/media-modality', # ValueSet contains an unknown ValueSet
-        'http://hl7.org/fhir/ValueSet/example-hierarchical' # Example valueset with fake codes
+        'http://hl7.org/fhir/ValueSet/example-hierarchical', # Example valueset with fake codes
+        # We don't perform code system validation, this code system is no longer
+        # in UMLS, and this bloom filter was not being correctly generated anyway
+        'http://unitsofmeasure.org'
       ].freeze
 
       @value_sets_repo = Inferno::Repositories::ValueSets.new
@@ -146,7 +149,7 @@ module Inferno
               Inferno.logger.warn "#{e.message} for CodeSystem #{cs_name}"
               next
             end
-          end
+          end.compact
           validators = (vs_validators + cs_validators).compact
 
           # Write manifest for loading later

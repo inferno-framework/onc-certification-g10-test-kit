@@ -17,6 +17,6 @@ echo "$?"
 
 if [ -n "$CLEANUP" ]
 then
-  echo 'Deleting 2023 build files'
-  bundle exec rake terminology:cleanup_precursors["2023"]
+    echo 'Deleting 2023 build files'
+    bundle exec rake terminology:cleanup_precursors["2023"]
 fi
