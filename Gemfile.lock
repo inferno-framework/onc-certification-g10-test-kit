@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    onc_certification_g10_test_kit (5.0.0)
+    onc_certification_g10_test_kit (5.0.0.CONNECTATHON)
       bloomer (~> 1.0.0)
       colorize (~> 0.8.1)
       inferno_core (~> 0.4.20)
