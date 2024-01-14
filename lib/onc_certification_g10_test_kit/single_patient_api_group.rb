@@ -104,7 +104,7 @@ module ONCCertificationG10TestKit
       end
     end
 
-    USCoreTestKit::USCoreV311::USCoreTestSuite.groups.each do |group|
+    USCoreTestKit::USCoreV311::USCoreTestSuite.groups[1].groups.each do |group|
       test_group = group.ancestors[1]
 
       next if test_group.optional?

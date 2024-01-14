@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/inferno-framework/us-core-test-kit.git
+  revision: e0fb8ce9897a170707e9061300dea475911882d5
+  branch: fi-2371-add-fine-grained-scopes-tests
+  specs:
+    us_core_test_kit (0.6.2.CONNECTATHON)
+      inferno_core (>= 0.4.2)
+      smart_app_launch_test_kit (>= 0.4.0)
+      tls_test_kit (~> 0.2.0)
+
 PATH
   remote: .
   specs:
@@ -11,7 +21,6 @@ PATH
       rubyzip (~> 2.3.2)
       smart_app_launch_test_kit (= 0.4.0)
       tls_test_kit (= 0.2.0)
-      us_core_test_kit (= 0.6.2)
 
 GEM
   remote: https://rubygems.org/
@@ -328,9 +337,6 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
     unicode_utils (1.4.0)
-    us_core_test_kit (0.6.2)
-      inferno_core (>= 0.4.2)
-      tls_test_kit (~> 0.2.0)
     webmock (3.18.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -353,6 +359,7 @@ DEPENDENCIES
   rubocop (~> 1.9)
   rubocop-rspec
   rubyXL
+  us_core_test_kit!
   webmock (~> 3.11)
 
 BUNDLED WITH
