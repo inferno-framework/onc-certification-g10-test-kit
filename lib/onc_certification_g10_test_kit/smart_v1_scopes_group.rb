@@ -62,6 +62,8 @@ module ONCCertificationG10TestKit
             patient/Organization.read patient/Patient.read
             patient/Practitioner.read patient/Procedure.read
             patient/Provenance.read patient/PractitionerRole.read
+            patient/Specimen.read patient/Coverage.read
+            patient/MedicationDispense.read patient/ServiceRequest.read
           ).gsub(/\s{2,}/, ' ').strip
         },
         received_scopes: { name: :v1_received_scopes },
