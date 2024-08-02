@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    onc_certification_g10_test_kit (5.4.2)
+    onc_certification_g10_test_kit (6.0.0.dev)
       bloomer (~> 1.0.0)
       colorize (~> 0.8.1)
       inferno_core (~> 0.4.34)
@@ -94,7 +94,7 @@ GEM
     faraday-httpclient (1.0.1)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
-    faraday-net_http (1.0.1)
+    faraday-net_http (1.0.2)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
