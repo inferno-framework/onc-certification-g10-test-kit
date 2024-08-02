@@ -593,6 +593,28 @@
       "value": null
     },
     {
+      "name": "token_introspection_auth_type",
+      "value": "confidential_symmetric",
+      "_title": "Client Authentication Method",
+      "_type": "radio",
+      "_options": {
+        "list_options": [
+          {
+            "label": "Public",
+            "value": "public"
+          },
+          {
+            "label": "Confidential Symmetric",
+            "value": "confidential_symmetric"
+          },
+          {
+            "label": "Confidential Asymmetric",
+            "value": "confidential_asymmetric"
+          }
+        ]
+      }
+    },
+    {
       "name": "asymmetric_client_id",
       "value": "SAMPLE_ASYMMETRIC_CLIENT_ID",
       "_title": "Asymmetric Launch Client ID",
