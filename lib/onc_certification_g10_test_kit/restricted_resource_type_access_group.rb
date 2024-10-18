@@ -34,6 +34,9 @@ module ONCCertificationG10TestKit
       If testing against USCDI v3 and v4, Encounter, ServiceRequest, Coverage,
       and MedicationDispense are also checked.
 
+      If testing against USCDI v4, Encounter, ServiceRequest, Coverage,
+      MedicationDispense, and Location are also checked.
+
       For each of the resources that can be mapped to USCDI data class or
       elements, this set of tests performs a minimum number of requests to
       determine if access to the resource type is appropriately allowed or
