@@ -199,8 +199,7 @@ module Inferno
             USCoreTestKit::USCoreV311::USCoreTestSuite.metadata +
             USCoreTestKit::USCoreV400::USCoreTestSuite.metadata +
             USCoreTestKit::USCoreV501::USCoreTestSuite.metadata +
-            USCoreTestKit::USCoreV610::USCoreTestSuite.metadata +
-            USCoreTestKit::USCoreV700::USCoreTestSuite.metadata
+            USCoreTestKit::USCoreV610::USCoreTestSuite.metadata
 
           all_metadata =
             all_metadata
