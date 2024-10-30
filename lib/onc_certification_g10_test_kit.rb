@@ -1,5 +1,6 @@
 require 'smart_app_launch/smart_stu1_suite'
 require 'smart_app_launch/smart_stu2_suite'
+require 'smart_app_launch/smart_stu2_2_suite'
 require 'us_core_test_kit'
 
 require_relative 'onc_certification_g10_test_kit/configuration_checker'
@@ -24,14 +25,19 @@ require_relative 'onc_certification_g10_test_kit/smart_limited_app_group'
 require_relative 'onc_certification_g10_test_kit/smart_standalone_patient_app_group'
 require_relative 'onc_certification_g10_test_kit/smart_public_standalone_launch_group'
 require_relative 'onc_certification_g10_test_kit/smart_public_standalone_launch_group_stu2'
+require_relative 'onc_certification_g10_test_kit/smart_public_standalone_launch_group_stu2_2'
 require_relative 'onc_certification_g10_test_kit/smart_ehr_patient_launch_group'
 require_relative 'onc_certification_g10_test_kit/smart_ehr_patient_launch_group_stu2'
+require_relative 'onc_certification_g10_test_kit/smart_ehr_patient_launch_group_stu2_2'
 require_relative 'onc_certification_g10_test_kit/smart_ehr_practitioner_app_group'
 require_relative 'onc_certification_g10_test_kit/smart_fine_grained_scopes_group'
+require_relative 'onc_certification_g10_test_kit/smart_fine_grained_scopes_group_stu2_2'
 require_relative 'onc_certification_g10_test_kit/smart_fine_grained_scopes_us_core_7_group'
+require_relative 'onc_certification_g10_test_kit/smart_fine_grained_scopes_us_core_7_group_stu2_2'
 require_relative 'onc_certification_g10_test_kit/smart_v1_scopes_group'
 require_relative 'onc_certification_g10_test_kit/terminology_binding_validator'
 require_relative 'onc_certification_g10_test_kit/token_introspection_group'
+require_relative 'onc_certification_g10_test_kit/token_introspection_group_stu2_2'
 require_relative 'onc_certification_g10_test_kit/token_revocation_group'
 require_relative 'onc_certification_g10_test_kit/visual_inspection_and_attestations_group'
 
@@ -236,6 +242,10 @@ module ONCCertificationG10TestKit
                    {
                      label: 'SMART App Launch 2.0.0',
                      value: G10Options::SMART_2
+                   },
+                   {
+                     label: 'SMART App Launch 2.2.0',
+                     value: G10Options::SMART_2_2
                    }
                  ]
 
@@ -399,9 +409,11 @@ module ONCCertificationG10TestKit
       group from: :g10_public_standalone_launch_stu2,
             required_suite_options: G10Options::SMART_2_REQUIREMENT,
             config: { options: { redirect_message_proc: default_redirect_message_proc } }
+      group from: :g10_public_standalone_launch_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
+            config: { options: { redirect_message_proc: default_redirect_message_proc } }
 
       group from: :g10_token_revocation
-
       group from: :g10_smart_invalid_aud,
             config: { options: { redirect_message_proc: default_redirect_message_proc } }
 
@@ -411,23 +423,45 @@ module ONCCertificationG10TestKit
       group from: :g10_smart_invalid_token_request_stu2,
             required_suite_options: G10Options::SMART_2_REQUIREMENT,
             config: { options: { redirect_message_proc: default_redirect_message_proc } }
+      group from: :g10_smart_invalid_token_request_stu2,
+            id: :g10_smart_invalid_token_request_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
+            config: { options: { redirect_message_proc: default_redirect_message_proc } }
 
       group from: :g10_smart_invalid_pkce_code_verifier_group,
             required_suite_options: G10Options::SMART_2_REQUIREMENT
+      group from: :g10_smart_invalid_pkce_code_verifier_group,
+            id: :g10_smart_invalid_pkce_code_verifier_group_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
       group from: :g10_ehr_patient_launch,
             required_suite_options: G10Options::SMART_1_REQUIREMENT
       group from: :g10_ehr_patient_launch_stu2,
             required_suite_options: G10Options::SMART_2_REQUIREMENT
+      group from: :g10_ehr_patient_launch_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
       group from: :g10_token_introspection,
             required_suite_options: G10Options::SMART_2_REQUIREMENT
+      group from: :g10_token_introspection_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
       group from: :g10_asymmetric_launch,
             required_suite_options: G10Options::SMART_2_REQUIREMENT
+      group from: :g10_asymmetric_launch,
+            id: :g10_asymmetric_launch_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
       group from: :g10_smart_v1_scopes,
             required_suite_options: G10Options::SMART_2_REQUIREMENT,
+            config: {
+              inputs: {
+                client_auth_encryption_method: { locked: true }
+              }
+            }
+      group from: :g10_smart_v1_scopes,
+            id: :g10_smart_v1_scopes_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
             config: {
               inputs: {
                 client_auth_encryption_method: { locked: true }
@@ -437,17 +471,29 @@ module ONCCertificationG10TestKit
       group from: :g10_smart_fine_grained_scopes,
             required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT),
             exclude_optional: true
+      group from: :g10_smart_fine_grained_scopes_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT),
+            exclude_optional: true
 
       group from: :g10_us_core_7_smart_fine_grained_scopes,
             required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT),
             exclude_optional: true
+      group from: :g10_us_core_7_smart_fine_grained_scopes_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT),
+            exclude_optional: true
 
       group from: :g10_smart_granular_scope_selection,
             required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)
+      group from: :g10_smart_granular_scope_selection,
+            id: :g10_smart_granular_scope_selection_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)
 
       group from: :g10_smart_granular_scope_selection,
             id: :g10_us_core_7_smart_granular_scope_selection,
             required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT)
+      group from: :g10_smart_granular_scope_selection,
+            id: :g10_us_core_7_smart_granular_scope_selection_stu2_2,
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT)
     end
 
     group from: :g10_visual_inspection_and_attestations

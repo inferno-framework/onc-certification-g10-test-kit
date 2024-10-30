@@ -142,9 +142,42 @@ module ONCCertificationG10TestKit
                 :asymmetric_client_auth_type,
                 :client_auth_encryption_method
 
-    group from: :smart_discovery_stu2
+    group from: :smart_discovery_stu2,
+          required_suite_options: G10Options::SMART_2_REQUIREMENT
+    group from: :smart_discovery_stu2,
+          id: :smart_discovery_stu2_2,
+          required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
     group from: :smart_standalone_launch_stu2 do
+      required_suite_options(G10Options::SMART_2_REQUIREMENT)
+      test from: :g10_patient_context,
+           config: {
+             inputs: {
+               patient_id: { name: :asymmetric_patient_id },
+               smart_credentials: { name: :asymmetric_smart_credentials }
+             }
+           }
+
+      test do
+        title 'OAuth token exchange response contains OpenID Connect id_token'
+        description %(
+        This test requires that an OpenID Connect id_token is provided to
+        demonstrate authentication capabilies for asymmetric clients.
+      )
+        id :g10_asymmetric_launch_id_token
+
+        input :id_token,
+              name: :asymmetric_id_token,
+              locked: true,
+              optional: true
+
+        run do
+          assert id_token.present?, 'Token response did not provide an id_token as required.'
+        end
+      end
+    end
+    group from: :smart_standalone_launch_stu2_2 do
+      required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
       test from: :g10_patient_context,
            config: {
              inputs: {

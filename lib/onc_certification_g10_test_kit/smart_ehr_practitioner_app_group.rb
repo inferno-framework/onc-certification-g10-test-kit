@@ -129,6 +129,31 @@ module ONCCertificationG10TestKit
            }
     end
 
+    group from: :smart_discovery_stu2 do
+      required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
+      id :smart_discovery_stu2_2
+
+      test from: 'g10_smart_well_known_capabilities',
+           config: {
+             options: {
+               required_capabilities: [
+                 'launch-ehr',
+                 'client-confidential-symmetric',
+                 'client-confidential-asymmetric',
+                 'sso-openid-connect',
+                 'context-banner',
+                 'context-style',
+                 'context-ehr-patient',
+                 'permission-offline',
+                 'permission-user',
+                 'authorize-post',
+                 'permission-v2',
+                 'permission-v1'
+               ]
+             }
+           }
+    end
+
     group from: :smart_ehr_launch do
       required_suite_options(G10Options::SMART_1_REQUIREMENT)
 
@@ -332,6 +357,172 @@ module ONCCertificationG10TestKit
           },
           options: {
             scope_version: :v2,
+            required_scope_type: 'user',
+            required_scopes: ['openid', 'fhirUser', 'launch', 'offline_access']
+          }
+        )
+      end
+
+      test from: :g10_unauthorized_access,
+           config: {
+             inputs: {
+               patient_id: { name: :ehr_patient_id }
+             }
+           }
+
+      test from: :g10_patient_context,
+           config: {
+             inputs: {
+               patient_id: { name: :ehr_patient_id },
+               access_token: { name: :ehr_access_token }
+             }
+           }
+
+      test from: :g10_encounter_context,
+           config: {
+             inputs: {
+               encounter_id: { name: :ehr_encounter_id },
+               access_token: { name: :ehr_access_token }
+             }
+           },
+           required_suite_options: G10Options::US_CORE_5_REQUIREMENT
+
+      test from: :g10_encounter_context,
+           id: :g10_encounter_context_us_core_6, # rubocop:disable Naming/VariableNumber
+           config: {
+             inputs: {
+               encounter_id: { name: :ehr_encounter_id },
+               access_token: { name: :ehr_access_token }
+             }
+           },
+           required_suite_options: G10Options::US_CORE_6_REQUIREMENT
+
+      test from: :g10_encounter_context,
+           id: :g10_encounter_context_us_core_7, # rubocop:disable Naming/VariableNumber
+           config: {
+             inputs: {
+               encounter_id: { name: :ehr_encounter_id },
+               access_token: { name: :ehr_access_token }
+             }
+           },
+           required_suite_options: G10Options::US_CORE_7_REQUIREMENT
+
+      test do
+        title 'Launch context contains smart_style_url which links to valid JSON'
+        description %(
+          In order to mimic the style of the SMART host more closely, SMART apps
+          can check for the existence of this launch context parameter and
+          download the JSON file referenced by the URL value.
+        )
+        uses_request :token
+        id :g10_smart_style_url
+
+        run do
+          skip_if request.status != 200, 'No token response received'
+          assert_valid_json response[:body]
+
+          body = JSON.parse(response[:body])
+
+          assert body['smart_style_url'].present?,
+                 'Token response did not contain `smart_style_url`'
+
+          get(body['smart_style_url'])
+
+          assert_response_status(200)
+          assert_valid_json(response[:body])
+        end
+      end
+
+      test do
+        title 'Launch context contains need_patient_banner'
+        description %(
+          `need_patient_banner` is a boolean value indicating whether the app
+          was launched in a UX context where a patient banner is required (when
+          true) or not required (when false).
+        )
+        uses_request :token
+        id :g10_smart_need_patient_banner
+
+        run do
+          skip_if request.status != 200, 'No token response received'
+          assert_valid_json response[:body]
+
+          body = JSON.parse(response[:body])
+
+          assert body.key?('need_patient_banner'),
+                 'Token response did not contain `need_patient_banner`'
+        end
+      end
+
+      tests[2].config(
+        outputs: {
+          incorrectly_permitted_tls_versions_messages: {
+            name: :auth_incorrectly_permitted_tls_versions_messages
+          }
+        }
+      )
+
+      tests[5].config(
+        outputs: {
+          incorrectly_permitted_tls_versions_messages: {
+            name: :token_incorrectly_permitted_tls_versions_messages
+          }
+        }
+      )
+    end
+
+    group from: :smart_ehr_launch_stu2_2,
+          config: {
+            inputs: {
+              use_pkce: {
+                default: 'true',
+                locked: true
+              },
+              pkce_code_challenge_method: {
+                locked: true
+              },
+              authorization_method: {
+                name: :ehr_authorization_method,
+                default: 'post',
+                locked: true
+              }
+            }
+          } do
+      required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
+
+      title 'EHR Launch With Practitioner Scope'
+      input :client_secret,
+            name: :ehr_client_secret,
+            title: 'EHR Launch Client Secret',
+            description: 'Client Secret provided during registration of Inferno as an EHR launch application',
+            optional: false
+
+      config(
+        inputs: {
+          requested_scopes: {
+            default: %(
+              launch openid fhirUser offline_access user/Medication.rs
+              user/AllergyIntolerance.rs user/CarePlan.rs user/CareTeam.rs
+              user/Condition.rs user/Device.rs user/DiagnosticReport.rs
+              user/DocumentReference.rs user/Encounter.rs user/Goal.rs
+              user/Immunization.rs user/Location.rs user/MedicationRequest.rs
+              user/Observation.rs user/Organization.rs user/Patient.rs
+              user/Practitioner.rs user/Procedure.rs user/Provenance.rs
+              user/PractitionerRole.rs
+            ).gsub(/\s{2,}/, ' ').strip
+          }
+        }
+      )
+
+      test from: :g10_smart_scopes do
+        title 'User-level access with OpenID Connect and Refresh Token scopes used.'
+        config(
+          inputs: {
+            requested_scopes: { name: :ehr_requested_scopes },
+            received_scopes: { name: :ehr_received_scopes }
+          },
+          options: {
+            scope_version: :v2_2,
             required_scope_type: 'user',
             required_scopes: ['openid', 'fhirUser', 'launch', 'offline_access']
           }

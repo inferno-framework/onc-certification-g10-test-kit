@@ -19,6 +19,7 @@ module ONCCertificationG10TestKit
 
     SMART_1 = 'smart_app_launch_1'.freeze
     SMART_2 = 'smart_app_launch_2'.freeze
+    SMART_2_2 = 'smart_app_launch_2_2'.freeze
 
     US_CORE_3_REQUIREMENT = { us_core_version: US_CORE_3 }.freeze
     US_CORE_4_REQUIREMENT = { us_core_version: US_CORE_4 }.freeze
@@ -31,6 +32,7 @@ module ONCCertificationG10TestKit
 
     SMART_1_REQUIREMENT = { smart_app_launch_version: SMART_1 }.freeze
     SMART_2_REQUIREMENT = { smart_app_launch_version: SMART_2 }.freeze
+    SMART_2_2_REQUIREMENT = { smart_app_launch_version: SMART_2_2 }.freeze
 
     def us_core_version
       suite_options[:us_core_version]

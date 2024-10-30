@@ -84,9 +84,14 @@ module ONCCertificationG10TestKit
       }
     )
 
-    group from: :smart_discovery_stu2
+    group from: :smart_discovery_stu2,
+          required_suite_options: G10Options::SMART_2_REQUIREMENT
+    group from: :smart_discovery_stu2,
+          id: :smart_discovery_stu2_2,
+          required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
     group from: :smart_standalone_launch_stu2 do
+      required_suite_options(G10Options::SMART_2_REQUIREMENT)
       id :g10_granular_scope_selection_v2_scopes
       title 'Granular Scope Selection with v2 Scopes'
 
@@ -135,6 +140,68 @@ module ONCCertificationG10TestKit
         config(
           options: {
             scope_version: :v2,
+            required_scope_type: 'patient',
+            required_scopes: ['openid', 'fhirUser', 'launch/patient', 'offline_access']
+          }
+        )
+
+        def patient_compartment_resource_types
+          ['Patient', 'Condition', 'Observation']
+        end
+      end
+
+      test from: :g10_smart_granular_scope_selection
+    end
+    group from: :smart_standalone_launch_stu2_2 do
+      required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
+      id :g10_granular_scope_selection_v2_2_scopes
+      title 'Granular Scope Selection with v2 Scopes'
+
+      config(
+        inputs: {
+          client_id: {
+            name: :granular_scope_selection_v2_client_id,
+            title: 'Granular Scope Selection w/v2 Scopes Client ID'
+          },
+          client_secret: {
+            name: :granular_scope_selection_v2_client_secret,
+            title: 'Granular Scope Selection w/v2 Scopes Client Secret',
+            default: nil,
+            optional: true
+          },
+          requested_scopes: {
+            name: :granular_scope_selection_v2_requested_scopes,
+            title: 'Granular Scope Selection v2 Scopes',
+            default: %(
+              launch/patient openid fhirUser offline_access patient/Condition.rs
+              patient/Observation.rs patient/Patient.rs
+            ).gsub(/\s{2,}/, ' ').strip
+          },
+          received_scopes: { name: :granular_scope_selection_v2_received_scopes }
+        },
+        outputs: {
+          requested_scopes: { name: :granular_scope_selection_v2_requested_scopes },
+          received_scopes: { name: :granular_scope_selection_v2_received_scopes }
+        },
+        options: {
+          redirect_message_proc: proc do |auth_url|
+            %(
+              ### #{self.class.parent&.parent&.title}
+
+              [Follow this link to authorize with the SMART server](#{auth_url}).
+
+              Tests will resume once Inferno receives a request at
+              `#{config.options[:redirect_uri]}` with a state of `#{state}`.
+            )
+          end,
+          ignore_missing_scopes_check: true
+        }
+      )
+
+      test from: :g10_smart_scopes do
+        config(
+          options: {
+            scope_version: :v2_2,
             required_scope_type: 'patient',
             required_scopes: ['openid', 'fhirUser', 'launch/patient', 'offline_access']
           }

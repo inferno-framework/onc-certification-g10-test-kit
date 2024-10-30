@@ -96,6 +96,29 @@ module ONCCertificationG10TestKit
                 :client_auth_encryption_method
 
     group from: :smart_discovery_stu2 do
+      required_suite_options(G10Options::SMART_2_REQUIREMENT)
+      test from: 'g10_smart_well_known_capabilities',
+           config: {
+             options: {
+               required_capabilities: [
+                 'launch-standalone',
+                 'client-public',
+                 'client-confidential-symmetric',
+                 'client-confidential-asymmetric',
+                 'sso-openid-connect',
+                 'context-standalone-patient',
+                 'permission-offline',
+                 'permission-patient',
+                 'authorize-post',
+                 'permission-v2',
+                 'permission-v1'
+               ]
+             }
+           }
+    end
+    group from: :smart_discovery_stu2 do
+      required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
+      id :smart_discovery_stu2_2
       test from: 'g10_smart_well_known_capabilities',
            config: {
              options: {
@@ -117,6 +140,7 @@ module ONCCertificationG10TestKit
     end
 
     group from: :smart_standalone_launch_stu2,
+          required_suite_options: G10Options::SMART_2_REQUIREMENT,
           config: {
             inputs: {
               use_pkce: {
@@ -164,6 +188,99 @@ module ONCCertificationG10TestKit
 
         * [Standalone Launch
           Sequence](http://hl7.org/fhir/smart-app-launch/STU2/app-launch.html#launch-app-standalone-launch)
+      )
+
+      test from: :g10_smart_scopes do
+        config(
+          options: {
+            requested_scope_version: :v1,
+            received_scope_version: :any,
+            required_scope_type: 'patient',
+            required_scopes: ['openid', 'fhirUser', 'launch/patient', 'offline_access']
+          }
+        )
+      end
+
+      test from: :g10_unauthorized_access,
+           config: {
+             inputs: {
+               patient_id: { name: :v1_patient_id }
+             }
+           }
+
+      test from: :g10_patient_context,
+           config: {
+             inputs: {
+               patient_id: { name: :v1_patient_id },
+               smart_credentials: { name: :v1_smart_credentials }
+             }
+           }
+
+      tests[0].config(
+        outputs: {
+          incorrectly_permitted_tls_versions_messages: {
+            name: :auth_incorrectly_permitted_tls_versions_messages
+          }
+        }
+      )
+
+      tests[3].config(
+        outputs: {
+          incorrectly_permitted_tls_versions_messages: {
+            name: :token_incorrectly_permitted_tls_versions_messages
+          }
+        }
+      )
+    end
+    group from: :smart_standalone_launch_stu2_2,
+          required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
+          config: {
+            inputs: {
+              use_pkce: {
+                default: 'true',
+                locked: true
+              },
+              pkce_code_challenge_method: {
+                locked: true
+              },
+              authorization_method: {
+                name: :standalone_authorization_method,
+                default: 'get',
+                locked: true
+              },
+              client_auth_type: {
+                locked: true,
+                default: 'confidential_symmetric'
+              }
+            },
+            outputs: {
+              smart_credentials: { name: :v1_smart_credentials }
+            }
+          } do
+      title 'Standalone Launch With Patient Scope'
+      description %(
+        # Background
+
+        The [Standalone
+        Launch Sequence](http://hl7.org/fhir/smart-app-launch/STU2.2/app-launch.html#launch-app-standalone-launch)
+        allows an app, like Inferno, to be launched independent of an
+        existing EHR session. It is one of the two launch methods described in
+        the SMART App Launch Framework alongside EHR Launch. The app will
+        request authorization for the provided scope from the authorization
+        endpoint, ultimately receiving an authorization token which can be used
+        to gain access to resources on the FHIR server.
+
+        # Test Methodology
+
+        Inferno will redirect the user to the the authorization endpoint so that
+        they may provide any required credentials and authorize the application.
+        Upon successful authorization, Inferno will exchange the authorization
+        code provided for an access token.
+
+        For more information on the #{title}:
+
+        * [Standalone Launch
+          Sequence](http://hl7.org/fhir/smart-app-launch/STU2.2/app-launch.html#launch-app-standalone-launch)
       )
 
       test from: :g10_smart_scopes do

@@ -117,7 +117,47 @@ module ONCCertificationG10TestKit
     end
 
     test from: :smart_app_redirect_stu2 do
-      required_suite_options G10Options::SMART_2_REQUIREMENT
+      id :smart_app_redirect_stu2
+      required_suite_options(G10Options::SMART_2_REQUIREMENT)
+
+      config(
+        inputs: {
+          use_pkce: {
+            default: 'true',
+            locked: true
+          },
+          pkce_code_challenge_method: {
+            locked: true
+          }
+        }
+      )
+
+      input :client_secret,
+            name: :standalone_client_secret,
+            title: 'Standalone Client Secret',
+            description: 'Client Secret provided during registration of Inferno as a standalone application'
+
+      def aud
+        'https://inferno.healthit.gov/invalid_aud'
+      end
+
+      def wait_message(auth_url)
+        %(
+          Inferno will redirect you to an external website for authorization.
+          **It is expected this will fail**. If the server does not return to
+          Inferno automatically, but does provide an error message, you may
+          return to Inferno and confirm that an error was presented in this
+          window.
+
+          * [Perform Invalid Launch](#{auth_url})
+          * [Attest launch
+            failed](#{Inferno::Application['base_url']}/custom/smart/redirect?state=#{state}&confirm_fail=true)
+        )
+      end
+    end
+    test from: :smart_app_redirect_stu2 do
+      required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
+      id :smart_app_redirect_stu2_2
 
       config(
         inputs: {
