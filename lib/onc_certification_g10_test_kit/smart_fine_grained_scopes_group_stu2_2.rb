@@ -84,7 +84,7 @@ module ONCCertificationG10TestKit
 
       For more information, please refer to [finer-grained resource constraints
       using search
-      parameters](https://hl7.org/fhir/smart-app-launch/STU2/scopes-and-launch-context.html#finer-grained-resource-constraints-using-search-parameters).
+      parameters](https://hl7.org/fhir/smart-app-launch/STU2.2/scopes-and-launch-context.html#finer-grained-resource-constraints-using-search-parameters).
 
     DESCRIPTION
 
