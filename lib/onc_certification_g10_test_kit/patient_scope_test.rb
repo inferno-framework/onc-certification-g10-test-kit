@@ -22,7 +22,7 @@ module ONCCertificationG10TestKit
 
     run do
       expected_scopes =
-        if scope_version == :v2 || scope_version == :v2_2
+        if scope_version == :v2 || scope_version == :v22
           [
             Regexp.new(scope_regex_string('patient/Patient.rs').gsub('.rs', '.r?s')),
             Regexp.new(scope_regex_string('patient/Patient.rs').gsub('.rs', '.rs?'))

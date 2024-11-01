@@ -33,7 +33,7 @@ module ONCCertificationG10TestKit
 
       * [Standalone Launch Sequence](http://hl7.org/fhir/smart-app-launch/STU2.2/index.html#standalone-launch-sequence)
     )
-    id :g10_public_standalone_launch_stu2_2
+    id :g10_public_standalone_launch_stu2_2 # rubocop:disable Naming/VariableNumber
     run_as_group
 
     config(

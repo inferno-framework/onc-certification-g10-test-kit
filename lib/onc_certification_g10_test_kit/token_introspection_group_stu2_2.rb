@@ -4,7 +4,7 @@ require_relative 'g10_options'
 
 module ONCCertificationG10TestKit
   class TokenIntrospectionGroupSTU22 < SMARTAppLaunch::SMARTTokenIntrospectionGroupSTU22
-    id :g10_token_introspection_stu2_2
+    id :g10_token_introspection_stu2_2 # rubocop:disable Naming/VariableNumber
 
     description <<~DESCRIPTION
 

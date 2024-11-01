@@ -88,7 +88,7 @@ module ONCCertificationG10TestKit
 
     DESCRIPTION
 
-    id :g10_us_core_7_smart_fine_grained_scopes_stu2_2
+    id :g10_us_core_7_smart_fine_grained_scopes_stu2_2 # rubocop:disable Naming/VariableNumber
 
     input :url
 

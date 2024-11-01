@@ -734,7 +734,7 @@ module ONCCertificationG10TestKit
         * support for scopes for the Observation sub-resource SDOH using the
           "sdoh" code from the US Core Category code system .
       DESCRIPTION
-      id :g10_clinical_test_scope_attestation_stu2_2
+      id :g10_clinical_test_scope_attestation_stu2_2 # rubocop:disable Naming/VariableNumber
       input :clinical_test_scope_attestation,
             title: 'Health IT developer attested that the Health IT Module supports ' \
                    'granting a sub resource scope for Clinical Test Observations.',
@@ -848,7 +848,7 @@ module ONCCertificationG10TestKit
         * support for scopes for the Observation sub-resource SDOH using the
           "sdoh" code from the US Core Category code system .
       DESCRIPTION
-      id :g10_us_core_7_clinical_test_scope_attestation_stu2_2
+      id :g10_us_core_7_clinical_test_scope_attestation_stu2_2 # rubocop:disable Naming/VariableNumber
       input :clinical_test_scope_attestation,
             title: 'Health IT developer attested that the Health IT Module supports ' \
                    'granting a sub resource scope for Clinical Test Observations.',

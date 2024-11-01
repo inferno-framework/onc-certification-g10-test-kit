@@ -28,7 +28,7 @@ module ONCCertificationG10TestKit
       * [Apps that launch from the
         EHR](http://hl7.org/fhir/smart-app-launch/STU2.2/scopes-and-launch-context.html#apps-that-launch-from-the-ehr)
     )
-    id :g10_ehr_patient_launch_stu2_2
+    id :g10_ehr_patient_launch_stu2_2 # rubocop:disable Naming/VariableNumber
     run_as_group
 
     config(
@@ -117,7 +117,7 @@ module ONCCertificationG10TestKit
     test from: :g10_patient_scope,
          config: {
            options: {
-             scope_version: :v2_2
+             scope_version: :v22
            }
          }
 

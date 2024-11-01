@@ -299,7 +299,7 @@ module ONCCertificationG10TestKit
       end
     end
 
-    group from: :smart_standalone_launch_stu2_2,
+    group from: :smart_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
           config: {
             inputs: {
               use_pkce: {

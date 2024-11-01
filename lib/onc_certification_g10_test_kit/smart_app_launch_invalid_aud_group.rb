@@ -157,7 +157,7 @@ module ONCCertificationG10TestKit
     end
     test from: :smart_app_redirect_stu2 do
       required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
-      id :smart_app_redirect_stu2_2
+      id :smart_app_redirect_stu2_2 # rubocop:disable Naming/VariableNumber
 
       config(
         inputs: {

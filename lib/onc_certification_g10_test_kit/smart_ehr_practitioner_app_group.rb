@@ -131,7 +131,7 @@ module ONCCertificationG10TestKit
 
     group from: :smart_discovery_stu2 do
       required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
-      id :smart_discovery_stu2_2
+      id :smart_discovery_stu2_2 # rubocop:disable Naming/VariableNumber
 
       test from: 'g10_smart_well_known_capabilities',
            config: {
@@ -471,7 +471,7 @@ module ONCCertificationG10TestKit
       )
     end
 
-    group from: :smart_ehr_launch_stu2_2,
+    group from: :smart_ehr_launch_stu2_2, # rubocop:disable Naming/VariableNumber
           config: {
             inputs: {
               use_pkce: {
@@ -522,7 +522,7 @@ module ONCCertificationG10TestKit
             received_scopes: { name: :ehr_received_scopes }
           },
           options: {
-            scope_version: :v2_2,
+            scope_version: :v22,
             required_scope_type: 'user',
             required_scopes: ['openid', 'fhirUser', 'launch', 'offline_access']
           }

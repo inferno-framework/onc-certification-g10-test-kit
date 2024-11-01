@@ -87,7 +87,7 @@ module ONCCertificationG10TestKit
     group from: :smart_discovery_stu2,
           required_suite_options: G10Options::SMART_2_REQUIREMENT
     group from: :smart_discovery_stu2,
-          id: :smart_discovery_stu2_2,
+          id: :smart_discovery_stu2_2, # rubocop:disable Naming/VariableNumber
           required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
     group from: :smart_standalone_launch_stu2 do
@@ -152,7 +152,7 @@ module ONCCertificationG10TestKit
 
       test from: :g10_smart_granular_scope_selection
     end
-    group from: :smart_standalone_launch_stu2_2 do
+    group from: :smart_standalone_launch_stu2_2 do # rubocop:disable Naming/VariableNumber
       required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
       id :g10_granular_scope_selection_v2_2_scopes
       title 'Granular Scope Selection with v2 Scopes'
@@ -201,7 +201,7 @@ module ONCCertificationG10TestKit
       test from: :g10_smart_scopes do
         config(
           options: {
-            scope_version: :v2_2,
+            scope_version: :v22,
             required_scope_type: 'patient',
             required_scopes: ['openid', 'fhirUser', 'launch/patient', 'offline_access']
           }

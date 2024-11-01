@@ -118,7 +118,7 @@ module ONCCertificationG10TestKit
     end
     group from: :smart_discovery_stu2 do
       required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
-      id :smart_discovery_stu2_2
+      id :smart_discovery_stu2_2 # rubocop:disable Naming/VariableNumber
       test from: 'g10_smart_well_known_capabilities',
            config: {
              options: {
@@ -232,7 +232,7 @@ module ONCCertificationG10TestKit
         }
       )
     end
-    group from: :smart_standalone_launch_stu2_2,
+    group from: :smart_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
           required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
           config: {
             inputs: {

@@ -125,7 +125,7 @@ module ONCCertificationG10TestKit
       case scope_version
       when :v1
         "#{v1_read_format} | *"
-      when :v2, :v2_2
+      when :v2, :v22
         "#{v2_read_format} | *"
       else
         [v1_read_format, v2_read_format, '*'].join(' | ')
@@ -136,7 +136,7 @@ module ONCCertificationG10TestKit
       case scope_version
       when :v1
         /\A(\*|read)\b/
-      when :v2, :v2_2
+      when :v2, :v22
         /\A(\*|c?ru?d?s?)\b/
       else
         /\A(\*|read|c?ru?d?s?)\b/
