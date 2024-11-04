@@ -1,5 +1,6 @@
 require_relative 'g10_options'
 require_relative 'resource_access_test'
+require_relative 'all_resources'
 
 module ONCCertificationG10TestKit
   class UnrestrictedResourceTypeAccessGroup < Inferno::TestGroup
@@ -94,32 +95,12 @@ module ONCCertificationG10TestKit
       oauth_credentials :smart_credentials
     end
 
-    ALL_RESOURCES =
-      [
-        'AllergyIntolerance',
-        'CarePlan',
-        'CareTeam',
-        'Condition',
-        'Device',
-        'DiagnosticReport',
-        'DocumentReference',
-        'Goal',
-        'Immunization',
-        'MedicationRequest',
-        'Observation',
-        'Procedure',
-        'Patient',
-        'Provenance',
-        'Encounter',
-        'Practitioner',
-        'Organization'
-      ].freeze
 
-    V5_ALL_RESOURCES = (ALL_RESOURCES + ['ServiceRequest']).freeze
+    V5_EXCLUDED_RESOURCES = ['RelatedPerson'].freeze
 
-    V6_ALL_RESOURCES = (V5_ALL_RESOURCES + ['Coverage', 'MedicationDispense']).freeze
+    V6_EXCLUDED_RESOURCES = (V5_EXCLUDED_RESOURCES + ['Specimen']).freeze
 
-    V7_ALL_RESOURCES = (V6_ALL_RESOURCES + ['Location']).freeze
+    V7_EXCLUDED_RESOURCES = V6_EXCLUDED_RESOURCES.freeze
 
     NON_PATIENT_COMPARTMENT_RESOURCES =
       [
@@ -142,6 +123,7 @@ module ONCCertificationG10TestKit
 
     test do
       include G10Options
+      include AllResources
 
       title 'Scope granted enables access to all US Core resource types.'
       description %(
@@ -150,13 +132,13 @@ module ONCCertificationG10TestKit
       )
 
       def all_resources
-        return V5_ALL_RESOURCES if using_us_core_5?
+        return all_required_resources - V5_EXCLUDED_RESOURCES if using_us_core_5?
 
-        return V6_ALL_RESOURCES if using_us_core_6?
+        return all_required_resources - V6_EXCLUDED_RESOURCES if using_us_core_6?
 
-        return V7_ALL_RESOURCES if using_us_core_7?
+        return all_required_resources - V7_EXCLUDED_RESOURCES if using_us_core_7?
 
-        ALL_RESOURCES
+        all_required_resources
       end
 
       def non_patient_compartment_resources
