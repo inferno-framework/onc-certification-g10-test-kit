@@ -171,7 +171,7 @@ module ONCCertificationG10TestKit
       end
     end
 
-    USCoreTestKit::USCoreV700::USCoreTestSuite.groups[1].groups.each do |group|
+    USCoreTestKit::USCoreV700::USCoreTestSuite.groups.find { |g| g.title == 'US Core FHIR API' }.groups.each do |group|
       test_group = group.ancestors[1]
 
       next if test_group.optional?
