@@ -63,7 +63,11 @@ module ONCCertificationG10TestKit
     def element_with_invalid_binding
       @element_with_invalid_binding ||=
         find_a_value_at(path_source, binding_definition[:path]) do |element|
-          invalid_binding? element
+          if element.is_a? USCoreTestKit::PrimitiveType
+            invalid_binding? element.value
+          else
+            invalid_binding? element
+          end
         end
     end
 

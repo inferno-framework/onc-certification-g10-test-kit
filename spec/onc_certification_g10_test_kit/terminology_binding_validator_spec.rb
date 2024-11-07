@@ -292,5 +292,55 @@ RSpec.describe ONCCertificationG10TestKit::TerminologyBindingValidator do
         )
       end
     end
+
+    context 'with primitive extension' do
+      let(:json_obj) do
+        {
+          resourceType: 'Patient',
+          id: '123',
+          gender: good_code,
+          _gender: {
+            extension: [
+              {
+                url: 'http://hl7.org/fhir/StructureDefinition/alternate-codes',
+                valueCodeableConcept: {
+                  coding: [
+                    {
+                      system: 'http://snomed.info/sct',
+                      code: '248153007',
+                      display: 'Male (finding)'
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      end
+
+      let(:resource) { FHIR.from_contents(json_obj.to_json) }
+      let(:binding_definition) do
+        {
+          type: 'code',
+          strength: 'required',
+          system: 'http://hl7.org/fhir/ValueSet/administrative-gender',
+          path: 'gender'
+        }
+      end
+
+      it 'does not return an error message' do
+        allow_any_instance_of(described_class).to(
+          receive(:validate_code).with(
+            value_set_url: binding_definition[:system],
+            code: good_code
+          ).and_return(true)
+        )
+
+        result = described_class.validate(resource, binding_definition)
+
+        expect(result).to be_an(Array)
+        expect(result.length).to eq(0)
+      end
+    end
   end
 end
