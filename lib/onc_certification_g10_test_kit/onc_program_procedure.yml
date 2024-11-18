@@ -67,14 +67,20 @@
           - 1.3.04
           - 1.4.01
           - 1.4.04
+          - 1.9.01
+          - 1.9.04
           - 2.1.01
           - 2.1.04
           - 2.2.01
           - 2.2.04
+          - 2.4.01
+          - 2.4.04
           - 3.3.03
           - 3.3.06
           - 3.4.03
           - 3.4.06
+          - 3.8.03
+          - 3.8.06
           - 4.1.01
           - 5.1.01
           - 10.1.01
@@ -89,23 +95,63 @@
           - 9.1.04
           - 9.2.01
           - 9.2.04
+          - 9.16.01
+          - 9.16.04
           - 9.8.03
           - 9.8.06
           - 9.9.03
           - 9.9.06
+          - 9.19.03
+          - 9.19.06
           - '11.15'
           - 9.11.1.2.01
           - 9.11.1.2.04
+          - 9.20.1.2.01
+          - 9.20.1.2.04
           - 9.12.2.01
           - 9.12.2.04
+          - 9.12.5.01
+          - 9.12.5.04
+          - 9.21.3.01
+          - 9.21.3.04
+          - 9.21.4.01
+          - 9.21.4.04
           - 9.13.2.01
           - 9.13.2.04
+          - 9.13.5.01
+          - 9.13.5.04
+          - 9.22.3.01
+          - 9.22.3.04
+          - 9.22.4.01
+          - 9.22.4.04
           - 9.14.1.1.2.01
           - 9.14.1.1.2.04
           - 9.14.2.1.2.01
           - 9.14.2.1.2.04
+          - 9.23.1.1.2.01
+          - 9.23.1.1.2.04
+          - 9.23.2.1.2.01
+          - 9.23.2.1.2.04
+          - 9.24.1.1.2.01
+          - 9.24.1.1.2.04
+          - 9.24.2.1.2.01
+          - 9.24.2.1.2.04
+          - 9.25.1.1.2.01
+          - 9.25.1.1.2.04
+          - 9.25.2.1.2.01
+          - 9.25.2.1.2.04
           - 9.15.2.01
           - 9.15.2.04
+          - 9.15.5.01
+          - 9.15.5.04
+          - 9.26.3.01
+          - 9.26.3.04
+          - 9.26.4.01
+          - 9.26.4.04
+          - 9.27.3.01
+          - 9.27.3.04
+          - 9.28.3.01
+          - 9.28.3.04
         inferno_notes: |
           Inferno tests that all endpoints provided support at least TLS
           version 1.2, and rejects all requests for TLS version 1.1 or below.
@@ -133,8 +179,10 @@
         inferno_tests:
           - 1.3.01 - 1.3.07
           - 1.4.01 - 1.4.07
+          - 1.9.01 - 1.9.07
           - 3.3.01 - 3.3.09
           - 3.4.01 - 3.4.09
+          - 3.8.01 - 3.8.09
         inferno_notes: |
           Complete demonstration of these capabilities are accomplished
           through subsequent steps in the test procedure.
@@ -160,6 +208,8 @@
           - 3.3.04
           - 3.4.01 - 3.4.02
           - 3.4.04
+          - 3.8.01 - 3.8.02
+          - 3.8.04
       - id: AUT-PAT-3
         SUT: |
           [Standalone-Launch] The health IT developer demonstrates the ability
@@ -175,6 +225,7 @@
         inferno_tests:
           - 1.3.02
           - 1.4.02
+          - 1.9.02
       - id: AUT-PAT-4
         SUT: |
           [Standalone-Launch] The health IT developer demonstrates the ability
@@ -188,6 +239,8 @@
           - 9.1.05 - 9.1.09
           - 9.2.02 - 9.2.03
           - 9.2.05 - 9.2.09
+          - 9.16.01 - 9.16.03
+          - 9.16.05 - 9.16.09
       - id: AUT-PAT-5
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -220,7 +273,9 @@
         inferno_supported: 'yes'
         inferno_tests:
           - 1.2.01 - 1.2.03
+          - 1.8.01 - 1.8.03
           - 3.2.01 - 3.2.03
+          - 3.7.01 - 3.7.03
       - id: AUT-PAT-6
         SUT: |
           [Both] The health IT developer demonstrates the ability of the
@@ -271,7 +326,7 @@
             not include support for “plain”
 
           Additionally, the following “capabilities” must be supported if using
-          US Core 6.1.0:
+          US Core 6.1.0 or 7.0.0:
           * "context-ehr-encounter"
         TLV: |
           [Both] The tester verifies the ability of the
@@ -298,7 +353,9 @@
         inferno_supported: 'yes'
         inferno_tests:
           - 1.2.01 - 1.2.03
+          - 1.8.01 - 1.8.03
           - 3.2.01 - 3.2.03
+          - 3.7.01 - 3.7.03
       - id: AUT-PAT-7
         SUT: |
           [Both] The health IT developer demonstrates the ability of the FHIR®
@@ -383,7 +440,9 @@
         inferno_supported: 'yes'
         inferno_tests:
             - 1.4.02 - 1.4.03
+            - 1.9.02 - 1.9.03
             - 3.4.04 - 3.4.05
+            - 3.8.04 - 3.8.05
       - id: AUT-PAT-27
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -398,7 +457,9 @@
         inferno_supported: 'yes'
         inferno_tests:
             - 1.4.05 - 1.4.07
+            - 1.9.05 - 1.9.07
             - 3.4.07 - 3.4.09
+            - 3.8.07 - 3.8.09
       - id: AUT-PAT-9
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -481,14 +542,15 @@
           * SMART v1 scope syntax for patient-level and user-level scopes to
             support the “permission-v1” “SMART on FHIR® Capability”
           * SMART v2 scope syntax for patient-level and user-level scopes to
-            support the “permission-v2” “SMART on FHIR® Capability”, including
-            support for finer-grained resource constraints using search
-            parameters according to section 3.0.2.3 of the implementation
-            specification at § 170.215(c)(2) for the “category” parameter for
-            the following resources: (1) Condition resource with Condition
-            sub-resources Encounter Diagnosis, Problem List, and Health Concern;
-            and (2) Observation resource with Observation sub-resources Clinical
-            Test, Laboratory, Social History, SDOH, Survey, and Vital Signs
+            support the “permission-v2” “SMART on FHIR® Capability”. If using
+            US Core 6.1.0 or 7.0.0, this includes support for finer-grained
+            resource constraints using search parameters according to section
+            3.0.2.3 of the implementation specification at § 170.215(c)(2) for
+            the “category” parameter for the following resources: (1) Condition
+            resource with Condition sub-resources Encounter Diagnosis, Problem
+            List, and Health Concern; and (2) Observation resource with
+            Observation sub-resources Clinical Test, Laboratory, Social History,
+            SDOH, Survey, and Vital Signs
         TLV: |
           [Both] The tester verifies the ability of the Health IT Module to
           support the receipt of the following scopes and capabilities according
@@ -514,23 +576,45 @@
           * SMART v1 scope syntax for patient-level and user-level scopes to
             support the “permission-v1” “SMART on FHIR® Capability”
           * SMART v2 scope syntax for patient-level and user-level scopes to
-            support the “permission-v2” “SMART on FHIR® Capability”, including
-            support for finer-grained resource constraints using search
-            parameters according to section 3.0.2.3 of the implementation
-            specification at § 170.215(c)(2) for the “category” parameter for
-            the following resources: (1) Condition resource with Condition
-            sub-resources Encounter Diagnosis, Problem List, and Health Concern;
-            and (2) Observation resource with Observation sub-resources Clinical
-            Test, Laboratory, Social History, SDOH, Survey, and Vital Signs
+            support the “permission-v2” “SMART on FHIR® Capability”. If using
+            US Core 6.1.0 or 7.0.0, this includes support for finer-grained
+            resource constraints using search parameters according to section
+            3.0.2.3 of the implementation specification at § 170.215(c)(2) for
+            the “category” parameter for the following resources: (1) Condition
+            resource with Condition sub-resources Encounter Diagnosis, Problem
+            List, and Health Concern; and (2) Observation resource with
+            Observation sub-resources Clinical Test, Laboratory, Social History,
+            SDOH, Survey, and Vital Signs
         inferno_supported: 'yes'
         inferno_tests:
           - 1.4.02
+          - 1.9.02
           - 3.4.04
+          - 3.8.04
           - 9.13.2.02
+          - 9.13.5.02
+          - 9.22.3.02
+          - 9.22.4.02
           - 9.14.1.1.2.02
           - 9.14.2.1.2.02
+          - 9.23.1.1.2.02
+          - 9.23.2.1.2.02
+          - 9.24.1.1.2.02
+          - 9.24.2.1.2.02
+          - 9.25.1.1.2.02
+          - 9.25.2.1.2.02
           - '11.18'
-          - 9.15.2.05
+          - '11.19'
+          - '11.20'
+          - '11.21'
+          - 9.15.2.02
+          - 9.15.5.02
+          - 9.26.3.02
+          - 9.26.4.02
+          - 9.27.3.02
+          - 9.27.4.02
+          - 9.28.3.02
+          - 9.28.4.02
         inferno_notes: |
           This step refers to only the receipt of these scopes, which is covered in
           Inferno in one step in each the EHR and Standalone launch cases.  However,
@@ -549,7 +633,7 @@
           in § 170.213 and the corresponding implementation specification
           adopted in § 170.215(b)(1).
 
-          If using US Core 3.1.1, 4.0.0, or 6.1.0 these resources include:
+          If using US Core 3.1.1, 4.0.0, 6.1.0, or 7.0.0 these resources include:
 
           * “AllergyIntolerance”;
           * “CarePlan”;
@@ -567,13 +651,16 @@
           * “Procedure”; and
           * “Provenance”.
 
-          The following resources must also be supported if using US Core 6.1.0:
+          The following resources must also be supported if using US Core 6.1.0, or 7.0.0:
           * "Encounter"
           * "Coverage"
           * "Specimen"
           * "MedicationDispense"
           * "RelatedPerson"; and
           * "ServiceRequest"
+
+          The following resources must also be supported if using US Core 7.0.0:
+          * "Location"
         TLV: |
           [Both] The tester verifies the ability of the Health IT Module to
           evaluate the authorization request and request end-user input, if
@@ -584,7 +671,7 @@
           § 170.213 and the corresponding implementation specification adopted
           in § 170.215(b)(1).
 
-          If using US Core 3.1.1, 4.0.0, or 6.1.0 these resources include:
+          If using US Core 3.1.1, 4.0.0, 6.1.0, or 7.0.0 these resources include:
 
           * “AllergyIntolerance”;
           * “CarePlan”;
@@ -602,7 +689,7 @@
           * “Procedure”; and
           * “Provenance”.
 
-          The following resources must also be supported if using US Core 6.1.0:
+          The following resources must also be supported if using US Core 6.1.0, or 7.0.0:
           * "Encounter"
           * "Coverage"
           * "Specimen"
@@ -610,20 +697,29 @@
           * "RelatedPerson"; and
           * "ServiceRequest"
 
+          The following resources must also be supported if using US Core 7.0.0:
+          * "Location"
+
         inferno_supported: 'yes'
         inferno_tests:
           - 1.3.02
           - 1.3.05
           - 1.4.02
           - 1.4.05
+          - 1.9.02
+          - 1.9.05
           - 3.3.04
           - 3.3.07
           - 3.4.04
           - 3.4.07
+          - 3.8.04
+          - 3.8.07
           - 2.1.02
           - 2.1.05
           - 2.2.02
           - 2.2.05
+          - 2.4.02
+          - 2.4.05
           - 1.7.01 - 1.7.20
           - 2.3.01 - 2.3.19
         inferno_notes: |
@@ -651,10 +747,14 @@
           - 1.3.05
           - 1.4.02
           - 1.4.05
+          - 1.9.02
+          - 1.9.05
           - 2.1.02
           - 2.1.05
           - 2.2.02
           - 2.2.05
+          - 2.4.02
+          - 2.4.05
           - '11.04'
       - id: AUT-PAT-12
         SUT: |
@@ -703,6 +803,7 @@
         inferno_supported: 'yes'
         inferno_tests:
           - 9.9.01 - 9.9.10
+          - 9.19.01 - 9.19.09
       - id: AUT-PAT-13
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -739,8 +840,10 @@
         inferno_tests:
           - 1.3.03
           - 1.4.03
+          - 1.9.03
           - 3.3.05
           - 3.4.05
+          - 3.8.05
       - id: AUT-PAT-15
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -810,8 +913,13 @@
         inferno_supported: 'yes'
         inferno_tests:
           - 1.4.05
+          - 1.9.05
           - 3.4.07
+          - 3.8.07
           - 9.12.2.05
+          - 9.12.5.05
+          - 9.21.3.05
+          - 9.21.4.05
       - id: AUT-PAT-31
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -826,6 +934,7 @@
         inferno_supported: 'yes'
         inferno_tests:
           - 9.7.01 - 9.7.12
+          - 9.18.01 - 9.18.05
       - id: AUT-PAT-16
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -879,14 +988,27 @@
         inferno_tests:
           - 1.3.06 - 1.3.08
           - 1.4.06 - 1.4.08
+          - 1.9.06 - 1.9.07
+          - 1.9.09
           - 3.3.08 - 3.3.10
           - 3.3.16
           - 3.4.08 - 3.4.10
-          - 3.4.16
+          - 3.4.16 - 3.4.17
+          - 3.8.08 - 3.8.09
+          - 3.8.11
+          - 3.8.15 - 3.8.16
           - 9.8.08 - 9.8.10
           - 9.9.08 - 9.9.10
+          - 9.19.08 - 9.19.09
+          - 9.19.11
           - 9.12.2.06 - 9.12.2.07
           - 9.12.2.09
+          - 9.12.5.06 - 9.12.5.07
+          - 9.12.5.10
+          - 9.21.3.06 - 9.21.3.07
+          - 9.21.3.09
+          - 9.21.4.06 - 9.21.4.07
+          - 9.21.4.10
       - id: AUT-PAT-17
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -909,8 +1031,10 @@
         inferno_tests:
           - 1.5.01 - 1.5.07
           - 1.10.01 - 1.10.07
+          - 1.11.01 - 1.11.07
           - 3.5.01 - 3.5.07
           - 3.9.01 - 3.9.07
+          - 3.10.01 - 3.10.07
         inferno_notes: |
           Inferno decodes the id_token provided during authentication and
           verifies that it contains the correct claims, has a valid signature,
@@ -934,9 +1058,12 @@
         inferno_tests:
           - 2.1.02 - 2.1.09
           - 2.2.02 - 2.2.09
+          - 2.4.01 - 2.4.07
+          - 2.4.09 - 2.4.10
           - 2.3.01 - 2.3.19
           - 9.5.01 - 9.5.04
           - 9.6.01 - 9.6.04
+          - 9.17.01 - 9.17.04
       - id: AUT-PAT-19
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -952,14 +1079,24 @@
         inferno_tests:
           - 1.3.10
           - 1.4.10
+          - 1.9.11
           - 3.3.12
           - 3.4.12
+          - 3.8.13
           - 9.1.08
           - 9.2.08
+          - 9.16.08
           - 9.8.10
           - 9.9.10
+          - 9.19.11
           - 9.12.2.08
+          - 9.12.5.09
+          - 9.21.3.08
+          - 9.21.4.09
           - 9.13.2.10
+          - 9.13.5.11
+          - 9.22.3.10
+          - 9.22.4.11
       - id: AUT-PAT-32
         SUT: |
           [EHR-Launch] The following must be supported if using US Core 6.1.0:
@@ -978,6 +1115,9 @@
         inferno_tests:
           - 3.3.16
           - 3.4.16
+          - 3.4.17
+          - 3.8.15
+          - 3.8.16
       - id: AUT-PAT-20
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -993,6 +1133,7 @@
           - 1.6.01 - 1.6.04
           - 3.6.01 - 3.6.04
           - 9.12.3.01 - 9.12.3.04
+          - 9.21.5.01 - 9.21.5.04
       - id: AUT-PAT-21
         SUT: |
           [Both] The health IT developer demonstrates the ability of the Health
@@ -1043,6 +1184,7 @@
           - 1.6.06
           - 3.6.06
           - 9.12.3.06
+          - 9.21.5.06
   - section: Paragraph (g)(10)(vi) – Patient authorization revocation
     steps:
       - group: Patient Authorization Revocation
@@ -2439,7 +2581,7 @@
           * “Encounter”;
           * “Goal”;
           * “Immunization”;
-          * “Location” (if supported);
+          * “Location” (if supported or using US Core 7.0.0);
           * “Medication” (if supported);
           * “MedicationDispense”
           * “MedicationRequest”;
@@ -2472,7 +2614,7 @@
           * “Encounter”;
           * “Goal”;
           * “Immunization”;
-          * “Location” (if supported);
+          * “Location” (if supported or using US Core 7.0.0);
           * “Medication” (if supported);
           * “MedicationDispense”
           * “MedicationRequest”;
