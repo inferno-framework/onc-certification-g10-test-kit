@@ -32,10 +32,13 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new('>= 3.1.2')
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = spec.homepage
+  spec.metadata['inferno_test_kit'] = 'true'
   spec.files = [
     Dir['lib/**/*.rb'],
     Dir['lib/**/*.json'],
     Dir['lib/**/*.yml'],
+    Dir['config/presets/*.json'],
+    Dir['config/presets/*.json.erb'],
     'LICENSE'
   ].flatten
 
