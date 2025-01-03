@@ -56,25 +56,43 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        client_secret: {
-          optional: false,
-          name: :standalone_client_secret
+        smart_auth_info: {
+          name: :standalone_smart_auth_info,
+          options: {
+            mode: 'auth',
+            components: [
+              {
+                name: :auth_type,
+                default: 'symmetric',
+                locked: true
+              },
+              {
+                name: :requested_scopes,
+                type: 'textarea'
+              },
+              {
+                name: :auth_request_method,
+                default: 'GET',
+                locked: true
+              },
+              {
+                name: :use_discovery,
+                locked: true
+              }
+            ]
+          }
         }
       }
     )
 
-    input_order :url,
-                :standalone_client_id,
-                :standalone_client_secret,
-                :standalone_requested_scopes,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :standalone_authorization_method,
-                :client_auth_type,
-                :client_auth_encryption_method
-
     group from: :smart_discovery do
       required_suite_options(G10Options::SMART_1_REQUIREMENT)
+
+      config(
+        outputs: {
+          smart_auth_info: { name: :standalone_smart_auth_info }
+        }
+      )
 
       test from: 'g10_smart_well_known_capabilities',
            config: {
@@ -194,19 +212,23 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          requested_scopes: {
-            default: %(
-              launch/patient openid fhirUser offline_access
-              patient/Medication.read patient/AllergyIntolerance.read
-              patient/CarePlan.read patient/CareTeam.read patient/Condition.read
-              patient/Device.read patient/DiagnosticReport.read
-              patient/DocumentReference.read patient/Encounter.read
-              patient/Goal.read patient/Immunization.read patient/Location.read
-              patient/MedicationRequest.read patient/Observation.read
-              patient/Organization.read patient/Patient.read
-              patient/Practitioner.read patient/Procedure.read
-              patient/Provenance.read patient/PractitionerRole.read
-            ).gsub(/\s{2,}/, ' ').strip
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            default: {
+              requested_scopes: %(
+                launch/patient openid fhirUser offline_access
+                patient/Medication.read patient/AllergyIntolerance.read
+                patient/CarePlan.read patient/CareTeam.read
+                patient/Condition.read patient/Device.read
+                patient/DiagnosticReport.read patient/DocumentReference.read
+                patient/Encounter.read patient/Goal.read
+                patient/Immunization.read patient/Location.read
+                patient/MedicationRequest.read patient/Observation.read
+                patient/Organization.read patient/Patient.read
+                patient/Practitioner.read patient/Procedure.read
+                patient/Provenance.read patient/PractitionerRole.read
+              ).gsub(/\s{2,}/, ' ').strip
+            }.to_json
           }
         }
       )
@@ -214,7 +236,6 @@ module ONCCertificationG10TestKit
       test from: :g10_smart_scopes do
         config(
           inputs: {
-            requested_scopes: { name: :standalone_requested_scopes },
             received_scopes: { name: :standalone_received_scopes }
           },
           options: {
@@ -236,7 +257,7 @@ module ONCCertificationG10TestKit
            config: {
              inputs: {
                patient_id: { name: :standalone_patient_id },
-               smart_credentials: { name: :standalone_smart_credentials }
+               smart_auth_info: { name: :standalone_smart_auth_info }
              }
            }
 
@@ -260,13 +281,6 @@ module ONCCertificationG10TestKit
     group from: :smart_standalone_launch_stu2,
           config: {
             inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              },
               authorization_method: {
                 name: :standalone_authorization_method,
                 default: 'get',
@@ -350,7 +364,7 @@ module ONCCertificationG10TestKit
            config: {
              inputs: {
                patient_id: { name: :standalone_patient_id },
-               smart_credentials: { name: :standalone_smart_credentials }
+               smart_auth_info: { name: :standalone_smart_auth_info }
              }
            }
 
@@ -463,7 +477,7 @@ module ONCCertificationG10TestKit
            config: {
              inputs: {
                patient_id: { name: :standalone_patient_id },
-               smart_credentials: { name: :standalone_smart_credentials }
+               smart_auth_info: { name: :standalone_smart_auth_info }
              }
            }
 
@@ -489,9 +503,7 @@ module ONCCertificationG10TestKit
           config: {
             inputs: {
               id_token: { name: :standalone_id_token },
-              client_id: { name: :standalone_client_id },
-              requested_scopes: { name: :standalone_requested_scopes },
-              smart_credentials: { name: :standalone_smart_credentials }
+              smart_auth_info: { name: :standalone_smart_auth_info }
             }
           }
 
@@ -501,9 +513,7 @@ module ONCCertificationG10TestKit
           config: {
             inputs: {
               id_token: { name: :standalone_id_token },
-              client_id: { name: :standalone_client_id },
-              requested_scopes: { name: :standalone_requested_scopes },
-              smart_credentials: { name: :standalone_smart_credentials }
+              smart_auth_info: { name: :standalone_smart_auth_info }
             }
           }
 
@@ -512,9 +522,7 @@ module ONCCertificationG10TestKit
           config: {
             inputs: {
               id_token: { name: :standalone_id_token },
-              client_id: { name: :standalone_client_id },
-              requested_scopes: { name: :standalone_requested_scopes },
-              smart_credentials: { name: :standalone_smart_credentials }
+              smart_auth_info: { name: :standalone_smart_auth_info }
             }
           }
 
@@ -523,9 +531,6 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          refresh_token: { name: :standalone_refresh_token },
-          client_id: { name: :standalone_client_id },
-          client_secret: { name: :standalone_client_secret },
           received_scopes: { name: :standalone_received_scopes }
         },
         outputs: {
@@ -534,7 +539,7 @@ module ONCCertificationG10TestKit
           access_token: { name: :standalone_access_token },
           token_retrieval_time: { name: :standalone_token_retrieval_time },
           expires_in: { name: :standalone_expires_in },
-          smart_credentials: { name: :standalone_smart_credentials }
+          smart_auth_info: { name: :standalone_smart_auth_info }
         }
       )
 
@@ -542,7 +547,7 @@ module ONCCertificationG10TestKit
         config(
           inputs: {
             patient_id: { name: :standalone_patient_id },
-            smart_credentials: { name: :standalone_smart_credentials }
+            smart_auth_info: { name: :standalone_smart_auth_info }
           },
           options: {
             refresh_test: true
@@ -559,7 +564,7 @@ module ONCCertificationG10TestKit
             inputs: {
               received_scopes: { name: :standalone_received_scopes },
               patient_id: { name: :standalone_patient_id },
-              smart_credentials: { name: :standalone_smart_credentials }
+              smart_auth_info: { name: :standalone_smart_auth_info }
             }
           }
 
@@ -567,12 +572,12 @@ module ONCCertificationG10TestKit
       id :g10_standalone_credentials_export
       title 'Set SMART Credentials to Standalone Launch Credentials'
 
-      input :standalone_smart_credentials, type: :oauth_credentials
+      input :standalone_smart_auth_info, type: :auth_info
       input :standalone_patient_id
-      output :smart_credentials, :patient_id
+      output :smart_auth_info, :patient_id
 
       run do
-        output smart_credentials: standalone_smart_credentials.to_s,
+        output smart_auth_info: standalone_smart_auth_info.to_s,
                patient_id: standalone_patient_id
       end
     end

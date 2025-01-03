@@ -8,10 +8,13 @@ module ONCCertificationG10TestKit
 
       [OAuth 2.0 RFC (6749)](https://www.rfc-editor.org/rfc/rfc6749#section-6)
     )
-    input :refresh_token, :smart_token_url, :client_id, :received_scopes
-    input :client_secret, optional: true
+    input :smart_auth_info, type: :auth_info
+    input :received_scopes
 
     run do
+      skip_if smart_auth_info.refresh_token.blank?,
+              'No refresh token was received'
+
       oauth2_params = {
         'grant_type' => 'refresh_token',
         'refresh_token' => SecureRandom.uuid
@@ -20,14 +23,14 @@ module ONCCertificationG10TestKit
 
       oauth2_params['scope'] = received_scopes if config.options[:include_scopes]
 
-      if client_secret.present?
-        credentials = Base64.strict_encode64("#{client_id}:#{client_secret}")
+      if smart_auth_info.auth_type == 'symmetric'
+        credentials = Base64.strict_encode64("#{smart_auth_info.client_id}:#{smart_auth_info.client_secret}")
         oauth2_headers['Authorization'] = "Basic #{credentials}"
       else
-        oauth2_params['client_id'] = client_id
+        oauth2_params['client_id'] = smart_auth_info.client_id
       end
 
-      post(smart_token_url, body: oauth2_params, headers: oauth2_headers)
+      post(smart_auth_info.token_url, body: oauth2_params, headers: oauth2_headers)
 
       assert_response_status([400, 401])
     end
