@@ -18,25 +18,28 @@ RSpec.describe ONCCertificationG10TestKit::SMARTInvalidTokenRefreshTest do
   let(:session_data_repo) { Inferno::Repositories::SessionData.new }
   let(:default_inputs) do
     {
-      smart_token_url: 'http://example.com/token',
-      client_id: 'CLIENT_ID',
-      client_secret: 'CLIENT_SECRET',
-      received_scopes: 'offline_access',
-      refresh_token: 'REFRESH_TOKEN'
+      smart_auth_info: Inferno::DSL::AuthInfo.new(
+        token_url: 'http://example.com/token',
+        client_id: 'CLIENT_ID',
+        client_secret: 'CLIENT_SECRET',
+        refresh_token: 'REFRESH_TOKEN',
+        auth_type: 'symmetric'
+      ),
+      received_scopes: 'offline_access'
     }
   end
 
   it 'skips if the refresh token is blank' do
-    default_inputs.delete(:refresh_token)
+    default_inputs[:smart_auth_info].refresh_token = nil
 
     result = run(test, default_inputs)
 
     expect(result.result).to eq('skip')
-    expect(result.result_message).to match(/refresh_token/)
+    expect(result.result_message).to match(/refresh token/)
   end
 
   it 'fails if the token request succeeds' do
-    stub_request(:post, default_inputs[:smart_token_url])
+    stub_request(:post, default_inputs[:smart_auth_info].token_url)
       .to_return(status: 200)
     result = run(test, default_inputs)
 
@@ -45,7 +48,7 @@ RSpec.describe ONCCertificationG10TestKit::SMARTInvalidTokenRefreshTest do
   end
 
   it 'passes if the token request returns a 400' do
-    stub_request(:post, default_inputs[:smart_token_url])
+    stub_request(:post, default_inputs[:smart_auth_info].token_url)
       .to_return(status: 400)
     result = run(test, default_inputs)
 
@@ -53,7 +56,7 @@ RSpec.describe ONCCertificationG10TestKit::SMARTInvalidTokenRefreshTest do
   end
 
   it 'passes if the token request returns a 401' do
-    stub_request(:post, default_inputs[:smart_token_url])
+    stub_request(:post, default_inputs[:smart_auth_info].token_url)
       .to_return(status: 401)
     result = run(test, default_inputs)
 
