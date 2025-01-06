@@ -87,7 +87,7 @@ module ONCCertificationG10TestKit
     id :g10_unrestricted_resource_type_access
 
     input :url, :patient_id, :received_scopes
-    input :smart_auth_info, type: :auth_info
+    input :smart_auth_info, type: 'auth_info'
 
     fhir_client do
       url :url

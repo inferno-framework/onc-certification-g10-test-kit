@@ -214,21 +214,30 @@ module ONCCertificationG10TestKit
         inputs: {
           smart_auth_info: {
             name: :standalone_smart_auth_info,
-            default: {
-              requested_scopes: %(
-                launch/patient openid fhirUser offline_access
-                patient/Medication.read patient/AllergyIntolerance.read
-                patient/CarePlan.read patient/CareTeam.read
-                patient/Condition.read patient/Device.read
-                patient/DiagnosticReport.read patient/DocumentReference.read
-                patient/Encounter.read patient/Goal.read
-                patient/Immunization.read patient/Location.read
-                patient/MedicationRequest.read patient/Observation.read
-                patient/Organization.read patient/Patient.read
-                patient/Practitioner.read patient/Procedure.read
-                patient/Provenance.read patient/PractitionerRole.read
-              ).gsub(/\s{2,}/, ' ').strip
-            }.to_json
+            options: {
+              components: [
+                {
+                  name: :pkce_support,
+                  locked: false
+                },
+                {
+                  name: :requested_scopes,
+                  default: %(
+                    launch/patient openid fhirUser offline_access
+                    patient/Medication.read patient/AllergyIntolerance.read
+                    patient/CarePlan.read patient/CareTeam.read
+                    patient/Condition.read patient/Device.read
+                    patient/DiagnosticReport.read patient/DocumentReference.read
+                    patient/Encounter.read patient/Goal.read
+                    patient/Immunization.read patient/Location.read
+                    patient/MedicationRequest.read patient/Observation.read
+                    patient/Organization.read patient/Patient.read
+                    patient/Practitioner.read patient/Procedure.read
+                    patient/Provenance.read patient/PractitionerRole.read
+                  ).gsub(/\s{2,}/, ' ').strip
+                }
+              ]
+            }
           }
         }
       )
@@ -572,7 +581,7 @@ module ONCCertificationG10TestKit
       id :g10_standalone_credentials_export
       title 'Set SMART Credentials to Standalone Launch Credentials'
 
-      input :standalone_smart_auth_info, type: :auth_info
+      input :standalone_smart_auth_info, type: 'auth_info'
       input :standalone_patient_id
       output :smart_auth_info, :patient_id
 

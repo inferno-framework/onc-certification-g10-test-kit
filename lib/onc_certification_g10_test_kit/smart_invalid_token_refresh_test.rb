@@ -8,7 +8,7 @@ module ONCCertificationG10TestKit
 
       [OAuth 2.0 RFC (6749)](https://www.rfc-editor.org/rfc/rfc6749#section-6)
     )
-    input :smart_auth_info, type: :auth_info
+    input :smart_auth_info, type: 'auth_info'
     input :received_scopes
 
     run do

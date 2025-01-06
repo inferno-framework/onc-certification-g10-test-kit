@@ -8,7 +8,7 @@ module ONCCertificationG10TestKit
     )
     id :g10_patient_context
     input :patient_id, :url
-    input :smart_auth_info, type: :auth_info
+    input :smart_auth_info, type: 'auth_info'
 
     fhir_client :authenticated do
       url :url

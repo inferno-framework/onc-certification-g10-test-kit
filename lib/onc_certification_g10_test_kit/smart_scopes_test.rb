@@ -8,7 +8,7 @@ module ONCCertificationG10TestKit
       smart-app-launch guide. All scopes requested are expected to be granted.
     )
     id :g10_smart_scopes
-    input :smart_auth_info, type: :auth_info
+    input :smart_auth_info, type: 'auth_info'
     input :received_scopes
     uses_request :token
 

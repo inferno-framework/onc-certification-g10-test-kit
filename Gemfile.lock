@@ -33,7 +33,6 @@ PATH
   remote: ../smart-app-launch-test-kit
   specs:
     smart_app_launch_test_kit (0.5.0.dev)
-      inferno_core (>= 0.5.4)
       json-jwt (~> 1.15.3)
       jwt (~> 2.6)
       tls_test_kit (~> 0.2.0)
