@@ -560,7 +560,7 @@ module ONCCertificationG10TestKit
       id :g10_standalone_credentials_export
       title 'Set SMART Credentials to Standalone Launch Credentials'
 
-      input :standalone_smart_auth_info, type: 'auth_info'
+      input :standalone_smart_auth_info, type: :auth_info
       input :standalone_patient_id
       output :smart_auth_info, :patient_id
 

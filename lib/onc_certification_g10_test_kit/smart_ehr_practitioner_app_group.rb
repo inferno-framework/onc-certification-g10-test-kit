@@ -65,28 +65,43 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        smart_credentials: {
-          name: :ehr_smart_credentials
-        },
-        client_auth_type: {
-          locked: true,
-          default: 'confidential_symmetric'
+        smart_auth_info: {
+          name: :ehr_smart_auth_info,
+          options: {
+            mode: 'auth',
+            components: [
+              {
+                name: :auth_type,
+                default: 'symmetric',
+                locked: true
+              },
+              {
+                name: :requested_scopes,
+                type: 'textarea'
+              },
+              {
+                name: :auth_request_method,
+                default: 'POST',
+                locked: true
+              },
+              {
+                name: :use_discovery,
+                locked: true
+              }
+            ]
+          }
         }
       }
     )
 
-    input_order :url,
-                :ehr_client_id,
-                :ehr_client_secret,
-                :ehr_requested_scopes,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :ehr_authorization_method,
-                :client_auth_type,
-                :client_auth_encryption_method
-
     group from: :smart_discovery do
       required_suite_options(G10Options::SMART_1_REQUIREMENT)
+
+      config(
+        outputs: {
+          smart_auth_info: { name: :ehr_smart_auth_info }
+        }
+      )
 
       test from: 'g10_smart_well_known_capabilities',
            config: {
@@ -107,6 +122,12 @@ module ONCCertificationG10TestKit
 
     group from: :smart_discovery_stu2 do
       required_suite_options(G10Options::SMART_2_REQUIREMENT)
+
+      config(
+        outputs: {
+          smart_auth_info: { name: :ehr_smart_auth_info }
+        }
+      )
 
       test from: 'g10_smart_well_known_capabilities',
            config: {
@@ -131,6 +152,12 @@ module ONCCertificationG10TestKit
 
     group from: :smart_discovery_stu2_2 do # rubocop:disable Naming/VariableNumber
       required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
+
+      config(
+        outputs: {
+          smart_auth_info: { name: :ehr_smart_auth_info }
+        }
+      )
 
       test from: 'g10_smart_well_known_capabilities',
            config: {
@@ -165,18 +192,26 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          requested_scopes: {
-            default: %(
-              launch openid fhirUser offline_access user/Medication.read
-              user/AllergyIntolerance.read user/CarePlan.read user/CareTeam.read
-              user/Condition.read user/Device.read user/DiagnosticReport.read
-              user/DocumentReference.read user/Encounter.read user/Goal.read
-              user/Immunization.read user/Location.read
-              user/MedicationRequest.read user/Observation.read
-              user/Organization.read user/Patient.read user/Practitioner.read
-              user/Procedure.read user/Provenance.read
-              user/PractitionerRole.read
-            ).gsub(/\s{2,}/, ' ').strip
+          smart_auth_info: {
+            name: :ehr_smart_auth_info,
+            options: {
+              components: [
+                {
+                  name: :requested_scopes,
+                  default: %(
+                    launch openid fhirUser offline_access user/Medication.read
+                    user/AllergyIntolerance.read user/CarePlan.read
+                    user/CareTeam.read user/Condition.read user/Device.read
+                    user/DiagnosticReport.read user/DocumentReference.read
+                    user/Encounter.read user/Goal.read user/Immunization.read
+                    user/Location.read user/MedicationRequest.read
+                    user/Observation.read user/Organization.read
+                    user/Patient.read user/Practitioner.read user/Procedure.read
+                    user/Provenance.read user/PractitionerRole.read
+                  ).gsub(/\s{2,}/, ' ').strip
+                }
+              ]
+            }
           }
         }
       )
@@ -185,7 +220,6 @@ module ONCCertificationG10TestKit
         title 'User-level access with OpenID Connect and Refresh Token scopes used.'
         config(
           inputs: {
-            requested_scopes: { name: :ehr_requested_scopes },
             received_scopes: { name: :ehr_received_scopes }
           },
           options: {
@@ -206,16 +240,14 @@ module ONCCertificationG10TestKit
       test from: :g10_patient_context,
            config: {
              inputs: {
-               patient_id: { name: :ehr_patient_id },
-               access_token: { name: :ehr_access_token }
+               patient_id: { name: :ehr_patient_id }
              }
            }
 
       test from: :g10_encounter_context,
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_5_REQUIREMENT
@@ -224,8 +256,7 @@ module ONCCertificationG10TestKit
            id: :g10_encounter_context_us_core_6, # rubocop:disable Naming/VariableNumber
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_6_REQUIREMENT
@@ -234,8 +265,7 @@ module ONCCertificationG10TestKit
            id: :g10_encounter_context_us_core_7, # rubocop:disable Naming/VariableNumber
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_7_REQUIREMENT
@@ -304,23 +334,7 @@ module ONCCertificationG10TestKit
       )
     end
 
-    group from: :smart_ehr_launch_stu2,
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              },
-              authorization_method: {
-                name: :ehr_authorization_method,
-                default: 'post',
-                locked: true
-              }
-            }
-          } do
+    group from: :smart_ehr_launch_stu2 do
       required_suite_options(G10Options::SMART_2_REQUIREMENT)
 
       title 'EHR Launch With Practitioner Scope'
@@ -332,17 +346,26 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          requested_scopes: {
-            default: %(
-              launch openid fhirUser offline_access user/Medication.rs
-              user/AllergyIntolerance.rs user/CarePlan.rs user/CareTeam.rs
-              user/Condition.rs user/Device.rs user/DiagnosticReport.rs
-              user/DocumentReference.rs user/Encounter.rs user/Goal.rs
-              user/Immunization.rs user/Location.rs user/MedicationRequest.rs
-              user/Observation.rs user/Organization.rs user/Patient.rs
-              user/Practitioner.rs user/Procedure.rs user/Provenance.rs
-              user/PractitionerRole.rs
-            ).gsub(/\s{2,}/, ' ').strip
+          smart_auth_info: {
+            name: :ehr_smart_auth_info,
+            options: {
+              components: [
+                {
+                  name: :requested_scopes,
+                  default: %(
+                    launch openid fhirUser offline_access user/Medication.rs
+                    user/AllergyIntolerance.rs user/CarePlan.rs user/CareTeam.rs
+                    user/Condition.rs user/Device.rs user/DiagnosticReport.rs
+                    user/DocumentReference.rs user/Encounter.rs user/Goal.rs
+                    user/Immunization.rs user/Location.rs
+                    user/MedicationRequest.rs user/Observation.rs
+                    user/Organization.rs user/Patient.rs user/Practitioner.rs
+                    user/Procedure.rs user/Provenance.rs
+                    user/PractitionerRole.rs
+                  ).gsub(/\s{2,}/, ' ').strip
+                }
+              ]
+            }
           }
         }
       )
@@ -351,7 +374,6 @@ module ONCCertificationG10TestKit
         title 'User-level access with OpenID Connect and Refresh Token scopes used.'
         config(
           inputs: {
-            requested_scopes: { name: :ehr_requested_scopes },
             received_scopes: { name: :ehr_received_scopes }
           },
           options: {
@@ -372,16 +394,14 @@ module ONCCertificationG10TestKit
       test from: :g10_patient_context,
            config: {
              inputs: {
-               patient_id: { name: :ehr_patient_id },
-               access_token: { name: :ehr_access_token }
+               patient_id: { name: :ehr_patient_id }
              }
            }
 
       test from: :g10_encounter_context,
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_5_REQUIREMENT
@@ -390,8 +410,7 @@ module ONCCertificationG10TestKit
            id: :g10_encounter_context_us_core_6, # rubocop:disable Naming/VariableNumber
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_6_REQUIREMENT
@@ -400,8 +419,7 @@ module ONCCertificationG10TestKit
            id: :g10_encounter_context_us_core_7, # rubocop:disable Naming/VariableNumber
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_7_REQUIREMENT
@@ -470,23 +488,7 @@ module ONCCertificationG10TestKit
       )
     end
 
-    group from: :smart_ehr_launch_stu2_2, # rubocop:disable Naming/VariableNumber
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              },
-              authorization_method: {
-                name: :ehr_authorization_method,
-                default: 'post',
-                locked: true
-              }
-            }
-          } do
+    group from: :smart_ehr_launch_stu2_2 do # rubocop:disable Naming/VariableNumber
       required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
 
       title 'EHR Launch With Practitioner Scope'
@@ -498,17 +500,26 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          requested_scopes: {
-            default: %(
-              launch openid fhirUser offline_access user/Medication.rs
-              user/AllergyIntolerance.rs user/CarePlan.rs user/CareTeam.rs
-              user/Condition.rs user/Device.rs user/DiagnosticReport.rs
-              user/DocumentReference.rs user/Encounter.rs user/Goal.rs
-              user/Immunization.rs user/Location.rs user/MedicationRequest.rs
-              user/Observation.rs user/Organization.rs user/Patient.rs
-              user/Practitioner.rs user/Procedure.rs user/Provenance.rs
-              user/PractitionerRole.rs
-            ).gsub(/\s{2,}/, ' ').strip
+          smart_auth_info: {
+            name: :ehr_smart_auth_info,
+            options: {
+              components: [
+                {
+                  name: :requested_scopes,
+                  default: %(
+                    launch openid fhirUser offline_access user/Medication.rs
+                    user/AllergyIntolerance.rs user/CarePlan.rs user/CareTeam.rs
+                    user/Condition.rs user/Device.rs user/DiagnosticReport.rs
+                    user/DocumentReference.rs user/Encounter.rs user/Goal.rs
+                    user/Immunization.rs user/Location.rs
+                    user/MedicationRequest.rs user/Observation.rs
+                    user/Organization.rs user/Patient.rs user/Practitioner.rs
+                    user/Procedure.rs user/Provenance.rs
+                    user/PractitionerRole.rs
+                  ).gsub(/\s{2,}/, ' ').strip
+                }
+              ]
+            }
           }
         }
       )
@@ -517,7 +528,6 @@ module ONCCertificationG10TestKit
         title 'User-level access with OpenID Connect and Refresh Token scopes used.'
         config(
           inputs: {
-            requested_scopes: { name: :ehr_requested_scopes },
             received_scopes: { name: :ehr_received_scopes }
           },
           options: {
@@ -538,16 +548,14 @@ module ONCCertificationG10TestKit
       test from: :g10_patient_context,
            config: {
              inputs: {
-               patient_id: { name: :ehr_patient_id },
-               access_token: { name: :ehr_access_token }
+               patient_id: { name: :ehr_patient_id }
              }
            }
 
       test from: :g10_encounter_context,
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_5_REQUIREMENT
@@ -556,8 +564,7 @@ module ONCCertificationG10TestKit
            id: :g10_encounter_context_us_core_6, # rubocop:disable Naming/VariableNumber
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_6_REQUIREMENT
@@ -566,8 +573,7 @@ module ONCCertificationG10TestKit
            id: :g10_encounter_context_us_core_7, # rubocop:disable Naming/VariableNumber
            config: {
              inputs: {
-               encounter_id: { name: :ehr_encounter_id },
-               access_token: { name: :ehr_access_token }
+               encounter_id: { name: :ehr_encounter_id }
              }
            },
            required_suite_options: G10Options::US_CORE_7_REQUIREMENT
@@ -641,9 +647,7 @@ module ONCCertificationG10TestKit
           config: {
             inputs: {
               id_token: { name: :ehr_id_token },
-              client_id: { name: :ehr_client_id },
-              requested_scopes: { name: :ehr_requested_scopes },
-              smart_credentials: { name: :ehr_smart_credentials }
+              smart_auth_info: { name: :ehr_smart_auth_info }
             }
           }
 
@@ -653,9 +657,7 @@ module ONCCertificationG10TestKit
           config: {
             inputs: {
               id_token: { name: :ehr_id_token },
-              client_id: { name: :ehr_client_id },
-              requested_scopes: { name: :ehr_requested_scopes },
-              smart_credentials: { name: :ehr_smart_credentials }
+              smart_auth_info: { name: :ehr_smart_auth_info }
             }
           }
 
@@ -664,9 +666,7 @@ module ONCCertificationG10TestKit
           config: {
             inputs: {
               id_token: { name: :ehr_id_token },
-              client_id: { name: :ehr_client_id },
-              requested_scopes: { name: :ehr_requested_scopes },
-              smart_credentials: { name: :ehr_smart_credentials }
+              smart_auth_info: { name: :ehr_smart_auth_info }
             }
           }
 
@@ -675,9 +675,6 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          refresh_token: { name: :ehr_refresh_token },
-          client_id: { name: :ehr_client_id },
-          client_secret: { name: :ehr_client_secret },
           received_scopes: { name: :ehr_received_scopes }
         },
         outputs: {
@@ -686,7 +683,7 @@ module ONCCertificationG10TestKit
           access_token: { name: :ehr_access_token },
           token_retrieval_time: { name: :ehr_token_retrieval_time },
           expires_in: { name: :ehr_expires_in },
-          smart_credentials: { name: :ehr_smart_credentials }
+          smart_auth_info: { name: :ehr_smart_auth_info }
         }
       )
 
@@ -709,12 +706,12 @@ module ONCCertificationG10TestKit
       id :g10_ehr_credentials_export
       title 'Set SMART Credentials to EHR Launch Credentials'
 
-      input :ehr_smart_credentials, type: :oauth_credentials
+      input :ehr_smart_auth_info, type: :auth_info
       input :ehr_patient_id
-      output :smart_credentials, :patient_id
+      output :smart_auth_info, :patient_id
 
       run do
-        output smart_credentials: ehr_smart_credentials.to_s,
+        output smart_auth_info: ehr_smart_auth_info.to_s,
                patient_id: ehr_patient_id
       end
     end

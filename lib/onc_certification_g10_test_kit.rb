@@ -349,7 +349,7 @@ module ONCCertificationG10TestKit
 
     # group from: 'g10_smart_limited_app'
 
-    # group from: 'g10_smart_ehr_practitioner_app'
+    group from: 'g10_smart_ehr_practitioner_app'
 
     # group from: 'g10_single_patient_api',
     #       required_suite_options: G10Options::US_CORE_3_REQUIREMENT
