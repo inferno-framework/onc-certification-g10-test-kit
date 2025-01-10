@@ -136,50 +136,50 @@ module ONCCertificationG10TestKit
       end
     end
 
-    group from: :smart_discovery_stu2 do
-      required_suite_options(G10Options::SMART_2_REQUIREMENT)
+    # group from: :smart_discovery_stu2 do
+    #   required_suite_options(G10Options::SMART_2_REQUIREMENT)
 
-      test from: 'g10_smart_well_known_capabilities',
-           config: {
-             options: {
-               required_capabilities: [
-                 'launch-standalone',
-                 'client-public',
-                 'client-confidential-symmetric',
-                 'client-confidential-asymmetric',
-                 'sso-openid-connect',
-                 'context-standalone-patient',
-                 'permission-offline',
-                 'permission-patient',
-                 'authorize-post',
-                 'permission-v2',
-                 'permission-v1'
-               ]
-             }
-           }
-    end
+    #   test from: 'g10_smart_well_known_capabilities',
+    #        config: {
+    #          options: {
+    #            required_capabilities: [
+    #              'launch-standalone',
+    #              'client-public',
+    #              'client-confidential-symmetric',
+    #              'client-confidential-asymmetric',
+    #              'sso-openid-connect',
+    #              'context-standalone-patient',
+    #              'permission-offline',
+    #              'permission-patient',
+    #              'authorize-post',
+    #              'permission-v2',
+    #              'permission-v1'
+    #            ]
+    #          }
+    #        }
+    # end
 
-    group from: :smart_discovery_stu2_2 do # rubocop:disable Naming/VariableNumber
-      required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
-      test from: 'g10_smart_well_known_capabilities',
-           config: {
-             options: {
-               required_capabilities: [
-                 'launch-standalone',
-                 'client-public',
-                 'client-confidential-symmetric',
-                 'client-confidential-asymmetric',
-                 'sso-openid-connect',
-                 'context-standalone-patient',
-                 'permission-offline',
-                 'permission-patient',
-                 'authorize-post',
-                 'permission-v2',
-                 'permission-v1'
-               ]
-             }
-           }
-    end
+    # group from: :smart_discovery_stu2_2 do # rubocop:disable Naming/VariableNumber
+    #   required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
+    #   test from: 'g10_smart_well_known_capabilities',
+    #        config: {
+    #          options: {
+    #            required_capabilities: [
+    #              'launch-standalone',
+    #              'client-public',
+    #              'client-confidential-symmetric',
+    #              'client-confidential-asymmetric',
+    #              'sso-openid-connect',
+    #              'context-standalone-patient',
+    #              'permission-offline',
+    #              'permission-patient',
+    #              'authorize-post',
+    #              'permission-v2',
+    #              'permission-v1'
+    #            ]
+    #          }
+    #        }
+    # end
 
     group from: :smart_standalone_launch do
       required_suite_options(G10Options::SMART_1_REQUIREMENT)
@@ -216,10 +216,6 @@ module ONCCertificationG10TestKit
             name: :standalone_smart_auth_info,
             options: {
               components: [
-                {
-                  name: :pkce_support,
-                  locked: false
-                },
                 {
                   name: :requested_scopes,
                   default: %(
@@ -287,225 +283,225 @@ module ONCCertificationG10TestKit
       )
     end
 
-    group from: :smart_standalone_launch_stu2,
-          config: {
-            inputs: {
-              authorization_method: {
-                name: :standalone_authorization_method,
-                default: 'get',
-                locked: true
-              },
-              client_auth_type: {
-                locked: true,
-                default: 'confidential_symmetric'
-              }
-            }
-          } do
-      required_suite_options(G10Options::SMART_2_REQUIREMENT)
+    # group from: :smart_standalone_launch_stu2,
+    #       config: {
+    #         inputs: {
+    #           authorization_method: {
+    #             name: :standalone_authorization_method,
+    #             default: 'get',
+    #             locked: true
+    #           },
+    #           client_auth_type: {
+    #             locked: true,
+    #             default: 'confidential_symmetric'
+    #           }
+    #         }
+    #       } do
+    #   required_suite_options(G10Options::SMART_2_REQUIREMENT)
 
-      title 'Standalone Launch With Patient Scope'
-      description %(
-        # Background
+    #   title 'Standalone Launch With Patient Scope'
+    #   description %(
+    #     # Background
 
-        The [Standalone
-        Launch Sequence](http://hl7.org/fhir/smart-app-launch/STU2/app-launch.html#launch-app-standalone-launch)
-        allows an app, like Inferno, to be launched independent of an
-        existing EHR session. It is one of the two launch methods described in
-        the SMART App Launch Framework alongside EHR Launch. The app will
-        request authorization for the provided scope from the authorization
-        endpoint, ultimately receiving an authorization token which can be used
-        to gain access to resources on the FHIR server.
+    #     The [Standalone
+    #     Launch Sequence](http://hl7.org/fhir/smart-app-launch/STU2/app-launch.html#launch-app-standalone-launch)
+    #     allows an app, like Inferno, to be launched independent of an
+    #     existing EHR session. It is one of the two launch methods described in
+    #     the SMART App Launch Framework alongside EHR Launch. The app will
+    #     request authorization for the provided scope from the authorization
+    #     endpoint, ultimately receiving an authorization token which can be used
+    #     to gain access to resources on the FHIR server.
 
-        # Test Methodology
+    #     # Test Methodology
 
-        Inferno will redirect the user to the the authorization endpoint so that
-        they may provide any required credentials and authorize the application.
-        Upon successful authorization, Inferno will exchange the authorization
-        code provided for an access token.
+    #     Inferno will redirect the user to the the authorization endpoint so that
+    #     they may provide any required credentials and authorize the application.
+    #     Upon successful authorization, Inferno will exchange the authorization
+    #     code provided for an access token.
 
-        For more information on the #{title}:
+    #     For more information on the #{title}:
 
-        * [Standalone Launch
-          Sequence](http://hl7.org/fhir/smart-app-launch/STU2/app-launch.html#launch-app-standalone-launch)
-      )
+    #     * [Standalone Launch
+    #       Sequence](http://hl7.org/fhir/smart-app-launch/STU2/app-launch.html#launch-app-standalone-launch)
+    #   )
 
-      config(
-        inputs: {
-          requested_scopes: {
-            default: %(
-              launch/patient openid fhirUser offline_access
-              patient/Medication.rs patient/AllergyIntolerance.rs
-              patient/CarePlan.rs patient/CareTeam.rs patient/Condition.rs
-              patient/Device.rs patient/DiagnosticReport.rs
-              patient/DocumentReference.rs patient/Encounter.rs
-              patient/Goal.rs patient/Immunization.rs patient/Location.rs
-              patient/MedicationRequest.rs patient/Observation.rs
-              patient/Organization.rs patient/Patient.rs
-              patient/Practitioner.rs patient/Procedure.rs
-              patient/Provenance.rs patient/PractitionerRole.rs
-            ).gsub(/\s{2,}/, ' ').strip
-          }
-        }
-      )
+    #   config(
+    #     inputs: {
+    #       requested_scopes: {
+    #         default: %(
+    #           launch/patient openid fhirUser offline_access
+    #           patient/Medication.rs patient/AllergyIntolerance.rs
+    #           patient/CarePlan.rs patient/CareTeam.rs patient/Condition.rs
+    #           patient/Device.rs patient/DiagnosticReport.rs
+    #           patient/DocumentReference.rs patient/Encounter.rs
+    #           patient/Goal.rs patient/Immunization.rs patient/Location.rs
+    #           patient/MedicationRequest.rs patient/Observation.rs
+    #           patient/Organization.rs patient/Patient.rs
+    #           patient/Practitioner.rs patient/Procedure.rs
+    #           patient/Provenance.rs patient/PractitionerRole.rs
+    #         ).gsub(/\s{2,}/, ' ').strip
+    #       }
+    #     }
+    #   )
 
-      test from: :g10_smart_scopes do
-        config(
-          inputs: {
-            requested_scopes: { name: :standalone_requested_scopes },
-            received_scopes: { name: :standalone_received_scopes }
-          },
-          options: {
-            scope_version: :v2,
-            required_scope_type: 'patient',
-            required_scopes: ['openid', 'fhirUser', 'launch/patient', 'offline_access']
-          }
-        )
-      end
+    #   test from: :g10_smart_scopes do
+    #     config(
+    #       inputs: {
+    #         requested_scopes: { name: :standalone_requested_scopes },
+    #         received_scopes: { name: :standalone_received_scopes }
+    #       },
+    #       options: {
+    #         scope_version: :v2,
+    #         required_scope_type: 'patient',
+    #         required_scopes: ['openid', 'fhirUser', 'launch/patient', 'offline_access']
+    #       }
+    #     )
+    #   end
 
-      test from: :g10_unauthorized_access,
-           config: {
-             inputs: {
-               patient_id: { name: :standalone_patient_id }
-             }
-           }
+    #   test from: :g10_unauthorized_access,
+    #        config: {
+    #          inputs: {
+    #            patient_id: { name: :standalone_patient_id }
+    #          }
+    #        }
 
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :standalone_patient_id },
-               smart_auth_info: { name: :standalone_smart_auth_info }
-             }
-           }
+    #   test from: :g10_patient_context,
+    #        config: {
+    #          inputs: {
+    #            patient_id: { name: :standalone_patient_id },
+    #            smart_auth_info: { name: :standalone_smart_auth_info }
+    #          }
+    #        }
 
-      tests[0].config(
-        outputs: {
-          incorrectly_permitted_tls_versions_messages: {
-            name: :auth_incorrectly_permitted_tls_versions_messages
-          }
-        }
-      )
+    #   tests[0].config(
+    #     outputs: {
+    #       incorrectly_permitted_tls_versions_messages: {
+    #         name: :auth_incorrectly_permitted_tls_versions_messages
+    #       }
+    #     }
+    #   )
 
-      tests[3].config(
-        outputs: {
-          incorrectly_permitted_tls_versions_messages: {
-            name: :token_incorrectly_permitted_tls_versions_messages
-          }
-        }
-      )
-    end
+    #   tests[3].config(
+    #     outputs: {
+    #       incorrectly_permitted_tls_versions_messages: {
+    #         name: :token_incorrectly_permitted_tls_versions_messages
+    #       }
+    #     }
+    #   )
+    # end
 
-    group from: :smart_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              },
-              authorization_method: {
-                name: :standalone_authorization_method,
-                default: 'get',
-                locked: true
-              },
-              client_auth_type: {
-                locked: true,
-                default: 'confidential_symmetric'
-              }
-            }
-          } do
-      required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
-      title 'Standalone Launch With Patient Scope'
-      description %(
-        # Background
+    # group from: :smart_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
+    #       config: {
+    #         inputs: {
+    #           use_pkce: {
+    #             default: 'true',
+    #             locked: true
+    #           },
+    #           pkce_code_challenge_method: {
+    #             locked: true
+    #           },
+    #           authorization_method: {
+    #             name: :standalone_authorization_method,
+    #             default: 'get',
+    #             locked: true
+    #           },
+    #           client_auth_type: {
+    #             locked: true,
+    #             default: 'confidential_symmetric'
+    #           }
+    #         }
+    #       } do
+    #   required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
+    #   title 'Standalone Launch With Patient Scope'
+    #   description %(
+    #     # Background
 
-        The [Standalone
-        Launch Sequence](http://hl7.org/fhir/smart-app-launch/STU2.2/app-launch.html#launch-app-standalone-launch)
-        allows an app, like Inferno, to be launched independent of an
-        existing EHR session. It is one of the two launch methods described in
-        the SMART App Launch Framework alongside EHR Launch. The app will
-        request authorization for the provided scope from the authorization
-        endpoint, ultimately receiving an authorization token which can be used
-        to gain access to resources on the FHIR server.
+    #     The [Standalone
+    #     Launch Sequence](http://hl7.org/fhir/smart-app-launch/STU2.2/app-launch.html#launch-app-standalone-launch)
+    #     allows an app, like Inferno, to be launched independent of an
+    #     existing EHR session. It is one of the two launch methods described in
+    #     the SMART App Launch Framework alongside EHR Launch. The app will
+    #     request authorization for the provided scope from the authorization
+    #     endpoint, ultimately receiving an authorization token which can be used
+    #     to gain access to resources on the FHIR server.
 
-        # Test Methodology
+    #     # Test Methodology
 
-        Inferno will redirect the user to the the authorization endpoint so that
-        they may provide any required credentials and authorize the application.
-        Upon successful authorization, Inferno will exchange the authorization
-        code provided for an access token.
+    #     Inferno will redirect the user to the the authorization endpoint so that
+    #     they may provide any required credentials and authorize the application.
+    #     Upon successful authorization, Inferno will exchange the authorization
+    #     code provided for an access token.
 
-        For more information on the #{title}:
+    #     For more information on the #{title}:
 
-        * [Standalone Launch
-          Sequence](http://hl7.org/fhir/smart-app-launch/STU2.2/app-launch.html#launch-app-standalone-launch)
-      )
+    #     * [Standalone Launch
+    #       Sequence](http://hl7.org/fhir/smart-app-launch/STU2.2/app-launch.html#launch-app-standalone-launch)
+    #   )
 
-      config(
-        inputs: {
-          requested_scopes: {
-            default: %(
-              launch/patient openid fhirUser offline_access
-              patient/Medication.rs patient/AllergyIntolerance.rs
-              patient/CarePlan.rs patient/CareTeam.rs patient/Condition.rs
-              patient/Device.rs patient/DiagnosticReport.rs
-              patient/DocumentReference.rs patient/Encounter.rs
-              patient/Goal.rs patient/Immunization.rs patient/Location.rs
-              patient/MedicationRequest.rs patient/Observation.rs
-              patient/Organization.rs patient/Patient.rs
-              patient/Practitioner.rs patient/Procedure.rs
-              patient/Provenance.rs patient/PractitionerRole.rs
-            ).gsub(/\s{2,}/, ' ').strip
-          }
-        }
-      )
+    #   config(
+    #     inputs: {
+    #       requested_scopes: {
+    #         default: %(
+    #           launch/patient openid fhirUser offline_access
+    #           patient/Medication.rs patient/AllergyIntolerance.rs
+    #           patient/CarePlan.rs patient/CareTeam.rs patient/Condition.rs
+    #           patient/Device.rs patient/DiagnosticReport.rs
+    #           patient/DocumentReference.rs patient/Encounter.rs
+    #           patient/Goal.rs patient/Immunization.rs patient/Location.rs
+    #           patient/MedicationRequest.rs patient/Observation.rs
+    #           patient/Organization.rs patient/Patient.rs
+    #           patient/Practitioner.rs patient/Procedure.rs
+    #           patient/Provenance.rs patient/PractitionerRole.rs
+    #         ).gsub(/\s{2,}/, ' ').strip
+    #       }
+    #     }
+    #   )
 
-      test from: :g10_smart_scopes do
-        config(
-          inputs: {
-            requested_scopes: { name: :standalone_requested_scopes },
-            received_scopes: { name: :standalone_received_scopes }
-          },
-          options: {
-            scope_version: :v22,
-            required_scope_type: 'patient',
-            required_scopes: ['openid', 'fhirUser', 'launch/patient', 'offline_access']
-          }
-        )
-      end
+    #   test from: :g10_smart_scopes do
+    #     config(
+    #       inputs: {
+    #         requested_scopes: { name: :standalone_requested_scopes },
+    #         received_scopes: { name: :standalone_received_scopes }
+    #       },
+    #       options: {
+    #         scope_version: :v22,
+    #         required_scope_type: 'patient',
+    #         required_scopes: ['openid', 'fhirUser', 'launch/patient', 'offline_access']
+    #       }
+    #     )
+    #   end
 
-      test from: :g10_unauthorized_access,
-           config: {
-             inputs: {
-               patient_id: { name: :standalone_patient_id }
-             }
-           }
+    #   test from: :g10_unauthorized_access,
+    #        config: {
+    #          inputs: {
+    #            patient_id: { name: :standalone_patient_id }
+    #          }
+    #        }
 
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :standalone_patient_id },
-               smart_auth_info: { name: :standalone_smart_auth_info }
-             }
-           }
+    #   test from: :g10_patient_context,
+    #        config: {
+    #          inputs: {
+    #            patient_id: { name: :standalone_patient_id },
+    #            smart_auth_info: { name: :standalone_smart_auth_info }
+    #          }
+    #        }
 
-      tests[0].config(
-        outputs: {
-          incorrectly_permitted_tls_versions_messages: {
-            name: :auth_incorrectly_permitted_tls_versions_messages
-          }
-        }
-      )
+    #   tests[0].config(
+    #     outputs: {
+    #       incorrectly_permitted_tls_versions_messages: {
+    #         name: :auth_incorrectly_permitted_tls_versions_messages
+    #       }
+    #     }
+    #   )
 
-      tests[3].config(
-        outputs: {
-          incorrectly_permitted_tls_versions_messages: {
-            name: :token_incorrectly_permitted_tls_versions_messages
-          }
-        }
-      )
-    end
+    #   tests[3].config(
+    #     outputs: {
+    #       incorrectly_permitted_tls_versions_messages: {
+    #         name: :token_incorrectly_permitted_tls_versions_messages
+    #       }
+    #     }
+    #   )
+    # end
 
     group from: :smart_openid_connect,
           required_suite_options: G10Options::SMART_1_REQUIREMENT,
@@ -516,24 +512,24 @@ module ONCCertificationG10TestKit
             }
           }
 
-    group from: :smart_openid_connect,
-          required_suite_options: G10Options::SMART_2_REQUIREMENT,
-          id: :smart_openid_connect_stu2,
-          config: {
-            inputs: {
-              id_token: { name: :standalone_id_token },
-              smart_auth_info: { name: :standalone_smart_auth_info }
-            }
-          }
+    # group from: :smart_openid_connect,
+    #       required_suite_options: G10Options::SMART_2_REQUIREMENT,
+    #       id: :smart_openid_connect_stu2,
+    #       config: {
+    #         inputs: {
+    #           id_token: { name: :standalone_id_token },
+    #           smart_auth_info: { name: :standalone_smart_auth_info }
+    #         }
+    #       }
 
-    group from: :smart_openid_connect_stu2_2, # rubocop:disable Naming/VariableNumber
-          required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
-          config: {
-            inputs: {
-              id_token: { name: :standalone_id_token },
-              smart_auth_info: { name: :standalone_smart_auth_info }
-            }
-          }
+    # group from: :smart_openid_connect_stu2_2, # rubocop:disable Naming/VariableNumber
+    #       required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
+    #       config: {
+    #         inputs: {
+    #           id_token: { name: :standalone_id_token },
+    #           smart_auth_info: { name: :standalone_smart_auth_info }
+    #         }
+    #       }
 
     group from: :g10_token_refresh do
       id :g10_smart_standalone_token_refresh

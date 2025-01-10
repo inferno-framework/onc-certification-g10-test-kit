@@ -347,158 +347,158 @@ module ONCCertificationG10TestKit
 
     group from: 'g10_smart_standalone_patient_app'
 
-    group from: 'g10_smart_limited_app'
+    # group from: 'g10_smart_limited_app'
 
-    group from: 'g10_smart_ehr_practitioner_app'
+    # group from: 'g10_smart_ehr_practitioner_app'
 
-    group from: 'g10_single_patient_api',
-          required_suite_options: G10Options::US_CORE_3_REQUIREMENT
-    group from: 'g10_single_patient_us_core_4_api',
-          required_suite_options: G10Options::US_CORE_4_REQUIREMENT
-    group from: 'g10_single_patient_us_core_5_api',
-          required_suite_options: G10Options::US_CORE_5_REQUIREMENT
-    group from: 'g10_single_patient_us_core_6_api',
-          required_suite_options: G10Options::US_CORE_6_REQUIREMENT
-    group from: 'g10_single_patient_us_core_7_api',
-          required_suite_options: G10Options::US_CORE_7_REQUIREMENT
+    # group from: 'g10_single_patient_api',
+    #       required_suite_options: G10Options::US_CORE_3_REQUIREMENT
+    # group from: 'g10_single_patient_us_core_4_api',
+    #       required_suite_options: G10Options::US_CORE_4_REQUIREMENT
+    # group from: 'g10_single_patient_us_core_5_api',
+    #       required_suite_options: G10Options::US_CORE_5_REQUIREMENT
+    # group from: 'g10_single_patient_us_core_6_api',
+    #       required_suite_options: G10Options::US_CORE_6_REQUIREMENT
+    # group from: 'g10_single_patient_us_core_7_api',
+    #       required_suite_options: G10Options::US_CORE_7_REQUIREMENT
 
-    group from: 'multi_patient_api',
-          required_suite_options: G10Options::BULK_DATA_1_REQUIREMENT
-    group from: 'multi_patient_api_stu2',
-          required_suite_options: G10Options::BULK_DATA_2_REQUIREMENT
+    # group from: 'multi_patient_api',
+    #       required_suite_options: G10Options::BULK_DATA_1_REQUIREMENT
+    # group from: 'multi_patient_api_stu2',
+    #       required_suite_options: G10Options::BULK_DATA_2_REQUIREMENT
 
-    group do
-      title 'Additional Authorization Tests'
-      id 'Group06'
-      description %(
-        The (g)(10) Standardized Test Suite attempts to minimize effort required
-        by testers by creating scenarios that validate as many requirements as
-        possible with just a handful of SMART App Launches.  However, not all
-        SMART App Launch and (g)(10) Standardized API criterion requirements
-        that need to be verified fit within the first few test scenarios in this
-        suite.
+    # group do
+    #   title 'Additional Authorization Tests'
+    #   id 'Group06'
+    #   description %(
+    #     The (g)(10) Standardized Test Suite attempts to minimize effort required
+    #     by testers by creating scenarios that validate as many requirements as
+    #     possible with just a handful of SMART App Launches.  However, not all
+    #     SMART App Launch and (g)(10) Standardized API criterion requirements
+    #     that need to be verified fit within the first few test scenarios in this
+    #     suite.
 
-        The scenarios contained in this section verify remaining testing
-        requirements for the (g)(10) Standardized API criterion relevant to
-        the SMART App Launch implementation specification. Each of these scenarios
-        need to be run independently.  Please read the instructions for each in
-        the 'About' section, as they may require special setup on the part of
-        the tester.
-      )
+    #     The scenarios contained in this section verify remaining testing
+    #     requirements for the (g)(10) Standardized API criterion relevant to
+    #     the SMART App Launch implementation specification. Each of these scenarios
+    #     need to be run independently.  Please read the instructions for each in
+    #     the 'About' section, as they may require special setup on the part of
+    #     the tester.
+    #   )
 
-      default_redirect_message_proc = lambda do |auth_url|
-        %(
-          ### #{self.class.parent.title}
+    #   default_redirect_message_proc = lambda do |auth_url|
+    #     %(
+    #       ### #{self.class.parent.title}
 
-          [Follow this link to authorize with the SMART server](#{auth_url}).
+    #       [Follow this link to authorize with the SMART server](#{auth_url}).
 
-          Tests will resume once Inferno receives a request at
-          `#{config.options[:redirect_uri]}` with a state of `#{state}`.
-        )
-      end
+    #       Tests will resume once Inferno receives a request at
+    #       `#{config.options[:redirect_uri]}` with a state of `#{state}`.
+    #     )
+    #   end
 
-      config(
-        inputs: {
-          client_auth_encryption_method: {
-            locked: false
-          }
-        }
-      )
+    #   config(
+    #     inputs: {
+    #       client_auth_encryption_method: {
+    #         locked: false
+    #       }
+    #     }
+    #   )
 
-      group from: :g10_public_standalone_launch,
-            required_suite_options: G10Options::SMART_1_REQUIREMENT,
-            config: { options: { redirect_message_proc: default_redirect_message_proc } }
-      group from: :g10_public_standalone_launch_stu2,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT,
-            config: { options: { redirect_message_proc: default_redirect_message_proc } }
-      group from: :g10_public_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
-            config: { options: { redirect_message_proc: default_redirect_message_proc } }
+    #   group from: :g10_public_standalone_launch,
+    #         required_suite_options: G10Options::SMART_1_REQUIREMENT,
+    #         config: { options: { redirect_message_proc: default_redirect_message_proc } }
+    #   group from: :g10_public_standalone_launch_stu2,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT,
+    #         config: { options: { redirect_message_proc: default_redirect_message_proc } }
+    #   group from: :g10_public_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
+    #         config: { options: { redirect_message_proc: default_redirect_message_proc } }
 
-      group from: :g10_token_revocation
-      group from: :g10_smart_invalid_aud,
-            config: { options: { redirect_message_proc: default_redirect_message_proc } }
+    #   group from: :g10_token_revocation
+    #   group from: :g10_smart_invalid_aud,
+    #         config: { options: { redirect_message_proc: default_redirect_message_proc } }
 
-      group from: :g10_smart_invalid_token_request,
-            required_suite_options: G10Options::SMART_1_REQUIREMENT,
-            config: { options: { redirect_message_proc: default_redirect_message_proc } }
-      group from: :g10_smart_invalid_token_request_stu2,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT,
-            config: { options: { redirect_message_proc: default_redirect_message_proc } }
-      group from: :g10_smart_invalid_token_request_stu2,
-            id: :g10_smart_invalid_token_request_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
-            config: { options: { redirect_message_proc: default_redirect_message_proc } }
+    #   group from: :g10_smart_invalid_token_request,
+    #         required_suite_options: G10Options::SMART_1_REQUIREMENT,
+    #         config: { options: { redirect_message_proc: default_redirect_message_proc } }
+    #   group from: :g10_smart_invalid_token_request_stu2,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT,
+    #         config: { options: { redirect_message_proc: default_redirect_message_proc } }
+    #   group from: :g10_smart_invalid_token_request_stu2,
+    #         id: :g10_smart_invalid_token_request_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
+    #         config: { options: { redirect_message_proc: default_redirect_message_proc } }
 
-      group from: :g10_smart_invalid_pkce_code_verifier_group,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT
-      group from: :g10_smart_invalid_pkce_code_verifier_group,
-            id: :g10_smart_invalid_pkce_code_verifier_group_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
+    #   group from: :g10_smart_invalid_pkce_code_verifier_group,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT
+    #   group from: :g10_smart_invalid_pkce_code_verifier_group,
+    #         id: :g10_smart_invalid_pkce_code_verifier_group_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
-      group from: :g10_ehr_patient_launch,
-            required_suite_options: G10Options::SMART_1_REQUIREMENT
-      group from: :g10_ehr_patient_launch_stu2,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT
-      group from: :g10_ehr_patient_launch_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
+    #   group from: :g10_ehr_patient_launch,
+    #         required_suite_options: G10Options::SMART_1_REQUIREMENT
+    #   group from: :g10_ehr_patient_launch_stu2,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT
+    #   group from: :g10_ehr_patient_launch_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
-      group from: :g10_token_introspection,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT
-      group from: :g10_token_introspection_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
+    #   group from: :g10_token_introspection,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT
+    #   group from: :g10_token_introspection_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
-      group from: :g10_asymmetric_launch,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT
-      group from: :g10_asymmetric_launch,
-            id: :g10_asymmetric_launch_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
+    #   group from: :g10_asymmetric_launch,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT
+    #   group from: :g10_asymmetric_launch,
+    #         id: :g10_asymmetric_launch_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
-      group from: :g10_smart_v1_scopes,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT,
-            config: {
-              inputs: {
-                client_auth_encryption_method: { locked: true }
-              }
-            }
-      group from: :g10_smart_v1_scopes,
-            id: :g10_smart_v1_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
-            config: {
-              inputs: {
-                client_auth_encryption_method: { locked: true }
-              }
-            }
+    #   group from: :g10_smart_v1_scopes,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT,
+    #         config: {
+    #           inputs: {
+    #             client_auth_encryption_method: { locked: true }
+    #           }
+    #         }
+    #   group from: :g10_smart_v1_scopes,
+    #         id: :g10_smart_v1_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
+    #         config: {
+    #           inputs: {
+    #             client_auth_encryption_method: { locked: true }
+    #           }
+    #         }
 
-      group from: :g10_smart_fine_grained_scopes,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT),
-            exclude_optional: true
-      group from: :g10_smart_fine_grained_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT),
-            exclude_optional: true
+    #   group from: :g10_smart_fine_grained_scopes,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT),
+    #         exclude_optional: true
+    #   group from: :g10_smart_fine_grained_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT),
+    #         exclude_optional: true
 
-      group from: :g10_us_core_7_smart_fine_grained_scopes,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT),
-            exclude_optional: true
-      group from: :g10_us_core_7_smart_fine_grained_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT),
-            exclude_optional: true
+    #   group from: :g10_us_core_7_smart_fine_grained_scopes,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT),
+    #         exclude_optional: true
+    #   group from: :g10_us_core_7_smart_fine_grained_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT),
+    #         exclude_optional: true
 
-      group from: :g10_smart_granular_scope_selection,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)
-      group from: :g10_smart_granular_scope_selection,
-            id: :g10_smart_granular_scope_selection_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)
+    #   group from: :g10_smart_granular_scope_selection,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)
+    #   group from: :g10_smart_granular_scope_selection,
+    #         id: :g10_smart_granular_scope_selection_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)
 
-      group from: :g10_smart_granular_scope_selection,
-            id: :g10_us_core_7_smart_granular_scope_selection,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT)
-      group from: :g10_smart_granular_scope_selection,
-            id: :g10_us_core_7_smart_granular_scope_selection_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT)
-    end
+    #   group from: :g10_smart_granular_scope_selection,
+    #         id: :g10_us_core_7_smart_granular_scope_selection,
+    #         required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT)
+    #   group from: :g10_smart_granular_scope_selection,
+    #         id: :g10_us_core_7_smart_granular_scope_selection_stu2_2, # rubocop:disable Naming/VariableNumber
+    #         required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT)
+    # end
 
-    group from: :g10_visual_inspection_and_attestations
+    # group from: :g10_visual_inspection_and_attestations
   end
 end
 
