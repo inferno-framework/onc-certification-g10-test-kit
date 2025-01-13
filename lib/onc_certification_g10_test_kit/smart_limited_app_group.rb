@@ -39,17 +39,7 @@ module ONCCertificationG10TestKit
     run_as_group
 
     input_order :expected_resources,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :url,
-                :standalone_client_id,
-                :standalone_client_secret,
-                :smart_authorization_url,
-                :smart_token_url,
-                :standalone_requested_scopes,
-                :authorization_method,
-                :client_auth_type,
-                :client_auth_encryption_method
+                :url
 
     group from: :smart_standalone_launch do
       title 'Standalone Launch With Limited Scope'
@@ -91,33 +81,26 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          client_id: { locked: true },
-          client_secret: { locked: true, optional: false },
           url: { locked: true },
-          requested_scopes: { locked: true },
           code: { name: :limited_code },
           state: { name: :limited_state },
           patient_id: { name: :limited_patient_id },
-          access_token: { name: :limited_access_token },
           # TODO: separate standalone/ehr discovery outputs
-          smart_authorization_url: { locked: true, title: 'SMART Authorization Url' },
-          smart_token_url: { locked: true, title: 'SMART Token Url' },
           received_scopes: { name: :limited_received_scopes },
-          smart_credentials: { name: :limited_smart_credentials }
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            locked: true
+          }
         },
         outputs: {
           code: { name: :limited_code },
-          token_retrieval_time: { name: :limited_token_retrieval_time },
           state: { name: :limited_state },
           id_token: { name: :limited_id_token },
-          refresh_token: { name: :limited_refresh_token },
-          access_token: { name: :limited_access_token },
-          expires_in: { name: :limited_expires_in },
           patient_id: { name: :limited_patient_id },
           encounter_id: { name: :limited_encounter_id },
           received_scopes: { name: :limited_received_scopes },
           intent: { name: :limited_intent },
-          smart_credentials: { name: :limited_smart_credentials }
+          smart_auth_info: { name: :limited_smart_auth_info }
         },
         requests: {
           redirect: { name: :limited_redirect },
@@ -159,7 +142,7 @@ module ONCCertificationG10TestKit
            config: {
              inputs: {
                patient_id: { name: :limited_patient_id },
-               smart_credentials: { name: :limited_smart_credentials }
+               smart_auth_info: { name: :limited_smart_auth_info }
              }
            }
 
@@ -172,18 +155,7 @@ module ONCCertificationG10TestKit
       end
     end
 
-    group from: :smart_standalone_launch_stu2,
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              }
-            }
-          } do
+    group from: :smart_standalone_launch_stu2 do
       title 'Standalone Launch With Limited Scope'
       description %(
         # Background
@@ -214,37 +186,25 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          client_id: { locked: true },
-          client_secret: { locked: true },
           url: { locked: true },
-          requested_scopes: { locked: true },
           code: { name: :limited_code },
           state: { name: :limited_state },
           patient_id: { name: :limited_patient_id },
-          access_token: { name: :limited_access_token },
-          # TODO: separate standalone/ehr discovery outputs
-          smart_authorization_url: { locked: true, title: 'SMART Authorization Url' },
-          smart_token_url: { locked: true, title: 'SMART Token Url' },
           received_scopes: { name: :limited_received_scopes },
-          smart_credentials: { name: :limited_smart_credentials },
-          client_auth_type: {
-            locked: true,
-            default: 'confidential_symmetric'
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            locked: true
           }
         },
         outputs: {
           code: { name: :limited_code },
-          token_retrieval_time: { name: :limited_token_retrieval_time },
           state: { name: :limited_state },
           id_token: { name: :limited_id_token },
-          refresh_token: { name: :limited_refresh_token },
-          access_token: { name: :limited_access_token },
-          expires_in: { name: :limited_expires_in },
           patient_id: { name: :limited_patient_id },
           encounter_id: { name: :limited_encounter_id },
           received_scopes: { name: :limited_received_scopes },
           intent: { name: :limited_intent },
-          smart_credentials: { name: :limited_smart_credentials }
+          smart_auth_info: { name: :limited_smart_auth_info }
         },
         requests: {
           redirect: { name: :limited_redirect },
@@ -286,7 +246,7 @@ module ONCCertificationG10TestKit
            config: {
              inputs: {
                patient_id: { name: :limited_patient_id },
-               smart_credentials: { name: :limited_smart_credentials }
+               smart_auth_info: { name: :limited_smart_auth_info }
              }
            }
 
@@ -299,18 +259,7 @@ module ONCCertificationG10TestKit
       end
     end
 
-    group from: :smart_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              }
-            }
-          } do
+    group from: :smart_standalone_launch_stu2_2 do # rubocop:disable Naming/VariableNumber
       title 'Standalone Launch With Limited Scope'
       description %(
         # Background
@@ -341,37 +290,26 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          client_id: { locked: true },
-          client_secret: { locked: true },
           url: { locked: true },
           requested_scopes: { locked: true },
           code: { name: :limited_code },
           state: { name: :limited_state },
           patient_id: { name: :limited_patient_id },
-          access_token: { name: :limited_access_token },
-          # TODO: separate standalone/ehr discovery outputs
-          smart_authorization_url: { locked: true, title: 'SMART Authorization Url' },
-          smart_token_url: { locked: true, title: 'SMART Token Url' },
           received_scopes: { name: :limited_received_scopes },
-          smart_credentials: { name: :limited_smart_credentials },
-          client_auth_type: {
-            locked: true,
-            default: 'confidential_symmetric'
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            locked: true
           }
         },
         outputs: {
           code: { name: :limited_code },
-          token_retrieval_time: { name: :limited_token_retrieval_time },
           state: { name: :limited_state },
           id_token: { name: :limited_id_token },
-          refresh_token: { name: :limited_refresh_token },
-          access_token: { name: :limited_access_token },
-          expires_in: { name: :limited_expires_in },
           patient_id: { name: :limited_patient_id },
           encounter_id: { name: :limited_encounter_id },
           received_scopes: { name: :limited_received_scopes },
           intent: { name: :limited_intent },
-          smart_credentials: { name: :limited_smart_credentials }
+          smart_auth_info: { name: :limited_smart_auth_info }
         },
         requests: {
           redirect: { name: :limited_redirect },
@@ -413,7 +351,7 @@ module ONCCertificationG10TestKit
            config: {
              inputs: {
                patient_id: { name: :limited_patient_id },
-               smart_credentials: { name: :limited_smart_credentials }
+               smart_auth_info: { name: :limited_smart_auth_info }
              }
            }
 
@@ -431,7 +369,7 @@ module ONCCertificationG10TestKit
             inputs: {
               patient_id: { name: :limited_patient_id },
               received_scopes: { name: :limited_received_scopes },
-              smart_credentials: { name: :limited_smart_credentials }
+              smart_auth_info: { name: :limited_smart_auth_info }
             }
           }
   end

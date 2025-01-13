@@ -347,7 +347,7 @@ module ONCCertificationG10TestKit
 
     group from: 'g10_smart_standalone_patient_app'
 
-    # group from: 'g10_smart_limited_app'
+    group from: 'g10_smart_limited_app'
 
     group from: 'g10_smart_ehr_practitioner_app'
 

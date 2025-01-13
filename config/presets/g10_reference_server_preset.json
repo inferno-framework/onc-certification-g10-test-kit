@@ -11,11 +11,20 @@
       "value": "https://inferno.healthit.gov/reference-server/r4"
     },
     {
-      "name": "standalone_client_id",
-      "type": "text",
-      "title": "Standalone Client ID",
-      "description": "Client ID provided during registration of Inferno as a standalone application",
-      "value": "SAMPLE_CONFIDENTIAL_CLIENT_ID"
+      "name": "standalone_smart_auth_info",
+      "type": "auth_info",
+      "value": {
+        "pkce_support": "disabled",
+        "pkce_code_challenge_method": "S256",
+        "auth_request_method": "GET",
+        "auth_type": "symmetric",
+        "use_discovery": "true",
+        "auth_url": "https://inferno.healthit.gov/reference-server/oauth/authorization",
+        "token_url": "https://inferno.healthit.gov/reference-server/oauth/token",
+        "requested_scopes": "launch/patient openid fhirUser offline_access patient/Patient.read patient/AllergyIntolerance.read patient/CarePlan.read patient/CareTeam.read patient/Condition.read patient/Device.read patient/DiagnosticReport.read patient/DocumentReference.read patient/Encounter.read patient/Goal.read patient/Immunization.read patient/Location.read patient/Medication.read patient/MedicationRequest.read patient/Observation.read patient/Organization.read patient/Practitioner.read patient/PractitionerRole.read patient/Procedure.read patient/Provenance.read",
+        "client_id": "SAMPLE_CONFIDENTIAL_CLIENT_ID",
+        "client_secret": "SAMPLE_CONFIDENTIAL_CLIENT_SECRET"
+      }
     },
     {
       "name": "standalone_requested_scopes",
@@ -219,13 +228,6 @@
           "value": "launch/patient openid fhirUser offline_access patient/Patient.rs patient/AllergyIntolerance.rs patient/CarePlan.rs patient/CareTeam.rs patient/Condition.rs patient/Coverage.rs patient/Device.rs patient/DiagnosticReport.rs patient/DocumentReference.rs patient/Encounter.rs patient/Goal.rs patient/Immunization.rs patient/Location.rs patient/Media.rs patient/Medication.rs patient/MedicationDispense.rs patient/MedicationRequest.rs patient/Observation.rs patient/Organization.rs patient/Practitioner.rs patient/PractitionerRole.rs patient/Procedure.rs patient/Provenance.rs patient/QuestionnaireResponse.rs patient/RelatedPerson.rs patient/ServiceRequest.rs patient/Specimen.rs"
         }
       ]
-    },
-    {
-      "name": "standalone_client_secret",
-      "type": "text",
-      "title": "Standalone Client Secret",
-      "description": "Client Secret provided during registration of Inferno as a standalone application",
-      "value": "SAMPLE_CONFIDENTIAL_CLIENT_SECRET"
     },
     {
       "name": "expected_resources",
