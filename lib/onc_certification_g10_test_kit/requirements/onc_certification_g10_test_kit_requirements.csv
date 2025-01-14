@@ -1,0 +1,7 @@
+﻿Req Set,ID,URL,Requirement,Conformance,Actor,Sub-Requirement(s),Conditionality
+onc-certification-g(10),1,,random requirement,SHALL,Server,"onc-certification-g(10)@2-4,6",FALSE
+onc-certification-g(10),2,,random requirement,SHALL,Server,onc-certification-g(10)@4,FALSE
+onc-certification-g(10),3,,random requirement,SHOULD,Server,onc-certification-g(10)@5-6,TRUE
+onc-certification-g(10),4,,random,MAY,Server,,FALSE
+onc-certification-g(10),5,,random,SHOULD,Server,,FALSE
+onc-certification-g(10),6,,random,SHALL,Server,,FALSE
