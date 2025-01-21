@@ -39,6 +39,13 @@ module ONCCertificationG10TestKit
               }
             ]
           }
+    input :bulk_jwks_kid,
+          title: 'Bulk Data JWKS kid',
+          description: <<~DESCRIPTION,
+            The key ID of the JWKS private key to use for signing the client assertion when fetching an auth token.
+            Defaults to the first JWK in the list if no kid is supplied.
+          DESCRIPTION
+          optional: true
     output :bearer_token
 
     http_client :token_endpoint do
@@ -85,7 +92,8 @@ module ONCCertificationG10TestKit
                                                                  iss: bulk_client_id,
                                                                  sub: bulk_client_id,
                                                                  aud: bulk_token_endpoint,
-                                                                 grant_type: 'not_a_grant_type')
+                                                                 grant_type: 'not_a_grant_type',
+                                                                 kid: bulk_jwks_kid)
 
         post(**{ client: :token_endpoint }.merge(post_request_content))
 
@@ -116,7 +124,8 @@ module ONCCertificationG10TestKit
                                                                  iss: bulk_client_id,
                                                                  sub: bulk_client_id,
                                                                  aud: bulk_token_endpoint,
-                                                                 client_assertion_type: 'not_an_assertion_type')
+                                                                 client_assertion_type: 'not_an_assertion_type',
+                                                                 kid: bulk_jwks_kid)
 
         post(**{ client: :token_endpoint }.merge(post_request_content))
 
@@ -155,7 +164,8 @@ module ONCCertificationG10TestKit
                                                                  scope: bulk_scope,
                                                                  iss: 'not_a_valid_iss',
                                                                  sub: bulk_client_id,
-                                                                 aud: bulk_token_endpoint)
+                                                                 aud: bulk_token_endpoint,
+                                                                 kid: bulk_jwks_kid)
 
         post(**{ client: :token_endpoint }.merge(post_request_content))
 
@@ -177,7 +187,8 @@ module ONCCertificationG10TestKit
                                                                  scope: bulk_scope,
                                                                  iss: bulk_client_id,
                                                                  sub: bulk_client_id,
-                                                                 aud: bulk_token_endpoint)
+                                                                 aud: bulk_token_endpoint,
+                                                                 kid: bulk_jwks_kid)
 
         authentication_response = post(**{ client: :token_endpoint }.merge(post_request_content))
 

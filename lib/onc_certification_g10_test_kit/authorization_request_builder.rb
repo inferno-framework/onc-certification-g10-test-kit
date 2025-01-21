@@ -12,7 +12,7 @@ module ONCCertificationG10TestKit
     end
 
     attr_reader :encryption_method, :scope, :iss, :sub, :aud, :content_type, :grant_type, :client_assertion_type, :exp,
-                :jti
+                :jti, :kid
 
     def initialize(
       encryption_method:,
@@ -24,7 +24,8 @@ module ONCCertificationG10TestKit
       grant_type: 'client_credentials',
       client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
       exp: 5.minutes.from_now,
-      jti: SecureRandom.hex(32)
+      jti: SecureRandom.hex(32),
+      kid: nil
     )
       @encryption_method = encryption_method
       @scope = scope
@@ -36,13 +37,15 @@ module ONCCertificationG10TestKit
       @client_assertion_type = client_assertion_type
       @exp = exp
       @jti = jti
+      @kid = kid
     end
 
     def bulk_private_key
       @bulk_private_key ||=
         self.class.bulk_data_jwks['keys']
           .select { |key| key['key_ops']&.include?('sign') }
-          .find { |key| key['alg'] == encryption_method }
+          .select { |key| key['alg'] == encryption_method }
+          .find { |key| !kid || key['kid'] == kid }
     end
 
     def jwt_token
