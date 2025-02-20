@@ -7,7 +7,8 @@ module ONCCertificationG10TestKit
       Patient resource.
     )
     id :g10_smart_granular_scope_selection
-    input :requested_scopes, :received_scopes
+    input :received_scopes
+    input :smart_auth_info, type: :auth_info
 
     def resources_with_granular_scopes
       ['Condition', 'Observation']
@@ -26,8 +27,8 @@ module ONCCertificationG10TestKit
     end
 
     run do
-      assert requested_scopes.present?
-      requested_scopes = self.requested_scopes.split
+      assert smart_auth_info.requested_scopes.present?
+      requested_scopes = smart_auth_info.requested_scopes.split
       (resources_with_granular_scopes + ['Patient']).each do |resource_type|
         assert requested_scopes.any? { |scope| scope.match(resource_level_scope_regex(resource_type)) },
                "No resource-level scope was requested for #{resource_type}"

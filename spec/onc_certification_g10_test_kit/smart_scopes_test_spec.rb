@@ -15,7 +15,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
 
     context 'with requested scopes' do
       it 'fails if a required scope was not requested' do
-        result = run(test, requested_scopes: 'online_access launch', received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: 'online_access launch'),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to eq('Required scopes were not requested: offline_access')
@@ -23,7 +27,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
 
       it 'fails if a scope has an invalid format' do
         ['patient/*/read', 'patient*.read', 'patient/*.*.read', 'patient/*.readx'].each do |bad_scope|
-          result = run(test, requested_scopes: "#{base_scopes} #{bad_scope}", received_scopes: 'foo')
+          result = run(
+            test,
+            smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: "#{base_scopes} #{bad_scope}"),
+            received_scopes: 'foo'
+          )
 
           expect(result.result).to eq('fail')
           expect(result.result_message).to match('does not follow the format')
@@ -33,7 +41,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
 
       it 'fails if a patient compartment resource has a user-level scope' do
         bad_scope = 'user/Patient.read'
-        result = run(test, requested_scopes: "#{base_scopes} user/Binary.read #{bad_scope}", received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: "#{base_scopes} user/Binary.read #{bad_scope}"),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('does not follow the format')
@@ -42,7 +54,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
 
       it 'fails if a scope for a disallowed resource type is requested' do
         bad_scope = 'patient/CodeSystem.read'
-        result = run(test, requested_scopes: "#{base_scopes} #{bad_scope}", received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: "#{base_scopes} #{bad_scope}"),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('must be either a permitted resource type')
@@ -50,7 +66,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
       end
 
       it 'fails if no patient-level scopes were requested' do
-        result = run(test, requested_scopes: "#{base_scopes} user/Binary.read", received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: "#{base_scopes} user/Binary.read"),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('Patient-level scope in the format')
@@ -62,7 +82,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
         allow_any_instance_of(test).to receive(:scope_version).and_return(:v1)
 
         bad_scope = 'patient/Patient.r'
-        result = run(test, requested_scopes: "#{base_scopes} user/Binary.read #{bad_scope}", received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: "#{base_scopes} user/Binary.read #{bad_scope}"),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('does not follow the format')
@@ -75,7 +99,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
         allow_any_instance_of(test).to receive(:scope_version).and_return(:v2)
 
         bad_scope = 'patient/Patient.read'
-        result = run(test, requested_scopes: "#{base_scopes} user/Binary.rs #{bad_scope}", received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: "#{base_scopes} user/Binary.rs #{bad_scope}"),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('does not follow the format')
@@ -90,7 +118,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
         )
 
         bad_scope = 'patient/Patient.read'
-        result = run(test, requested_scopes: "#{base_scopes} user/Binary.rs #{bad_scope}", received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: "#{base_scopes} user/Binary.rs #{bad_scope}"),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('does not follow the format')
@@ -103,7 +135,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
 
       it 'fails if a patient compartment resource has a user-level scope' do
         bad_scope = 'user/Patient.read'
-        result = run(test, requested_scopes:, received_scopes: "#{base_scopes} user/Binary.read #{bad_scope}")
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes:),
+          received_scopes: "#{base_scopes} user/Binary.read #{bad_scope}"
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('does not follow the format')
@@ -111,7 +147,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
       end
 
       it 'fails if the received scopes do not grant access to all required resource types' do
-        result = run(test, requested_scopes:, received_scopes: "#{base_scopes} patient/Patient.read")
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes:),
+          received_scopes: "#{base_scopes} patient/Patient.read"
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('were not granted by authorization server')
@@ -123,7 +163,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
             receive(:config).and_return(OpenStruct.new(options: { scope_version: :v1, received_scope_version: :v2 }))
           )
           bad_scope = 'patient/Patient.read'
-          result = run(test, requested_scopes:, received_scopes: "#{base_scopes} patient/Goal.rs #{bad_scope}")
+          result = run(
+            test,
+            smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes:),
+            received_scopes: "#{base_scopes} patient/Goal.rs #{bad_scope}"
+          )
 
           expect(result.result).to eq('fail')
           expect(result.result_message).to match('were not granted')
@@ -142,7 +186,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
     context 'with requested scopes' do
       it 'fails if a patient-level scope is requested' do
         bad_scope = 'patient/Patient.read'
-        result = run(test, requested_scopes: "#{base_scopes} user/Binary.read #{bad_scope}", received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: "#{base_scopes} user/Binary.read #{bad_scope}"),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('does not follow the format')
@@ -150,7 +198,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
       end
 
       it 'fails if no user-level scopes were requested' do
-        result = run(test, requested_scopes: base_scopes, received_scopes: 'foo')
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes: base_scopes),
+          received_scopes: 'foo'
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match('User-level scope in the format')
@@ -162,7 +214,11 @@ RSpec.describe ONCCertificationG10TestKit::SMARTScopesTest do
 
       it 'fails if a patient-level scope is received' do
         bad_scope = 'patient/Patient.read'
-        result = run(test, requested_scopes:, received_scopes: "#{requested_scopes} #{bad_scope}")
+        result = run(
+          test,
+          smart_auth_info: Inferno::DSL::AuthInfo.new(requested_scopes:),
+          received_scopes: "#{requested_scopes} #{bad_scope}"
+        )
 
         expect(result.result).to eq('fail')
         expect(result.result_message).to match("Received scope `#{bad_scope}` does not follow the format")

@@ -55,45 +55,66 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        client_secret: {
-          optional: false,
-          name: :standalone_client_secret
+        smart_auth_info: {
+          name: :v1_smart_auth_info,
+          title: 'Launch with v1 Scopes Credentials',
+          options: {
+            mode: 'auth',
+            components: [
+              {
+                name: :requested_scopes,
+                default: %(
+                  launch/patient openid fhirUser offline_access
+                  patient/Medication.read patient/AllergyIntolerance.read
+                  patient/CarePlan.read patient/CareTeam.read
+                  patient/Condition.read patient/Device.read
+                  patient/DiagnosticReport.read patient/DocumentReference.read
+                  patient/Encounter.read patient/Goal.read
+                  patient/Immunization.read patient/Location.read
+                  patient/MedicationRequest.read patient/Observation.read
+                  patient/Organization.read patient/Patient.read
+                  patient/Practitioner.read patient/Procedure.read
+                  patient/Provenance.read patient/PractitionerRole.read
+                  patient/Specimen.read patient/Coverage.read
+                  patient/MedicationDispense.read patient/ServiceRequest.read
+                ).gsub(/\s{2,}/, ' ').strip
+              },
+              {
+                name: :auth_type,
+                default: 'symmetric',
+                locked: true
+              },
+              {
+                name: :auth_request_method,
+                default: 'GET',
+                locked: true
+              },
+              {
+                name: :use_discovery,
+                locked: true
+              },
+              {
+                name: :pkce_support,
+                default: 'enabled',
+                locked: true
+              },
+              {
+                name: :pkce_code_challenge_method,
+                default: 'S256',
+                locked: true
+              }
+            ]
+          }
         },
-        requested_scopes: {
-          name: :v1_requested_scopes,
-          default: %(
-            launch/patient openid fhirUser offline_access
-            patient/Medication.read patient/AllergyIntolerance.read
-            patient/CarePlan.read patient/CareTeam.read patient/Condition.read
-            patient/Device.read patient/DiagnosticReport.read
-            patient/DocumentReference.read patient/Encounter.read
-            patient/Goal.read patient/Immunization.read patient/Location.read
-            patient/MedicationRequest.read patient/Observation.read
-            patient/Organization.read patient/Patient.read
-            patient/Practitioner.read patient/Procedure.read
-            patient/Provenance.read patient/PractitionerRole.read
-            patient/Specimen.read patient/Coverage.read
-            patient/MedicationDispense.read patient/ServiceRequest.read
-          ).gsub(/\s{2,}/, ' ').strip
-        },
-        received_scopes: { name: :v1_received_scopes },
-        smart_credentials: { name: :v1_smart_credentials }
+        patient_id: { name: :v1_patient_id },
+        received_scopes: { name: :v1_received_scopes }
       },
       outputs: {
+        smart_auth_info: { name: :v1_smart_auth_info },
         received_scopes: { name: :v1_received_scopes },
         patient_id: { name: :v1_patient_id }
       }
     )
-
-    input_order :url,
-                :standalone_client_id,
-                :standalone_client_secret,
-                :v1_requested_scopes,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :standalone_authorization_method,
-                :client_auth_type,
-                :client_auth_encryption_method
 
     group from: :smart_discovery_stu2 do
       required_suite_options(G10Options::SMART_2_REQUIREMENT)
@@ -140,30 +161,7 @@ module ONCCertificationG10TestKit
     end
 
     group from: :smart_standalone_launch_stu2,
-          required_suite_options: G10Options::SMART_2_REQUIREMENT,
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              },
-              authorization_method: {
-                name: :standalone_authorization_method,
-                default: 'get',
-                locked: true
-              },
-              client_auth_type: {
-                locked: true,
-                default: 'confidential_symmetric'
-              }
-            },
-            outputs: {
-              smart_credentials: { name: :v1_smart_credentials }
-            }
-          } do
+          required_suite_options: G10Options::SMART_2_REQUIREMENT do
       title 'Standalone Launch With Patient Scope'
       description %(
         # Background
@@ -201,20 +199,9 @@ module ONCCertificationG10TestKit
         )
       end
 
-      test from: :g10_unauthorized_access,
-           config: {
-             inputs: {
-               patient_id: { name: :v1_patient_id }
-             }
-           }
+      test from: :g10_unauthorized_access
 
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :v1_patient_id },
-               smart_credentials: { name: :v1_smart_credentials }
-             }
-           }
+      test from: :g10_patient_context
 
       tests[0].config(
         outputs: {
@@ -233,30 +220,7 @@ module ONCCertificationG10TestKit
       )
     end
     group from: :smart_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
-          required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              },
-              authorization_method: {
-                name: :standalone_authorization_method,
-                default: 'get',
-                locked: true
-              },
-              client_auth_type: {
-                locked: true,
-                default: 'confidential_symmetric'
-              }
-            },
-            outputs: {
-              smart_credentials: { name: :v1_smart_credentials }
-            }
-          } do
+          required_suite_options: G10Options::SMART_2_2_REQUIREMENT do
       title 'Standalone Launch With Patient Scope'
       description %(
         # Background
@@ -294,20 +258,9 @@ module ONCCertificationG10TestKit
         )
       end
 
-      test from: :g10_unauthorized_access,
-           config: {
-             inputs: {
-               patient_id: { name: :v1_patient_id }
-             }
-           }
+      test from: :g10_unauthorized_access
 
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :v1_patient_id },
-               smart_credentials: { name: :v1_smart_credentials }
-             }
-           }
+      test from: :g10_patient_context
 
       tests[0].config(
         outputs: {
@@ -326,14 +279,7 @@ module ONCCertificationG10TestKit
       )
     end
 
-    group from: :g10_unrestricted_resource_type_access,
-          config: {
-            inputs: {
-              received_scopes: { name: :v1_received_scopes },
-              patient_id: { name: :v1_patient_id },
-              smart_credentials: { name: :v1_smart_credentials }
-            }
-          }
+    group from: :g10_unrestricted_resource_type_access
 
     test from: :g10_incorrectly_permitted_tls_versions_messages_setup,
          id: :g10_auth_incorrectly_permitted_tls_versions_messages_setup,

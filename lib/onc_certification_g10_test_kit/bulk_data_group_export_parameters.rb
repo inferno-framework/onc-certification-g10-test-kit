@@ -8,7 +8,7 @@ module ONCCertificationG10TestKit
       Verify that the Bulk Data server supports required query parameters.
     )
 
-    input :bearer_token
+    input :bulk_smart_auth_info, type: :auth_info
     input :bulk_server_url,
           title: 'Bulk Data FHIR URL',
           description: 'The URL of the Bulk FHIR server.'

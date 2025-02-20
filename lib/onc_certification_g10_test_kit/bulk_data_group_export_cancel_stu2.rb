@@ -21,7 +21,13 @@ module ONCCertificationG10TestKit
       run do
         skip 'No polling url available' unless cancelled_polling_url.present?
 
-        get(cancelled_polling_url, headers: { authorization: "Bearer #{bearer_token}", accept: 'application/json' })
+        get(
+          cancelled_polling_url,
+          headers: {
+            authorization: "Bearer #{bulk_smart_auth_info.access_token}",
+            accept: 'application/json'
+          }
+        )
 
         assert_response_status(404)
 

@@ -8,7 +8,8 @@ module ONCCertificationG10TestKit
       smart-app-launch guide. All scopes requested are expected to be granted.
     )
     id :g10_smart_scopes
-    input :requested_scopes, :received_scopes
+    input :smart_auth_info, type: 'auth_info'
+    input :received_scopes
     uses_request :token
 
     VALID_RESOURCE_TYPES = [
@@ -93,6 +94,10 @@ module ONCCertificationG10TestKit
       return V7_VALID_RESOURCE_TYPES if using_us_core_7?
 
       VALID_RESOURCE_TYPES
+    end
+
+    def requested_scopes
+      smart_auth_info.requested_scopes
     end
 
     def required_scope_type

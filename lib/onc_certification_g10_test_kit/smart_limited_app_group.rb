@@ -38,18 +38,62 @@ module ONCCertificationG10TestKit
     id :g10_smart_limited_app
     run_as_group
 
+    input :expected_resources,
+          title: 'expected resource grant for limited access launch',
+          description: 'the user will only grant access to the following resources during authorization.',
+          default: 'patient, condition, observation'
+
     input_order :expected_resources,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :url,
-                :standalone_client_id,
-                :standalone_client_secret,
-                :smart_authorization_url,
-                :smart_token_url,
-                :standalone_requested_scopes,
-                :authorization_method,
-                :client_auth_type,
-                :client_auth_encryption_method
+                :url
+
+    config(
+      inputs: {
+        url: { locked: true },
+        code: { name: :limited_code },
+        state: { name: :limited_state },
+        patient_id: { name: :limited_patient_id },
+        received_scopes: { name: :limited_received_scopes }
+      },
+      outputs: {
+        code: { name: :limited_code },
+        state: { name: :limited_state },
+        id_token: { name: :limited_id_token },
+        patient_id: { name: :limited_patient_id },
+        encounter_id: { name: :limited_encounter_id },
+        received_scopes: { name: :limited_received_scopes },
+        intent: { name: :limited_intent },
+        smart_auth_info: { name: :limited_smart_auth_info }
+      },
+      requests: {
+        redirect: { name: :limited_redirect },
+        token: { name: :limited_token }
+      },
+      options: {
+        ignore_missing_scopes_check: true,
+        redirect_message_proc: lambda do |auth_url|
+          expected_resource_string =
+            expected_resources
+              .split(',')
+              .map(&:strip)
+              .map { |resource_type| "* #{resource_type}\n" }
+              .join
+
+          <<~MESSAGE
+            ### #{self.class.parent.parent.title}
+
+            [Follow this link to authorize with the SMART
+            server](#{auth_url}).
+
+            Tests will resume once Inferno receives a request at
+            `#{config.options[:redirect_uri]}` with a state of `#{state}`.
+
+            Access should only be granted to the following resources:
+
+            #{expected_resource_string}
+          MESSAGE
+        end
+      }
+    )
 
     group from: :smart_standalone_launch do
       title 'Standalone Launch With Limited Scope'
@@ -91,99 +135,20 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          client_id: { locked: true },
-          client_secret: { locked: true, optional: false },
-          url: { locked: true },
-          requested_scopes: { locked: true },
-          code: { name: :limited_code },
-          state: { name: :limited_state },
-          patient_id: { name: :limited_patient_id },
-          access_token: { name: :limited_access_token },
-          # TODO: separate standalone/ehr discovery outputs
-          smart_authorization_url: { locked: true, title: 'SMART Authorization Url' },
-          smart_token_url: { locked: true, title: 'SMART Token Url' },
-          received_scopes: { name: :limited_received_scopes },
-          smart_credentials: { name: :limited_smart_credentials }
-        },
-        outputs: {
-          code: { name: :limited_code },
-          token_retrieval_time: { name: :limited_token_retrieval_time },
-          state: { name: :limited_state },
-          id_token: { name: :limited_id_token },
-          refresh_token: { name: :limited_refresh_token },
-          access_token: { name: :limited_access_token },
-          expires_in: { name: :limited_expires_in },
-          patient_id: { name: :limited_patient_id },
-          encounter_id: { name: :limited_encounter_id },
-          received_scopes: { name: :limited_received_scopes },
-          intent: { name: :limited_intent },
-          smart_credentials: { name: :limited_smart_credentials }
-        },
-        requests: {
-          redirect: { name: :limited_redirect },
-          token: { name: :limited_token }
-        },
-        options: {
-          ignore_missing_scopes_check: true,
-          redirect_message_proc: lambda do |auth_url|
-            expected_resource_string =
-              expected_resources
-                .split(',')
-                .map(&:strip)
-                .map { |resource_type| "* #{resource_type}\n" }
-                .join
-
-            <<~MESSAGE
-              ### #{self.class.parent.parent.title}
-
-              [Follow this link to authorize with the SMART
-              server](#{auth_url}).
-
-              Tests will resume once Inferno receives a request at
-              `#{config.options[:redirect_uri]}` with a state of `#{state}`.
-
-              Access should only be granted to the following resources:
-
-              #{expected_resource_string}
-            MESSAGE
-          end
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            title: 'Standalone Launch Credentials',
+            locked: true
+          }
         }
       )
 
-      input :expected_resources,
-            title: 'Expected Resource Grant for Limited Access Launch',
-            description: 'The user will only grant access to the following resources during authorization.',
-            default: 'Patient, Condition, Observation'
+      test from: :g10_patient_context
 
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :limited_patient_id },
-               smart_credentials: { name: :limited_smart_credentials }
-             }
-           }
-
-      test from: :g10_limited_scope_grant do
-        config(
-          inputs: {
-            received_scopes: { name: :limited_received_scopes }
-          }
-        )
-      end
+      test from: :g10_limited_scope_grant
     end
 
-    group from: :smart_standalone_launch_stu2,
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              }
-            }
-          } do
+    group from: :smart_standalone_launch_stu2 do
       title 'Standalone Launch With Limited Scope'
       description %(
         # Background
@@ -214,103 +179,20 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          client_id: { locked: true },
-          client_secret: { locked: true },
-          url: { locked: true },
-          requested_scopes: { locked: true },
-          code: { name: :limited_code },
-          state: { name: :limited_state },
-          patient_id: { name: :limited_patient_id },
-          access_token: { name: :limited_access_token },
-          # TODO: separate standalone/ehr discovery outputs
-          smart_authorization_url: { locked: true, title: 'SMART Authorization Url' },
-          smart_token_url: { locked: true, title: 'SMART Token Url' },
-          received_scopes: { name: :limited_received_scopes },
-          smart_credentials: { name: :limited_smart_credentials },
-          client_auth_type: {
-            locked: true,
-            default: 'confidential_symmetric'
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            title: 'Standalone Launch Credentials',
+            locked: true
           }
-        },
-        outputs: {
-          code: { name: :limited_code },
-          token_retrieval_time: { name: :limited_token_retrieval_time },
-          state: { name: :limited_state },
-          id_token: { name: :limited_id_token },
-          refresh_token: { name: :limited_refresh_token },
-          access_token: { name: :limited_access_token },
-          expires_in: { name: :limited_expires_in },
-          patient_id: { name: :limited_patient_id },
-          encounter_id: { name: :limited_encounter_id },
-          received_scopes: { name: :limited_received_scopes },
-          intent: { name: :limited_intent },
-          smart_credentials: { name: :limited_smart_credentials }
-        },
-        requests: {
-          redirect: { name: :limited_redirect },
-          token: { name: :limited_token }
-        },
-        options: {
-          ignore_missing_scopes_check: true,
-          redirect_message_proc: lambda do |auth_url|
-            expected_resource_string =
-              expected_resources
-                .split(',')
-                .map(&:strip)
-                .map { |resource_type| "* #{resource_type}\n" }
-                .join
-
-            <<~MESSAGE
-              ### #{self.class.parent.parent.title}
-
-              [Follow this link to authorize with the SMART
-              server](#{auth_url}).
-
-              Tests will resume once Inferno receives a request at
-              `#{config.options[:redirect_uri]}` with a state of `#{state}`.
-
-              Access should only be granted to the following resources:
-
-              #{expected_resource_string}
-            MESSAGE
-          end
         }
       )
 
-      input :expected_resources,
-            title: 'Expected Resource Grant for Limited Access Launch',
-            description: 'The user will only grant access to the following resources during authorization.',
-            default: 'Patient, Condition, Observation'
+      test from: :g10_patient_context
 
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :limited_patient_id },
-               smart_credentials: { name: :limited_smart_credentials }
-             }
-           }
-
-      test from: :g10_limited_scope_grant do
-        config(
-          inputs: {
-            received_scopes: { name: :limited_received_scopes }
-          }
-        )
-      end
+      test from: :g10_limited_scope_grant
     end
 
-    group from: :smart_standalone_launch_stu2_2, # rubocop:disable Naming/VariableNumber
-          config: {
-            inputs: {
-              use_pkce: {
-                default: 'true',
-                locked: true
-              },
-              pkce_code_challenge_method: {
-                locked: true
-              }
-            }
-          } do
+    group from: :smart_standalone_launch_stu2_2 do # rubocop:disable Naming/VariableNumber
       title 'Standalone Launch With Limited Scope'
       description %(
         # Background
@@ -341,97 +223,23 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          client_id: { locked: true },
-          client_secret: { locked: true },
-          url: { locked: true },
-          requested_scopes: { locked: true },
-          code: { name: :limited_code },
-          state: { name: :limited_state },
-          patient_id: { name: :limited_patient_id },
-          access_token: { name: :limited_access_token },
-          # TODO: separate standalone/ehr discovery outputs
-          smart_authorization_url: { locked: true, title: 'SMART Authorization Url' },
-          smart_token_url: { locked: true, title: 'SMART Token Url' },
-          received_scopes: { name: :limited_received_scopes },
-          smart_credentials: { name: :limited_smart_credentials },
-          client_auth_type: {
-            locked: true,
-            default: 'confidential_symmetric'
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            title: 'Standalone Launch Credentials',
+            locked: true
           }
-        },
-        outputs: {
-          code: { name: :limited_code },
-          token_retrieval_time: { name: :limited_token_retrieval_time },
-          state: { name: :limited_state },
-          id_token: { name: :limited_id_token },
-          refresh_token: { name: :limited_refresh_token },
-          access_token: { name: :limited_access_token },
-          expires_in: { name: :limited_expires_in },
-          patient_id: { name: :limited_patient_id },
-          encounter_id: { name: :limited_encounter_id },
-          received_scopes: { name: :limited_received_scopes },
-          intent: { name: :limited_intent },
-          smart_credentials: { name: :limited_smart_credentials }
-        },
-        requests: {
-          redirect: { name: :limited_redirect },
-          token: { name: :limited_token }
-        },
-        options: {
-          ignore_missing_scopes_check: true,
-          redirect_message_proc: lambda do |auth_url|
-            expected_resource_string =
-              expected_resources
-                .split(',')
-                .map(&:strip)
-                .map { |resource_type| "* #{resource_type}\n" }
-                .join
-
-            <<~MESSAGE
-              ### #{self.class.parent.parent.title}
-
-              [Follow this link to authorize with the SMART
-              server](#{auth_url}).
-
-              Tests will resume once Inferno receives a request at
-              `#{config.options[:redirect_uri]}` with a state of `#{state}`.
-
-              Access should only be granted to the following resources:
-
-              #{expected_resource_string}
-            MESSAGE
-          end
         }
       )
 
-      input :expected_resources,
-            title: 'Expected Resource Grant for Limited Access Launch',
-            description: 'The user will only grant access to the following resources during authorization.',
-            default: 'Patient, Condition, Observation'
+      test from: :g10_patient_context
 
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :limited_patient_id },
-               smart_credentials: { name: :limited_smart_credentials }
-             }
-           }
-
-      test from: :g10_limited_scope_grant do
-        config(
-          inputs: {
-            received_scopes: { name: :limited_received_scopes }
-          }
-        )
-      end
+      test from: :g10_limited_scope_grant
     end
 
     group from: :g10_restricted_resource_type_access,
           config: {
             inputs: {
-              patient_id: { name: :limited_patient_id },
-              received_scopes: { name: :limited_received_scopes },
-              smart_credentials: { name: :limited_smart_credentials }
+              smart_auth_info: { name: :limited_smart_auth_info }
             }
           }
   end

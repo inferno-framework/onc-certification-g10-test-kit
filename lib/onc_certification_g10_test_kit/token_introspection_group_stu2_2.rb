@@ -61,19 +61,13 @@ module ONCCertificationG10TestKit
                 :well_known_introspection_url,
                 :custom_authorization_header,
                 :optional_introspection_request_params,
-                :standalone_client_id,
-                :standalone_client_secret,
-                :authorization_method,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :standalone_requested_scopes,
-                :token_introspection_auth_type,
-                :client_auth_encryption_method
+                :standalone_smart_auth_info
 
     config(
       inputs: {
-        client_auth_type: {
-          name: :token_introspection_auth_type
+        smart_auth_info: {
+          name: :standalone_smart_auth_info,
+          title: 'Standalone Launch Credentials'
         }
       }
     )
@@ -89,9 +83,5 @@ module ONCCertificationG10TestKit
       the correct HTTP response is returned but does not validate the contents
       of the token introspection response.
     DESCRIPTION
-
-    groups.first.groups.each do |group|
-      group.required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
-    end
   end
 end

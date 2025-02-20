@@ -9,7 +9,7 @@ module ONCCertificationG10TestKit
     DESCRIPTION
     id :bulk_data_group_export
 
-    input :bearer_token
+    input :bulk_smart_auth_info, type: :auth_info
     input :bulk_server_url,
           title: 'Bulk Data FHIR URL',
           description: 'The URL of the Bulk FHIR server.'
@@ -137,6 +137,8 @@ module ONCCertificationG10TestKit
       include ExportKickOffPerformer
 
       run do
+        skip_if bulk_smart_auth_info.access_token.blank?, 'No access token was received'
+
         perform_export_kick_off_request(use_token: false)
         assert_response_status([400, 401])
       end
@@ -199,7 +201,13 @@ module ONCCertificationG10TestKit
         used_time = 0
 
         loop do
-          get(polling_url, headers: { authorization: "Bearer #{bearer_token}", accept: 'application/json' })
+          get(
+            polling_url,
+            headers: {
+              authorization: "Bearer #{bulk_smart_auth_info.access_token}",
+              accept: 'application/json'
+            }
+          )
 
           retry_after_val = request.response_header('retry-after')&.value.to_i
 

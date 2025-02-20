@@ -33,17 +33,28 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        client_id: {
-          name: :ehr_patient_client_id
-        },
-        client_secret: {
-          name: :ehr_patient_client_secret,
-          optional: false
-        },
-        requested_scopes: {
-          name: :ehr_patient_requested_scopes,
-          default: 'launch openid fhirUser offline_access patient/Patient.read',
-          locked: true
+        smart_auth_info: {
+          name: :ehr_patient_smart_auth_info,
+          title: 'EHR Launch with Patient Scopes Credentials',
+          options: {
+            mode: 'auth',
+            components: [
+              {
+                name: :auth_type,
+                default: 'symmetric',
+                locked: true
+              },
+              {
+                name: :requested_scopes,
+                default: 'launch openid fhirUser offline_access patient/Patient.read',
+                locked: true
+              },
+              {
+                name: :use_discovery,
+                locked: true
+              }
+            ]
+          }
         },
         code: {
           name: :ehr_patient_code
@@ -57,33 +68,20 @@ module ONCCertificationG10TestKit
         received_scopes: {
           name: :ehr_patient_received_scopes
         },
-        smart_credentials: {
-          name: :ehr_patient_smart_credentials
-        },
-        smart_authorization_url: {
-          title: 'OAuth 2.0 Authorize Endpoint',
-          description: 'OAuth 2.0 Authorize Endpoint provided during the EHR launch'
-        },
-        smart_token_url: {
-          title: 'OAuth 2.0 Token Endpoint',
-          description: 'OAuth 2.0 Token Endpoint provided during the EHR launch'
+        patient_id: {
+          name: :ehr_patient_patient_id
         }
       },
       outputs: {
         launch: { name: :ehr_patient_launch },
         code: { name: :ehr_patient_code },
-        token_retrieval_time: { name: :ehr_patient_token_retrieval_time },
         state: { name: :ehr_patient_state },
         id_token: { name: :ehr_patient_id_token },
-        refresh_token: { name: :ehr_patient_refresh_token },
-        access_token: { name: :ehr_patient_access_token },
-        expires_in: { name: :ehr_patient_expires_in },
         patient_id: { name: :ehr_patient_patient_id },
         encounter_id: { name: :ehr_patient_encounter_id },
         received_scopes: { name: :ehr_patient_received_scopes },
-        requested_scopes: { name: :ehr_patient_requested_scopes },
         intent: { name: :ehr_patient_intent },
-        smart_credentials: { name: :ehr_patient_smart_credentials }
+        smart_auth_info: { name: :ehr_patient_smart_auth_info }
       },
       requests: {
         redirect: { name: :ehr_patient_redirect },
@@ -91,20 +89,7 @@ module ONCCertificationG10TestKit
       }
     )
 
-    input_order :url,
-                :ehr_patient_client_id,
-                :ehr_patient_client_secret,
-                :smart_authorization_url,
-                :smart_token_url,
-                :ehr_patient_requested_scopes
-
-    test from: :g10_patient_context,
-         config: {
-           inputs: {
-             patient_id: { name: :ehr_patient_patient_id },
-             smart_credentials: { name: :ehr_patient_smart_credentials }
-           }
-         }
+    test from: :g10_patient_context
 
     test from: :g10_patient_scope,
          config: {
@@ -112,5 +97,10 @@ module ONCCertificationG10TestKit
              scope_version: :v1
            }
          }
+
+    test from: :well_known_endpoint
+
+    # Move the well-known endpoint test to the beginning
+    children.prepend(children.pop)
   end
 end

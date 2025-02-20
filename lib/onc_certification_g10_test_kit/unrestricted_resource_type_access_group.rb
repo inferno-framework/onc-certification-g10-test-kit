@@ -86,12 +86,12 @@ module ONCCertificationG10TestKit
     )
     id :g10_unrestricted_resource_type_access
 
-    input :url, :smart_credentials, :patient_id, :received_scopes
-    input :smart_credentials, type: :oauth_credentials
+    input :url, :patient_id, :received_scopes
+    input :smart_auth_info, type: 'auth_info'
 
     fhir_client do
       url :url
-      oauth_credentials :smart_credentials
+      oauth_credentials :smart_auth_info
     end
 
     V5_EXCLUDED_RESOURCES = ['RelatedPerson'].freeze

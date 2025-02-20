@@ -2,7 +2,7 @@ require_relative '../../lib/onc_certification_g10_test_kit/export_kick_off_perfo
 
 class ExportKickOffPerformerTesterClass < Inferno::Test
   include ONCCertificationG10TestKit::ExportKickOffPerformer
-  attr_accessor :bearer_token, :group_id, :requests
+  attr_accessor :bulk_smart_auth_info, :group_id, :requests
 
   def http_clients
     { bulk_server: Inferno::DSL::HTTPClientBuilder.new.build(self, proc { url 'https://www.example.com' }) }
@@ -18,14 +18,19 @@ RSpec.describe ONCCertificationG10TestKit::ExportKickOffPerformer do
   let(:request) { Inferno::Entities::Request.new({ headers: [header] }) }
   let(:bulk_export_url) { "#{bulk_server_url}/Group/#{group_id}/$export" }
   let(:params) { { _outputFormat: 'application/fhir+ndjson', _sort: 'sample+value' } }
+  let(:bulk_smart_auth_info) do
+    Inferno::DSL::AuthInfo.new(access_token: token)
+  end
   let(:header) do
-    Inferno::Entities::Header.new({
-                                    name: 'content-location', type: 'response', value: polling_url
-                                  })
+    Inferno::Entities::Header.new(
+      name: 'content-location',
+      type: 'response',
+      value: polling_url
+    )
   end
 
   before do
-    performer.bearer_token = token
+    performer.bulk_smart_auth_info = bulk_smart_auth_info
     performer.group_id = group_id
     performer.requests = [request]
   end
@@ -43,7 +48,7 @@ RSpec.describe ONCCertificationG10TestKit::ExportKickOffPerformer do
     end
 
     it 'raises skip if use_token but token is not present' do
-      performer.bearer_token = nil
+      performer.bulk_smart_auth_info.access_token = nil
 
       expect { performer.perform_export_kick_off_request }
         .to raise_exception(Inferno::Exceptions::SkipException)
