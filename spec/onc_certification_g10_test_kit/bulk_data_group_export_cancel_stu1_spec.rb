@@ -7,10 +7,11 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportCancelSTU1 do
   let(:bearer_token) { 'some_bearer_token_alphanumeric' }
   let(:group_id) { '1219' }
   let(:polling_url) { 'https://redirect.com' }
+  let(:bulk_smart_auth_info) { Inferno::DSL::AuthInfo.new(access_token: bearer_token) }
   let(:base_input) do
     {
       bulk_server_url:,
-      bearer_token:,
+      bulk_smart_auth_info:,
       group_id:
     }
   end
@@ -20,7 +21,7 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportCancelSTU1 do
     let(:bulk_export_url) { "#{bulk_server_url}/Group/1219/$export" }
 
     it 'skips when no Bearer Token is given' do
-      base_input.delete(:bearer_token)
+      base_input[:bulk_smart_auth_info].access_token = nil
       result = run(runnable, base_input)
 
       expect(result.result).to eq('skip')

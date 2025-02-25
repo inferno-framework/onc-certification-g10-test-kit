@@ -7,7 +7,6 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
       .find { |group| group.id.include? 'multi_patient_api' }
       .groups.find { |group| group.id.include? 'bulk_data_group_export_validation' }
   end
-  let(:session_data_repo) { Inferno::Repositories::SessionData.new }
   let(:suite_id) { 'g10_certification' }
   let(:endpoint) { 'https://www.example.com' }
   let(:status_output) { "[{\"url\":\"#{endpoint}\"}]" }
@@ -20,24 +19,9 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
     {
       requires_access_token: 'true',
       status_output:,
-      bearer_token:,
+      bulk_smart_auth_info: Inferno::DSL::AuthInfo.new(access_token: bearer_token),
       bulk_download_url: endpoint
     }
-  end
-
-  def run(runnable, inputs = {})
-    test_run_params = { test_session_id: test_session.id }.merge(runnable.reference_hash)
-    test_run = Inferno::Repositories::TestRuns.new.create(test_run_params)
-    inputs.each do |name, value|
-      session_data_repo.save(
-        test_session_id: test_session.id,
-        name:,
-        value:,
-        type: runnable.config.input_type(name)
-      )
-    end
-
-    Inferno::TestRunner.new(test_session:, test_run:).run(runnable, scratch)
   end
 
   describe '[NDJSON download requires access token] test' do
@@ -68,11 +52,11 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
     end
 
     it 'skips when bearer_token is not provided' do
-      input.delete(:bearer_token)
+      input[:bulk_smart_auth_info].access_token = nil
       result = run(runnable, input)
 
       expect(result.result).to eq('skip')
-      expect(result.result_message).to match(/bearer_token/)
+      expect(result.result_message).to match(/No access token/)
     end
 
     context 'when bulk_download_url and bearer_token are given and requiresAccessToken is true' do
@@ -214,7 +198,7 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
 
     it 'fails when less than two patient ids are stored' do
       scratch[:patient_ids_seen] = ['one_id']
-      result = run(runnable, input)
+      result = run(runnable, input, scratch)
 
       expect(result.result).to eq('fail')
       expect(result.result_message).to eq('Bulk data export did not have multiple Patient resources.')
@@ -222,7 +206,7 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
 
     it 'passes when two or more patient ids are stored' do
       scratch[:patient_ids_seen] = ['one_id', 'two_id']
-      result = run(runnable, input)
+      result = run(runnable, input, scratch)
 
       expect(result.result).to eq('pass')
     end
@@ -241,7 +225,7 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
 
     it 'fails when the input patient ids do not match those stored' do
       scratch[:patient_ids_seen] = ['one_id', 'one_id', 'one_id']
-      result = run(runnable, patient_input)
+      result = run(runnable, patient_input, scratch)
 
       expect(result.result).to eq('fail')
       expect(result.result_message).to eq('Mismatch between patient ids seen (one_id, one_id, one_id) and patient ' \
@@ -250,7 +234,7 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
 
     it 'fails when more input patient ids than ids stored' do
       scratch[:patient_ids_seen] = ['one_id', 'two_id']
-      result = run(runnable, patient_input)
+      result = run(runnable, patient_input, scratch)
 
       expect(result.result).to eq('fail')
       expect(result.result_message).to eq('Mismatch between patient ids seen (one_id, two_id) and patient ' \
@@ -259,7 +243,7 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
 
     it 'fails when less input patient ids than ids stored' do
       scratch[:patient_ids_seen] = ['one_id', 'two_id', 'three_id', 'four_id']
-      result = run(runnable, patient_input)
+      result = run(runnable, patient_input, scratch)
 
       expect(result.result).to eq('fail')
       expect(result.result_message).to eq('Mismatch between patient ids seen (one_id, two_id, three_id, four_id) ' \
@@ -268,7 +252,7 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportValidation do
 
     it 'passes when the input patient ids do not match those stored' do
       scratch[:patient_ids_seen] = ['one_id', 'two_id', 'three_id']
-      result = run(runnable, patient_input)
+      result = run(runnable, patient_input, scratch)
 
       expect(result.result).to eq('pass')
     end

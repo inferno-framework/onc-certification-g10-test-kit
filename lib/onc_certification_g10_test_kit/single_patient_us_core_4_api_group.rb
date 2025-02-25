@@ -47,17 +47,17 @@ module ONCCertificationG10TestKit
             ID from the SMART App Launch contain all MUST SUPPORT elements.
           DESCRIPTION
           optional: true
-    input :smart_credentials,
+    input :smart_auth_info,
           title: 'SMART App Launch Credentials',
-          type: :oauth_credentials,
+          type: :auth_info,
           locked: true
 
     fhir_client do
       url :url
-      oauth_credentials :smart_credentials
+      auth_info :smart_auth_info
     end
 
-    input_order :url, :patient_id, :additional_patient_ids, :implantable_device_codes, :smart_credentials
+    input_order :url, :patient_id, :additional_patient_ids, :implantable_device_codes, :smart_auth_info
 
     config(
       options: {

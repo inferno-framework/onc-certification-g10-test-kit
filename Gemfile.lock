@@ -1,10 +1,31 @@
+GIT
+  remote: https://github.com/inferno-framework/smart-app-launch-test-kit.git
+  revision: f8fa50b0a8577960ed1826c86f2f9193f5bf9722
+  branch: fi-3093-use-auth-info
+  specs:
+    smart_app_launch_test_kit (0.5.0)
+      inferno_core (>= 0.6.3)
+      json-jwt (~> 1.15.3)
+      jwt (~> 2.6)
+      tls_test_kit (~> 0.3.0)
+
+GIT
+  remote: https://github.com/inferno-framework/us-core-test-kit.git
+  revision: 77d486c19add10930833d8e7c95b397baacb8f86
+  branch: fi-3586-migrate-to-authinfo
+  specs:
+    us_core_test_kit (0.10.0)
+      inferno_core (>= 0.6.3)
+      smart_app_launch_test_kit (>= 0.5.0)
+      tls_test_kit (~> 0.3.0)
+
 PATH
   remote: .
   specs:
     onc_certification_g10_test_kit (7.0.3)
       bloomer (~> 1.0.0)
       colorize (~> 0.8.1)
-      inferno_core (~> 0.6.2)
+      inferno_core (~> 0.6.3)
       json-jwt (~> 1.15.3)
       mime-types (~> 3.4.0)
       ndjson (~> 1.0.0)
@@ -146,10 +167,11 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.8)
       domain_name (~> 0.5)
-    httpclient (2.8.3)
+    httpclient (2.9.0)
+      mutex_m
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    inferno_core (0.6.2)
+    inferno_core (0.6.4)
       activesupport (~> 6.1.7.5)
       base62-rb (= 0.3.1)
       blueprinter (= 0.25.2)
@@ -194,7 +216,7 @@ GEM
     method_source (1.1.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2025.0107)
+    mime-types-data (3.2025.0220)
     mini_portile2 (2.8.8)
     minitest (5.25.4)
     msgpack (1.7.5)
@@ -207,17 +229,18 @@ GEM
     mustermann-contrib (1.1.2)
       hansi (~> 0.2.0)
       mustermann (= 1.1.2)
+    mutex_m (0.3.0)
     ndjson (1.0.0)
     netrc (0.11.0)
     nio4r (2.7.4)
-    nokogiri (1.18.2)
+    nokogiri (1.18.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.18.2-arm64-darwin)
+    nokogiri (1.18.3-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.2-x86_64-darwin)
+    nokogiri (1.18.3-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.2-x86_64-linux-gnu)
+    nokogiri (1.18.3-x86_64-linux-gnu)
       racc (~> 1.4)
     oauth2 (1.4.11)
       faraday (>= 0.17.3, < 3.0)
@@ -242,7 +265,7 @@ GEM
     puma (5.6.9)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.10)
+    rack (2.2.11)
     rack-test (2.2.0)
       rack (>= 1.3)
     rainbow (3.1.1)
@@ -257,7 +280,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rexml (3.4.0)
+    rexml (3.4.1)
     rouge (4.5.1)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
@@ -298,11 +321,6 @@ GEM
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
       redis-client (>= 0.19.0)
-    smart_app_launch_test_kit (0.5.0)
-      inferno_core (>= 0.6.2)
-      json-jwt (~> 1.15.3)
-      jwt (~> 2.6)
-      tls_test_kit (~> 0.3.0)
     sqlite3 (1.7.3)
       mini_portile2 (~> 2.8.0)
     sqlite3 (1.7.3-arm64-darwin)
@@ -330,15 +348,11 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.6.0)
     unicode_utils (1.4.0)
-    us_core_test_kit (0.10.0)
-      inferno_core (>= 0.6.1)
-      smart_app_launch_test_kit (>= 0.5.0)
-      tls_test_kit (~> 0.3.0)
     webmock (3.18.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    zeitwerk (2.7.1)
+    zeitwerk (2.7.2)
 
 PLATFORMS
   arm64-darwin-21
@@ -356,6 +370,8 @@ DEPENDENCIES
   rubocop (~> 1.9)
   rubocop-rspec
   rubyXL
+  smart_app_launch_test_kit!
+  us_core_test_kit!
   webmock (~> 3.11)
 
 BUNDLED WITH

@@ -1,5 +1,9 @@
+require_relative 'scope_constants'
+
 module ONCCertificationG10TestKit
   class SMARTPublicStandaloneLaunchGroupTestSTU22 < SMARTAppLaunch::StandaloneLaunchGroupSTU2
+    include ScopeConstants
+
     title 'Public Client Standalone Launch with OpenID Connect'
     short_title 'Public Client Launch'
     input_instructions %(
@@ -38,31 +42,28 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        client_id: {
-          name: :public_client_id,
-          title: 'Public Launch Client ID'
-        },
-        client_secret: {
-          name: :public_client_secret,
-          title: 'Public Launch Client Secret',
-          default: nil,
-          optional: true,
-          locked: true
-        },
-        requested_scopes: {
-          name: :public_requested_scopes,
-          title: 'Public Launch Scope',
-          default: %(
-            launch/patient openid fhirUser offline_access patient/Medication.rs
-            patient/AllergyIntolerance.rs patient/CarePlan.rs
-            patient/CareTeam.rs patient/Condition.rs patient/Device.rs
-            patient/DiagnosticReport.rs patient/DocumentReference.rs
-            patient/Encounter.rs patient/Goal.rs patient/Immunization.rs
-            patient/Location.rs patient/MedicationRequest.rs
-            patient/Observation.rs patient/Organization.rs patient/Patient.rs
-            patient/Practitioner.rs patient/Procedure.rs patient/Provenance.rs
-            patient/PractitionerRole.rs
-          ).gsub(/\s{2,}/, ' ').strip
+        smart_auth_info: {
+          name: :public_smart_auth_info,
+          title: 'Public Launch Credentials',
+          options: {
+            mode: 'auth',
+            components: [
+              {
+                name: :auth_type,
+                default: 'public',
+                locked: true
+              },
+              {
+                name: :auth_request_method,
+                default: 'GET',
+                locked: true
+              },
+              {
+                name: :requested_scopes,
+                default: STANDALONE_SMART_2_SCOPES
+              }
+            ]
+          }
         },
         url: {
           title: 'Public Launch FHIR Endpoint',
@@ -74,43 +75,19 @@ module ONCCertificationG10TestKit
         state: {
           name: :public_state
         },
-        smart_authorization_url: {
-          title: 'OAuth 2.0 Authorize Endpoint',
-          description: 'OAuth 2.0 Authorize Endpoint provided during the patient standalone launch'
-        },
-        smart_token_url: {
-          title: 'OAuth 2.0 Token Endpoint',
-          description: 'OAuth 2.0 Token Endpoint provided during the patient standalone launch'
-        },
-        smart_credentials: {
-          name: :public_smart_credentials
-        },
-        use_pkce: {
-          default: 'true',
-          locked: true
-        },
-        pkce_code_challenge_method: {
-          locked: true
-        },
-        client_auth_type: {
-          name: :public_client_auth_type,
-          locked: true,
-          default: 'public'
+        patient_id: {
+          name: :public_patient_id
         }
       },
       outputs: {
         code: { name: :public_code },
-        token_retrieval_time: { name: :public_token_retrieval_time },
         state: { name: :public_state },
         id_token: { name: :public_id_token },
-        refresh_token: { name: :public_refresh_token },
-        access_token: { name: :public_access_token },
-        expires_in: { name: :public_expires_in },
         patient_id: { name: :public_patient_id },
         encounter_id: { name: :public_encounter_id },
         received_scopes: { name: :public_received_scopes },
         intent: { name: :public_intent },
-        smart_credentials: { name: :public_smart_credentials }
+        smart_auth_info: { name: :public_smart_auth_info }
       },
       requests: {
         redirect: { name: :public_redirect },
@@ -118,24 +95,7 @@ module ONCCertificationG10TestKit
       }
     )
 
-    input_order :url,
-                :public_client_id,
-                :public_client_secret,
-                :public_requested_scopes,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :smart_authorization_url,
-                :smart_token_url,
-                :authorization_method,
-                :public_client_auth_type
-
-    test from: :g10_patient_context,
-         config: {
-           inputs: {
-             patient_id: { name: :public_patient_id },
-             smart_credentials: { name: :public_smart_credentials }
-           }
-         }
+    test from: :g10_patient_context
 
     test do
       title 'OAuth token exchange response contains OpenID Connect id_token'
@@ -155,8 +115,9 @@ module ONCCertificationG10TestKit
       end
     end
 
-    children.each do |child|
-      child.inputs.delete(:client_auth_encryption_method)
-    end
+    test from: :well_known_endpoint
+
+    # Move the well-known endpoint test to the beginning
+    children.prepend(children.pop)
   end
 end

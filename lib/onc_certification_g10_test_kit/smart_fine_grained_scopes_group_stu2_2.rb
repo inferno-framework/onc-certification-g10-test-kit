@@ -92,6 +92,22 @@ module ONCCertificationG10TestKit
 
     input :url
 
+    config(
+      inputs: {
+        smart_auth_info: {
+          options: {
+            components: [
+              Inferno::DSL::AuthInfo.default_auth_type_component_without_backend_services,
+              {
+                name: :jwks,
+                locked: true
+              }
+            ]
+          }
+        }
+      }
+    )
+
     children.each(&:run_as_group)
 
     # Replace generic finer-grained scope auth group with which allows standalone or
@@ -125,64 +141,10 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        authorization_method: {
-          name: :granular_scopes_authorization_method,
-          title: 'Granular Scopes Authorization Request Method'
-        },
-        client_auth_type: {
-          name: :granular_scopes_client_auth_type,
-          title: 'Granular Scopes Client Authentication Type'
-        },
         received_scopes: {
           name: :standalone_received_scopes
         }
       }
     )
-
-    granular_scopes_group1.config(
-      inputs: {
-        client_id: {
-          name: :granular_scopes1_client_id,
-          title: 'Granular Scopes Group 1 Client ID'
-        },
-        client_secret: {
-          name: :granular_scopes1_client_secret,
-          title: 'Granular Scopes Group 1 Client Secret'
-        },
-        requested_scopes: {
-          title: 'Granular Scopes Group 1 Scopes'
-        }
-      }
-    )
-
-    granular_scopes_group2.config(
-      inputs: {
-        client_id: {
-          name: :granular_scopes2_client_id,
-          title: 'Granular Scopes Group 2 Client ID'
-        },
-        client_secret: {
-          name: :granular_scopes2_client_secret,
-          title: 'Granular Scopes Group 2 Client Secret'
-        },
-        requested_scopes: {
-          title: 'Granular Scopes Group 2 Scopes'
-        }
-      }
-    )
-
-    input_order :url,
-                :granular_scopes1_client_id,
-                :requested_scopes_group1,
-                :granular_scopes_authorization_method,
-                :granular_scopes_client_auth_type,
-                :granular_scopes1_client_secret,
-                :client_auth_encryption_method,
-                :granular_scopes2_client_id,
-                :requested_scopes_group2,
-                :granular_scopes2_client_secret,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :patient_ids
   end
 end

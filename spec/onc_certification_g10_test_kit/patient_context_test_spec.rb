@@ -1,28 +1,27 @@
 RSpec.describe ONCCertificationG10TestKit::PatientContextTest do
   let(:test) { described_class }
   let(:suite_id) { 'g10_certification' }
-  let(:smart_credentials) do
-    {
+  let(:smart_auth_info) do
+    Inferno::DSL::AuthInfo.new(
       access_token: 'ACCESS_TOKEN',
       refresh_token: 'REFRESH_TOKEN',
       expires_in: 3600,
       client_id: 'CLIENT_ID',
-      token_retrieval_time: Time.now.iso8601,
+      issue_time: Time.now.iso8601,
       token_url: 'http://example.com/token'
-    }.to_json
+    )
   end
   let(:default_inputs) do
     {
       url: 'http://example.com/fhir',
       patient_id: '123',
-      smart_credentials:
+      smart_auth_info:
     }
   end
 
   it 'skips if the access token is blank' do
-    credentials = Inferno::DSL::OAuthCredentials.new(JSON.parse(smart_credentials).merge('access_token' => ''))
-    inputs = default_inputs.merge(smart_credentials: credentials.to_s)
-    result = run(test, inputs)
+    smart_auth_info.access_token = nil
+    result = run(test, default_inputs)
 
     expect(result.result).to eq('skip')
     expect(result.result_message).to match(/No access token/)

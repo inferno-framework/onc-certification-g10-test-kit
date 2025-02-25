@@ -66,21 +66,36 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        use_pkce: {
-          default: 'true',
-          locked: true
-        },
-        pkce_code_challenge_method: {
-          locked: true
-        },
-        granular_scope_selection_authorization_method: {
-          name: :granular_scope_selection_authorization_method,
-          default: 'get'
-        },
-        client_auth_type: {
-          name: :granular_scope_selection_client_auth_type,
-          default: 'confidential_asymmetric'
+        received_scopes: { name: :granular_scope_selection_v2_received_scopes },
+        smart_auth_info: {
+          name: :granular_scopes_selection_smart_auth_info,
+          title: 'Granular Scope Selection Credentials',
+          options: {
+            mode: 'auth',
+            components: [
+              Inferno::DSL::AuthInfo.default_auth_type_component_without_backend_services,
+              {
+                name: :use_discovery,
+                locked: true
+              },
+              {
+                name: :requested_scopes,
+                default: %(
+                  launch/patient openid fhirUser offline_access patient/Condition.rs
+                  patient/Observation.rs patient/Patient.rs
+                ).gsub(/\s{2,}/, ' ').strip
+              },
+              {
+                name: :jwks,
+                locked: true
+              }
+            ]
+          }
         }
+      },
+      outputs: {
+        smart_auth_info: { name: :granular_scopes_selection_smart_auth_info },
+        received_scopes: { name: :granular_scope_selection_v2_received_scopes }
       }
     )
 
@@ -95,31 +110,6 @@ module ONCCertificationG10TestKit
       title 'Granular Scope Selection with v2 Scopes'
 
       config(
-        inputs: {
-          client_id: {
-            name: :granular_scope_selection_v2_client_id,
-            title: 'Granular Scope Selection w/v2 Scopes Client ID'
-          },
-          client_secret: {
-            name: :granular_scope_selection_v2_client_secret,
-            title: 'Granular Scope Selection w/v2 Scopes Client Secret',
-            default: nil,
-            optional: true
-          },
-          requested_scopes: {
-            name: :granular_scope_selection_v2_requested_scopes,
-            title: 'Granular Scope Selection v2 Scopes',
-            default: %(
-              launch/patient openid fhirUser offline_access patient/Condition.rs
-              patient/Observation.rs patient/Patient.rs
-            ).gsub(/\s{2,}/, ' ').strip
-          },
-          received_scopes: { name: :granular_scope_selection_v2_received_scopes }
-        },
-        outputs: {
-          requested_scopes: { name: :granular_scope_selection_v2_requested_scopes },
-          received_scopes: { name: :granular_scope_selection_v2_received_scopes }
-        },
         options: {
           redirect_message_proc: proc do |auth_url|
             %(
@@ -157,31 +147,6 @@ module ONCCertificationG10TestKit
       title 'Granular Scope Selection with v2 Scopes'
 
       config(
-        inputs: {
-          client_id: {
-            name: :granular_scope_selection_v2_client_id,
-            title: 'Granular Scope Selection w/v2 Scopes Client ID'
-          },
-          client_secret: {
-            name: :granular_scope_selection_v2_client_secret,
-            title: 'Granular Scope Selection w/v2 Scopes Client Secret',
-            default: nil,
-            optional: true
-          },
-          requested_scopes: {
-            name: :granular_scope_selection_v2_requested_scopes,
-            title: 'Granular Scope Selection v2 Scopes',
-            default: %(
-              launch/patient openid fhirUser offline_access patient/Condition.rs
-              patient/Observation.rs patient/Patient.rs
-            ).gsub(/\s{2,}/, ' ').strip
-          },
-          received_scopes: { name: :granular_scope_selection_v2_received_scopes }
-        },
-        outputs: {
-          requested_scopes: { name: :granular_scope_selection_v2_requested_scopes },
-          received_scopes: { name: :granular_scope_selection_v2_received_scopes }
-        },
         options: {
           redirect_message_proc: proc do |auth_url|
             %(

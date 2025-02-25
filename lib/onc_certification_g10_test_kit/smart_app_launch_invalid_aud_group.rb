@@ -1,5 +1,9 @@
+require_relative 'scope_constants'
+
 module ONCCertificationG10TestKit
   class SMARTAppLaunchInvalidAudGroup < Inferno::TestGroup
+    include ScopeConstants
+
     title 'Invalid AUD Parameter'
     short_title 'Invalid AUD Launch'
     input_instructions %(
@@ -37,40 +41,16 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        client_id: {
-          name: :standalone_client_id,
-          title: 'Standalone Client ID',
-          description: 'Client ID provided during registration of Inferno as a standalone application'
-        },
-        requested_scopes: {
-          name: :standalone_requested_scopes,
-          title: 'Standalone Scope',
-          description: 'OAuth 2.0 scope provided by system to enable all required functionality',
-          type: 'textarea',
-          default: %(
-            launch/patient openid fhirUser offline_access
-            patient/Medication.read patient/AllergyIntolerance.read
-            patient/CarePlan.read patient/CareTeam.read patient/Condition.read
-            patient/Device.read patient/DiagnosticReport.read
-            patient/DocumentReference.read patient/Encounter.read
-            patient/Goal.read patient/Immunization.read patient/Location.read
-            patient/MedicationRequest.read patient/Observation.read
-            patient/Organization.read patient/Patient.read
-            patient/Practitioner.read patient/Procedure.read
-            patient/Provenance.read patient/PractitionerRole.read
-          ).gsub(/\s{2,}/, ' ').strip
+        smart_auth_info: {
+          name: :standalone_smart_auth_info,
+          title: 'Standalone Launch Credentials',
+          options: {
+            mode: 'auth'
+          }
         },
         url: {
           title: 'Standalone FHIR Endpoint',
           description: 'URL of the FHIR endpoint used by standalone applications'
-        },
-        smart_authorization_url: {
-          title: 'OAuth 2.0 Authorize Endpoint',
-          description: 'OAuth 2.0 Authorize Endpoint provided during the patient standalone launch'
-        },
-        smart_token_url: {
-          title: 'OAuth 2.0 Token Endpoint',
-          description: 'OAuth 2.0 Token Endpoint provided during the patient standalone launch'
         }
       },
       outputs: {
@@ -81,21 +61,38 @@ module ONCCertificationG10TestKit
       }
     )
 
-    input_order :url,
-                :standalone_client_id,
-                :standalone_client_secret,
-                :standalone_requested_scopes,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :smart_authorization_url
-
     test from: :smart_app_redirect do
       required_suite_options G10Options::SMART_1_REQUIREMENT
 
-      input :client_secret,
-            name: :standalone_client_secret,
-            title: 'Standalone Client Secret',
-            description: 'Client Secret provided during registration of Inferno as a standalone application'
+      config(
+        inputs: {
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            options: {
+              components: [
+                {
+                  name: :auth_type,
+                  default: 'symmetric',
+                  locked: true
+                },
+                {
+                  name: :auth_request_method,
+                  default: 'GET',
+                  locked: true
+                },
+                {
+                  name: :use_discovery,
+                  locked: true
+                },
+                {
+                  name: :requested_scopes,
+                  default: STANDALONE_SMART_1_SCOPES
+                }
+              ]
+            }
+          }
+        }
+      )
 
       def aud
         'https://inferno.healthit.gov/invalid_aud'
@@ -122,20 +119,43 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          use_pkce: {
-            default: 'true',
-            locked: true
-          },
-          pkce_code_challenge_method: {
-            locked: true
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            options: {
+              components: [
+                {
+                  name: :auth_type,
+                  default: 'symmetric',
+                  locked: true
+                },
+                {
+                  name: :auth_request_method,
+                  default: 'GET',
+                  locked: true
+                },
+                {
+                  name: :use_discovery,
+                  locked: true
+                },
+                {
+                  name: :requested_scopes,
+                  default: STANDALONE_SMART_2_SCOPES
+                },
+                {
+                  name: :pkce_support,
+                  default: 'enabled',
+                  locked: true
+                },
+                {
+                  name: :pkce_code_challenge_method,
+                  default: 'S256',
+                  locked: true
+                }
+              ]
+            }
           }
         }
       )
-
-      input :client_secret,
-            name: :standalone_client_secret,
-            title: 'Standalone Client Secret',
-            description: 'Client Secret provided during registration of Inferno as a standalone application'
 
       def aud
         'https://inferno.healthit.gov/invalid_aud'
@@ -161,20 +181,43 @@ module ONCCertificationG10TestKit
 
       config(
         inputs: {
-          use_pkce: {
-            default: 'true',
-            locked: true
-          },
-          pkce_code_challenge_method: {
-            locked: true
+          smart_auth_info: {
+            name: :standalone_smart_auth_info,
+            options: {
+              components: [
+                {
+                  name: :auth_type,
+                  default: 'symmetric',
+                  locked: true
+                },
+                {
+                  name: :auth_request_method,
+                  default: 'GET',
+                  locked: true
+                },
+                {
+                  name: :use_discovery,
+                  locked: true
+                },
+                {
+                  name: :requested_scopes,
+                  default: STANDALONE_SMART_2_SCOPES
+                },
+                {
+                  name: :pkce_support,
+                  default: 'enabled',
+                  locked: true
+                },
+                {
+                  name: :pkce_code_challenge_method,
+                  default: 'S256',
+                  locked: true
+                }
+              ]
+            }
           }
         }
       )
-
-      input :client_secret,
-            name: :standalone_client_secret,
-            title: 'Standalone Client Secret',
-            description: 'Client Secret provided during registration of Inferno as a standalone application'
 
       def aud
         'https://inferno.healthit.gov/invalid_aud'

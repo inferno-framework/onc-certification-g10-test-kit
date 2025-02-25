@@ -4,6 +4,13 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'smart_app_launch_test_kit',
+    git: 'https://github.com/inferno-framework/smart-app-launch-test-kit.git',
+    branch: 'fi-3093-use-auth-info'
+gem 'us_core_test_kit',
+    git: 'https://github.com/inferno-framework/us-core-test-kit.git',
+    branch: 'fi-3586-migrate-to-authinfo'
+
 group :development, :test do
   gem 'debug'
   gem 'rubocop', '~> 1.9'

@@ -10,7 +10,7 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportSTU1 do
   let(:base_input) do
     {
       bulk_server_url:,
-      bearer_token:,
+      bulk_smart_auth_info: Inferno::DSL::AuthInfo.new(access_token: bearer_token),
       group_id:,
       bulk_timeout: '180'
     }
@@ -121,15 +121,14 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportSTU1 do
 
   describe '[Bulk Data Server rejects $export request without authorization] test' do
     let(:runnable) { group.tests[2] }
-    let(:bad_token_input) do
-      base_input.merge({ bearer_token: nil })
-    end
 
     it 'skips if bearer_token not provided' do
-      result = run(runnable, bad_token_input)
+      base_input[:bulk_smart_auth_info].access_token = nil
+
+      result = run(runnable, base_input)
 
       expect(result.result).to eq('skip')
-      expect(result.result_message).to match(/bearer_token/)
+      expect(result.result_message).to match(/No access token/)
     end
 
     it 'fails if client can $export without authorization' do

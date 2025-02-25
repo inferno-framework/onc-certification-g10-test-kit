@@ -36,6 +36,10 @@ module ONCCertificationG10TestKit
       scratch[:patient_ids_seen] ||= []
     end
 
+    def bearer_token
+      bulk_smart_auth_info.access_token
+    end
+
     def build_headers(use_token)
       headers = { accept: 'application/fhir+ndjson' }
       headers.merge!({ authorization: "Bearer #{bearer_token}" }) if use_token == 'true'

@@ -252,12 +252,6 @@ module ONCCertificationG10TestKit
                  ]
 
     config(
-      inputs: {
-        client_auth_encryption_method: {
-          title: 'Client Authentication Encryption Method',
-          locked: true
-        }
-      },
       options: {
         post_authorization_uri: "#{Inferno::Application['base_url']}/custom/smart_stu2/post_auth",
         incorrectly_permitted_tls_version_message_type: 'warning'
@@ -336,7 +330,24 @@ module ONCCertificationG10TestKit
 
     group from: 'g10_smart_standalone_patient_app'
 
-    group from: 'g10_smart_limited_app'
+    group from: 'g10_smart_limited_app' do
+      # This has to be configured here, otherwise the `smart_auth_info` config
+      # will get clobbered and will use `standalone_smart_auth_info` instead of
+      # `limited_smart_auth_info`
+      groups
+        .select { |group| group.id.include? 'smart_standalone_launch' }
+        .flat_map(&:tests)
+        .select { |test| test.id.include? 'g10_patient_context' }
+        .each do |test|
+        test
+          .config(
+            inputs: {
+              patient_id: { name: :limited_patient_id },
+              smart_auth_info: { name: :limited_smart_auth_info }
+            }
+          )
+      end
+    end
 
     group from: 'g10_smart_ehr_practitioner_app'
 
@@ -386,14 +397,6 @@ module ONCCertificationG10TestKit
         )
       end
 
-      config(
-        inputs: {
-          client_auth_encryption_method: {
-            locked: false
-          }
-        }
-      )
-
       group from: :g10_public_standalone_launch,
             required_suite_options: G10Options::SMART_1_REQUIREMENT,
             config: { options: { redirect_message_proc: default_redirect_message_proc } }
@@ -405,6 +408,7 @@ module ONCCertificationG10TestKit
             config: { options: { redirect_message_proc: default_redirect_message_proc } }
 
       group from: :g10_token_revocation
+
       group from: :g10_smart_invalid_aud,
             config: { options: { redirect_message_proc: default_redirect_message_proc } }
 
@@ -444,34 +448,94 @@ module ONCCertificationG10TestKit
             required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
       group from: :g10_smart_v1_scopes,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT,
-            config: {
-              inputs: {
-                client_auth_encryption_method: { locked: true }
-              }
-            }
+            required_suite_options: G10Options::SMART_2_REQUIREMENT
       group from: :g10_smart_v1_scopes,
             id: :g10_smart_v1_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT,
-            config: {
-              inputs: {
-                client_auth_encryption_method: { locked: true }
-              }
-            }
+            required_suite_options: G10Options::SMART_2_2_REQUIREMENT
 
-      group from: :g10_smart_fine_grained_scopes,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT),
-            exclude_optional: true
-      group from: :g10_smart_fine_grained_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT),
-            exclude_optional: true
+      group from: :g10_smart_fine_grained_scopes, exclude_optional: true do
+        required_suite_options G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)
+        groups.first.config(
+          inputs: {
+            smart_auth_info: { name: :granular_scopes_1_auth_info }
+          },
+          outputs: {
+            smart_auth_info: { name: :granular_scopes_1_auth_info }
+          }
+        )
 
-      group from: :g10_us_core_7_smart_fine_grained_scopes,
-            required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT),
-            exclude_optional: true
-      group from: :g10_us_core_7_smart_fine_grained_scopes_stu2_2, # rubocop:disable Naming/VariableNumber
-            required_suite_options: G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT),
-            exclude_optional: true
+        groups.last.config(
+          inputs: {
+            smart_auth_info: { name: :granular_scopes_2_auth_info }
+          },
+          outputs: {
+            smart_auth_info: { name: :granular_scopes_2_auth_info }
+          }
+        )
+      end
+
+      group from: :g10_smart_fine_grained_scopes_stu2_2, exclude_optional: true do # rubocop:disable Naming/VariableNumber
+        required_suite_options G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)
+        groups.first.config(
+          inputs: {
+            smart_auth_info: { name: :granular_scopes_1_auth_info }
+          },
+          outputs: {
+            smart_auth_info: { name: :granular_scopes_1_auth_info }
+          }
+        )
+
+        groups.last.config(
+          inputs: {
+            smart_auth_info: { name: :granular_scopes_2_auth_info }
+          },
+          outputs: {
+            smart_auth_info: { name: :granular_scopes_2_auth_info }
+          }
+        )
+      end
+
+      group from: :g10_us_core_7_smart_fine_grained_scopes, exclude_optional: true do
+        required_suite_options G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT)
+        groups.first.config(
+          inputs: {
+            smart_auth_info: { name: :granular_scopes_1_auth_info }
+          },
+          outputs: {
+            smart_auth_info: { name: :granular_scopes_1_auth_info }
+          }
+        )
+
+        groups.last.config(
+          inputs: {
+            smart_auth_info: { name: :granular_scopes_2_auth_info }
+          },
+          outputs: {
+            smart_auth_info: { name: :granular_scopes_2_auth_info }
+          }
+        )
+      end
+
+      group from: :g10_us_core_7_smart_fine_grained_scopes_stu2_2, exclude_optional: true do # rubocop:disable Naming/VariableNumber
+        required_suite_options G10Options::SMART_2_2_REQUIREMENT.merge(G10Options::US_CORE_7_REQUIREMENT)
+        groups.first.config(
+          inputs: {
+            smart_auth_info: { name: :granular_scopes_1_auth_info }
+          },
+          outputs: {
+            smart_auth_info: { name: :granular_scopes_1_auth_info }
+          }
+        )
+
+        groups.last.config(
+          inputs: {
+            smart_auth_info: { name: :granular_scopes_2_auth_info }
+          },
+          outputs: {
+            smart_auth_info: { name: :granular_scopes_2_auth_info }
+          }
+        )
+      end
 
       group from: :g10_smart_granular_scope_selection,
             required_suite_options: G10Options::SMART_2_REQUIREMENT.merge(G10Options::US_CORE_6_REQUIREMENT)

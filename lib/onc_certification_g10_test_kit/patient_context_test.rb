@@ -8,15 +8,15 @@ module ONCCertificationG10TestKit
     )
     id :g10_patient_context
     input :patient_id, :url
-    input :smart_credentials, type: :oauth_credentials
+    input :smart_auth_info, type: 'auth_info'
 
     fhir_client :authenticated do
       url :url
-      oauth_credentials :smart_credentials
+      auth_info :smart_auth_info
     end
 
     run do
-      skip_if smart_credentials.access_token.blank?, 'No access token was received during the SMART launch'
+      skip_if smart_auth_info.access_token.blank?, 'No access token was received during the SMART launch'
 
       skip_if patient_id.blank?, 'Token response did not contain `patient` field'
 

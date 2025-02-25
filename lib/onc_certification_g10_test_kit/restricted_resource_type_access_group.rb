@@ -85,19 +85,12 @@ module ONCCertificationG10TestKit
     id :g10_restricted_resource_type_access
 
     input :url, :patient_id, :received_scopes, :expected_resources
-    input :smart_credentials, type: :oauth_credentials
 
-    config(
-      inputs: {
-        client_secret: {
-          optional: false
-        }
-      }
-    )
+    input :smart_auth_info, type: :auth_info
 
     fhir_client do
       url :url
-      oauth_credentials :smart_credentials
+      auth_info :smart_auth_info
     end
 
     test from: :g10_restricted_access_test do

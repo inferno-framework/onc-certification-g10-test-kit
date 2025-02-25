@@ -1,8 +1,11 @@
 require_relative 'base_token_refresh_stu2_group'
 require_relative 'patient_context_test'
+require_relative 'scope_constants'
 
 module ONCCertificationG10TestKit
   class SMARTAsymmetricLaunchGroup < Inferno::TestGroup
+    include ScopeConstants
+
     title 'Asymmetric Client Standalone Launch'
     short_title 'Asymmetric Client Launch'
     description %(
@@ -46,35 +49,37 @@ module ONCCertificationG10TestKit
 
     config(
       inputs: {
-        client_id: {
-          name: :asymmetric_client_id,
-          title: 'Asymmetric Launch Client ID'
-        },
-        client_secret: {
-          name: :asymmetric_client_secret,
-          title: 'Asymmetric Launch Client Secret',
-          default: nil,
-          optional: true,
-          locked: true
-        },
-        requested_scopes: {
-          name: :asymmetric_requested_scopes,
-          title: 'Asymmetric Launch Scope',
-          default: %(
-            launch/patient openid fhirUser offline_access patient/Medication.rs
-            patient/AllergyIntolerance.rs patient/CarePlan.rs
-            patient/CareTeam.rs patient/Condition.rs patient/Device.rs
-            patient/DiagnosticReport.rs patient/DocumentReference.rs
-            patient/Encounter.rs patient/Goal.rs patient/Immunization.rs
-            patient/Location.rs patient/MedicationRequest.rs
-            patient/Observation.rs patient/Organization.rs patient/Patient.rs
-            patient/Practitioner.rs patient/Procedure.rs patient/Provenance.rs
-            patient/PractitionerRole.rs
-          ).gsub(/\s{2,}/, ' ').strip
-        },
-        url: {
-          title: 'Asymmetric Launch FHIR Endpoint',
-          description: 'URL of the FHIR endpoint used by standalone applications'
+        smart_auth_info: {
+          name: :asymmetric_smart_auth_info,
+          title: 'Asymmetric Launch Credentials',
+          options: {
+            mode: 'auth',
+            components: [
+              {
+                name: :auth_type,
+                default: 'asymmetric',
+                locked: true
+              },
+              {
+                name: :requested_scopes,
+                default: STANDALONE_SMART_2_SCOPES
+              },
+              {
+                name: :pkce_support,
+                default: 'enabled',
+                locked: true
+              },
+              {
+                name: :pkce_code_challenge_method,
+                default: 'S256',
+                locked: true
+              },
+              {
+                name: :jwks,
+                locked: true
+              }
+            ]
+          }
         },
         code: {
           name: :asymmetric_code
@@ -82,65 +87,28 @@ module ONCCertificationG10TestKit
         state: {
           name: :asymmetric_state
         },
-        smart_authorization_url: {
-          title: 'OAuth 2.0 Authorize Endpoint',
-          description: 'OAuth 2.0 Authorize Endpoint provided during the patient standalone launch'
-        },
-        smart_credentials: {
-          name: :asymmetric_smart_credentials
-        },
-        use_pkce: {
-          default: 'true',
-          locked: true
-        },
-        pkce_code_challenge_method: {
-          locked: true
-        },
-        client_auth_type: {
-          name: :asymmetric_client_auth_type,
-          locked: true,
-          default: 'confidential_asymmetric'
-        },
-        refresh_token: {
-          name: :asymmetric_refresh_token
-        },
         received_scopes: {
           name: :asymmetric_received_scopes
         },
-        client_auth_encryption_method: {
-          name: :asymmetric_client_auth_encryption_method,
-          locked: false
+        patient_id: {
+          name: :asymmetric_patient_id
         }
       },
       outputs: {
-        access_token: { name: :asymmetric_access_token },
         code: { name: :asymmetric_code },
         encounter_id: { name: :asymmetric_encounter_id },
-        expires_in: { name: :asymmetric_expires_in },
         id_token: { name: :asymmetric_id_token },
         intent: { name: :asymmetric_intent },
         patient_id: { name: :asymmetric_patient_id },
         received_scopes: { name: :asymmetric_received_scopes },
-        refresh_token: { name: :asymmetric_refresh_token },
-        smart_credentials: { name: :asymmetric_smart_credentials },
-        state: { name: :asymmetric_state },
-        token_retrieval_time: { name: :asymmetric_token_retrieval_time }
+        smart_auth_info: { name: :asymmetric_smart_auth_info },
+        state: { name: :asymmetric_state }
       },
       requests: {
         redirect: { name: :asymmetric_redirect },
         token: { name: :asymmetric_token }
       }
     )
-
-    input_order :url,
-                :asymmetric_client_id,
-                :asymmetric_client_secret,
-                :asymmetric_requested_scopes,
-                :use_pkce,
-                :pkce_code_challenge_method,
-                :authorization_method,
-                :asymmetric_client_auth_type,
-                :client_auth_encryption_method
 
     group from: :smart_discovery_stu2,
           required_suite_options: G10Options::SMART_2_REQUIREMENT
@@ -149,13 +117,7 @@ module ONCCertificationG10TestKit
 
     group from: :smart_standalone_launch_stu2 do
       required_suite_options(G10Options::SMART_2_REQUIREMENT)
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :asymmetric_patient_id },
-               smart_credentials: { name: :asymmetric_smart_credentials }
-             }
-           }
+      test from: :g10_patient_context
 
       test do
         title 'OAuth token exchange response contains OpenID Connect id_token'
@@ -175,15 +137,10 @@ module ONCCertificationG10TestKit
         end
       end
     end
+
     group from: :smart_standalone_launch_stu2_2 do # rubocop:disable Naming/VariableNumber
       required_suite_options(G10Options::SMART_2_2_REQUIREMENT)
-      test from: :g10_patient_context,
-           config: {
-             inputs: {
-               patient_id: { name: :asymmetric_patient_id },
-               smart_credentials: { name: :asymmetric_smart_credentials }
-             }
-           }
+      test from: :g10_patient_context
 
       test do
         title 'OAuth token exchange response contains OpenID Connect id_token'
@@ -209,10 +166,6 @@ module ONCCertificationG10TestKit
 
       test from: :g10_patient_context do
         config(
-          inputs: {
-            patient_id: { name: :asymmetric_patient_id },
-            smart_credentials: { name: :asymmetric_smart_credentials }
-          },
           options: {
             refresh_test: true
           }

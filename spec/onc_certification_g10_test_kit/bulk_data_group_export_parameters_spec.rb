@@ -8,10 +8,13 @@ RSpec.describe ONCCertificationG10TestKit::BulkDataGroupExportParameters do
   let(:bearer_token) { 'some_bearer_token_alphanumeric' }
   let(:group_id) { '1219' }
   let(:polling_url) { 'https://redirect.com' }
+  let(:bulk_smart_auth_info) do
+    Inferno::DSL::AuthInfo.new(access_token: bearer_token)
+  end
   let(:input) do
     {
+      bulk_smart_auth_info:,
       bulk_server_url:,
-      bearer_token:,
       group_id:
     }
   end

@@ -45,15 +45,19 @@ module ONCCertificationG10TestKit
     run_as_group
 
     input_order :bulk_server_url,
-                :bulk_token_endpoint,
-                :bulk_client_id,
-                :bulk_scope,
-                :bulk_encryption_method,
                 :group_id,
                 :bulk_patient_ids_in_group,
                 :bulk_device_types_in_group,
                 :lines_to_validate,
                 :bulk_timeout
+
+    config(
+      inputs: {
+        url: {
+          name: :bulk_server_url
+        }
+      }
+    )
 
     group from: :bulk_data_authorization,
           description: <<~DESCRIPTION

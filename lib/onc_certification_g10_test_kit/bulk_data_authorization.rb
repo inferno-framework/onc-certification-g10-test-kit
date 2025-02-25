@@ -7,43 +7,33 @@ module ONCCertificationG10TestKit
 
     id :bulk_data_authorization
 
-    input :bulk_token_endpoint,
-          title: 'Backend Services Token Endpoint',
-          description: <<~DESCRIPTION
-            The OAuth 2.0 Token Endpoint used by the Backend Services specification to provide bearer tokens.
-          DESCRIPTION
-    input :bulk_client_id,
-          title: 'Bulk Data Client ID',
-          description: 'Client ID provided at registration to the Inferno application.'
-    input :bulk_scope,
-          title: 'Bulk Data Scopes',
-          description: 'Bulk Data Scopes provided at registration to the Inferno application.',
-          default: 'system/*.read'
-    input :bulk_encryption_method,
-          title: 'Encryption Method',
-          description: <<~DESCRIPTION,
-            The server is required to suport either ES384 or RS384 encryption methods for JWT signature verification.
-            Select which method to use.
-          DESCRIPTION
-          type: 'radio',
-          default: 'ES384',
+    input :bulk_smart_auth_info,
+          type: :auth_info,
+          title: 'Multi-Patient API Credentials',
           options: {
-            list_options: [
+            mode: :auth,
+            components: [
               {
-                label: 'ES384',
-                value: 'ES384'
+                name: :auth_type,
+                default: 'backend_services',
+                locked: true
               },
               {
-                label: 'RS384',
-                value: 'RS384'
+                name: :use_discovery,
+                default: false,
+                locked: true
+              },
+              {
+                name: :token_url,
+                optional: false
+              },
+              {
+                name: :jwks,
+                locked: true
               }
             ]
           }
-    output :bearer_token
-
-    http_client :token_endpoint do
-      url :bulk_token_endpoint
-    end
+    output :bulk_smart_auth_info
 
     test from: :tls_version_test do
       title 'Authorization service token endpoint secured by transport layer security'
@@ -56,8 +46,13 @@ module ONCCertificationG10TestKit
       DESCRIPTION
       id :g10_bulk_token_tls_version
 
+      input :bulk_smart_auth_info, type: :auth_info
+
+      def url
+        bulk_smart_auth_info.token_url
+      end
+
       config(
-        inputs: { url: { name: :bulk_token_endpoint } },
         options: {  minimum_allowed_version: OpenSSL::SSL::TLS1_2_VERSION }
       )
     end
@@ -80,14 +75,17 @@ module ONCCertificationG10TestKit
       # link 'http://hl7.org/fhir/uv/bulkdata/STU1.0.1/authorization/index.html#protocol-details'
 
       run do
-        post_request_content = AuthorizationRequestBuilder.build(encryption_method: bulk_encryption_method,
-                                                                 scope: bulk_scope,
-                                                                 iss: bulk_client_id,
-                                                                 sub: bulk_client_id,
-                                                                 aud: bulk_token_endpoint,
-                                                                 grant_type: 'not_a_grant_type')
+        post_request_content =
+          AuthorizationRequestBuilder.build(
+            encryption_method: bulk_smart_auth_info.encryption_algorithm,
+            scope: bulk_smart_auth_info.requested_scopes,
+            iss: bulk_smart_auth_info.client_id,
+            sub: bulk_smart_auth_info.client_id,
+            aud: bulk_smart_auth_info.token_url,
+            grant_type: 'not_a_grant_type'
+          )
 
-        post(client: :token_endpoint, **post_request_content)
+        post(bulk_smart_auth_info.token_url, **post_request_content)
 
         assert_response_status(400)
       end
@@ -111,14 +109,17 @@ module ONCCertificationG10TestKit
       # link 'http://hl7.org/fhir/uv/bulkdata/STU1.0.1/authorization/index.html#protocol-details'
 
       run do
-        post_request_content = AuthorizationRequestBuilder.build(encryption_method: bulk_encryption_method,
-                                                                 scope: bulk_scope,
-                                                                 iss: bulk_client_id,
-                                                                 sub: bulk_client_id,
-                                                                 aud: bulk_token_endpoint,
-                                                                 client_assertion_type: 'not_an_assertion_type')
+        post_request_content =
+          AuthorizationRequestBuilder.build(
+            encryption_method: bulk_smart_auth_info.encryption_algorithm,
+            scope: bulk_smart_auth_info.requested_scopes,
+            iss: bulk_smart_auth_info.client_id,
+            sub: bulk_smart_auth_info.client_id,
+            aud: bulk_smart_auth_info.token_url,
+            client_assertion_type: 'not_an_assertion_type'
+          )
 
-        post(client: :token_endpoint, **post_request_content)
+        post(bulk_smart_auth_info.token_url, **post_request_content)
 
         assert_response_status(400)
       end
@@ -151,13 +152,16 @@ module ONCCertificationG10TestKit
       # link 'http://hl7.org/fhir/uv/bulkdata/STU1.0.1/authorization/index.html#protocol-details'
 
       run do
-        post_request_content = AuthorizationRequestBuilder.build(encryption_method: bulk_encryption_method,
-                                                                 scope: bulk_scope,
-                                                                 iss: 'not_a_valid_iss',
-                                                                 sub: bulk_client_id,
-                                                                 aud: bulk_token_endpoint)
+        post_request_content =
+          AuthorizationRequestBuilder.build(
+            encryption_method: bulk_smart_auth_info.encryption_algorithm,
+            scope: bulk_smart_auth_info.requested_scopes,
+            iss: 'not_a_valid_iss',
+            sub: bulk_smart_auth_info.client_id,
+            aud: bulk_smart_auth_info.token_url
+          )
 
-        post(client: :token_endpoint, **post_request_content)
+        post(bulk_smart_auth_info.token_url, **post_request_content)
 
         assert_response_status([400, 401])
       end
@@ -170,20 +174,21 @@ module ONCCertificationG10TestKit
       DESCRIPTION
       # link 'http://hl7.org/fhir/uv/bulkdata/STU1.0.1/authorization/index.html#issuing-access-tokens'
 
-      output :authentication_response
+      makes_request :bulk_authentication
 
       run do
-        post_request_content = AuthorizationRequestBuilder.build(encryption_method: bulk_encryption_method,
-                                                                 scope: bulk_scope,
-                                                                 iss: bulk_client_id,
-                                                                 sub: bulk_client_id,
-                                                                 aud: bulk_token_endpoint)
+        post_request_content =
+          AuthorizationRequestBuilder.build(
+            encryption_method: bulk_smart_auth_info.encryption_algorithm,
+            scope: bulk_smart_auth_info.requested_scopes,
+            iss: bulk_smart_auth_info.client_id,
+            sub: bulk_smart_auth_info.client_id,
+            aud: bulk_smart_auth_info.token_url
+          )
 
-        authentication_response = post(client: :token_endpoint, **post_request_content)
+        post(bulk_smart_auth_info.token_url, **post_request_content, name: :bulk_authentication)
 
         assert_response_status([200, 201])
-
-        output authentication_response: authentication_response.response_body
       end
     end
 
@@ -201,17 +206,18 @@ module ONCCertificationG10TestKit
       DESCRIPTION
       # link 'http://hl7.org/fhir/uv/bulkdata/STU1.0.1/authorization/index.html#issuing-access-tokens'
 
-      input :authentication_response
-      output :bearer_token
+      uses_request :bulk_authentication
+      output :bulk_smart_auth_info
 
       run do
-        assert_valid_json(authentication_response)
-        response_body = JSON.parse(authentication_response)
+        assert_valid_json(request.response_body)
+        response_body = JSON.parse(request.response_body)
 
         access_token = response_body['access_token']
         assert access_token.present?, 'Token response did not contain access_token as required'
 
-        output bearer_token: access_token
+        bulk_smart_auth_info.update_from_response_body(request)
+        output bulk_smart_auth_info: bulk_smart_auth_info
 
         required_keys = ['token_type', 'expires_in', 'scope']
 
